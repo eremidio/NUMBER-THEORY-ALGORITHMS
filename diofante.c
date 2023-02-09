@@ -1,4 +1,4 @@
-//Vamos escrever um simples programa em C capaz de resolver equações diofantinas lineares do tipo
+//Vamos escrever um simples programa em C capaz de resolver equações diofantinas lineares do tipo ax+by=c
 
 /*Cabeçalho*/
 #include<stdio.h>
