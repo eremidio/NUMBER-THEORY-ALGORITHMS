@@ -28,7 +28,6 @@ printf("Digite o valor de b:\n");
 scanf("%d", &b);
 printf("Digite o valor de c:\n");
 scanf("%d", &c);
-printf("Vamos calcular soluções inteiras para a equação %dx+%dy=%d\n", a, b, c);
 
 //Determinando o maior dos coeficientes
 if(a>b){
@@ -66,7 +65,7 @@ y_values[counter-1]=(c-i*bigger)/smaller;
                           };
 
 //Exibindo os resultados encontrados
-printf("Eis as soluções inteira para a %dx+%dy=%d:\n", a, b, c);
+printf("Eis as soluções inteira para a %dx+%dy=%d:\n", bigger, smaller, c);
 for(i=0;i<counter; i++)
 printf("x=%d e y=%d\n", x_values[i], y_values[i]);
 printf("Aqui 'x' de nota o valor da variável multiplicada pelo maior coeficiente, enquanto 'y' o valor da variável multiplicada pelo menor dos coeficientes da equação.\n");                    
@@ -75,4 +74,3 @@ free(x_values);
 free(y_values);
 return 0;
           };
-
