@@ -15,7 +15,7 @@ long long int value1, value2, residue1, residue2, start_value1, start_value2, fa
 long long int * factor_array=NULL;
 
 //EXPLICAÇÃO DO ALGORITMO
-printf("Este programa computa o mínimo múltiplo comum (MMC) de dois números inteiros.\nUm teorema em teoria de números grante que inteiros possuem uma decomposição em fatores primos.\nDados dois inteiros A e B e os respectivos conjuntos de fatores primos destes números A_p e B_p,\no MMC destes números corresponte ao produto de todos os fatores primos no conjunto (A_p)U(B_p).\n\n");
+printf("Este programa computa o mínimo múltiplo comum (MMC) de dois números inteiros.\nUm teorema em teoria de números garante que inteiros possuem uma decomposição em fatores primos que é única.\nDados dois inteiros A e B e os respectivos conjuntos de fatores primos destes números A_p e B_p,\no MMC destes números corresponte ao produto de todos os fatores primos no conjunto (A_p)U(B_p).\n\n");
 
 //ENTRADA DE DADOS
 printf("Digite um número inteiro:\n");
