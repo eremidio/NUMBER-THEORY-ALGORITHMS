@@ -16,7 +16,7 @@ O módulo quadrado deste número é: z²=|zz*|= x²-y².
 
 Inversos multiplicativos são definidos por (1/z)=(z*)/z².
 
-A exponencial de um número perplexo é definida pela relação: exp(ja)=cosh(a)+jsenh(a).
+A exponencial de um número perplexo é definida pela relação: exp(ja)=cosh(a)+jsenh(a). Números perplexos com parte real nula coprrepondem a pontos em uma hipérbole unitária.
 
 Ver maiores informações em: https://en.wikipedia.org/wiki/Split-complex_number
 
@@ -160,7 +160,7 @@ z2.y= std::exp(x)*sinh(y);
 return z2;
                            };
 
-//FUNÇÃO QUE EXIBE UM NÚMERO PERPPLEXO EM NOTAÇÃO ALGÉBRICA
+//FUNÇÃO QUE EXIBE UM NÚMERO PERPLEXO EM NOTAÇÃO ALGÉBRICA
 template<typename T>
 string perplex<T>::show(){
 string result;
