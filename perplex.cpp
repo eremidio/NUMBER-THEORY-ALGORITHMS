@@ -3,20 +3,22 @@
 
 /* TEORIA:
 
-A classe dos números perplexos compreende a classe de números da forma: z=(x, j) ou em notação algébrica z= x+yj, onde j é a unidade hiperbólica imaginária que satifaxz a relação: j²=1.
+A classe dos números perplexos compreende a classe de números da forma: z=(x, y) ou em notação algébrica z= x+yj, onde j é a unidade hiperbólica imaginária que satifaxz a relação: j²=1.
 
-As regras de adição e multiplicação de números perpeplexos são definidas respectivamente por:
+As regras de adição e multiplicação de números perplexos são definidas respectivamente por:
 (x, y) +(u, v) =(x+u, y+v) ou (x+yj)+(u+vj)=(x+u)+(y+v)j
 (x, y) × (u, v) =(xu+yv, xv+yu) ou (x+yj)×(u+vj)=(xu+yv)+(xv+yu)j 
 
 O complexo do número z=x+yj é z*=x-yj. Esta operação satisfaz as propriedades: (z+w)*=z*+w*,(zw)*=z*w*, (z*)*=z.  
-Isto define um automorfismo de ordem 2 em relação a operação de conuugação.
+Isto define um automorfismo de ordem 2 em relação a operação de conjugação.
 
 O módulo quadrado deste número é: z²=|zz*|= x²-y².
 
 Inversos multiplicativos são definidos por (1/z)=(z*)/z².
 
 A exponencial de um número perplexo é definida pela relação: exp(ja)=cosh(a)+jsenh(a).
+
+Ver maiores informações em: https://en.wikipedia.org/wiki/Split-complex_number
 
 */
 
@@ -50,6 +52,7 @@ perplex<T> exp();
 perplex<T> conjugate();
 perplex<T> inverse();
 T absolute();
+T angle();
 string show();
              };
 
@@ -125,6 +128,14 @@ result= pow(x, 2) - pow(y, 2);
 return result;
                         };
 
+//FUNÇÃO QUE RETORNA O MÓDULO QUADRADO DE UM NÚMERO PERPLEXO
+template<typename T>
+T perplex<T>::angle(){
+T result;
+result= atanh(y/x);
+return result;
+                        };
+
 //FUNÇÃO QUE RETORNA O CONJUNGADO DE UM NÚMERO PERPLEXO
 template<typename T>
 perplex<T> perplex<T>::inverse(){
@@ -143,8 +154,8 @@ template<typename T>
 perplex<T> perplex<T>::exp(){
 perplex z2;
 
-z2.x= cosh(x);
-z2.y= sinh(y);
+z2.x= std::exp(x)*cosh(y);
+z2.y= std::exp(x)*sinh(y);
 
 return z2;
                            };
@@ -170,10 +181,11 @@ return result;
 //FUNÇÃO PRINCIPAL
 int main(){
 //INICIALIZANDO OBJETOS DA CLASSE
-float absolute_value;
+float absolute_value, hyperbolic_angle;
 perplex<float> z1(1.0, 2.0);
 perplex<float> z2(1.4, 2.5);
 perplex<float> z3, z4, z5, z6, z7, z8, z9;
+perplex<float> z10(2.5, 1.4);
 
 //OPERAÇÕES
 cout<<"z1: "<<z1.show()<<"\n";
@@ -193,12 +205,13 @@ z7=z1.conjugate();
 z8=z1.inverse();
 z9=z1.exp();
 absolute_value=z1.absolute();
+hyperbolic_angle = z10.angle();
 
 cout<<"z1*: "<<z7.show()<<"\n";
 cout<<"1/z1: "<<z8.show()<<"\n";
 cout<<"exp(z1): "<<z9.show()<<"\n";
 cout<<"|z1|²: "<<absolute_value<<"\n";
-
+cout<<"Ângulo hiperbólico associado a (2.5+1.4j): "<<hyperbolic_angle<<"\n";
 
 
 
