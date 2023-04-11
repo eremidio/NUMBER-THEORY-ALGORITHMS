@@ -32,7 +32,7 @@ using namespace std;
 
 
 //***************************************************************************************************************************
-//CLASSE DOS NÚMEROS PERPELEXOS
+//CLASSE DOS NÚMEROS PERPLEXOS
 template<typename T>
 class perplex{
 public:
