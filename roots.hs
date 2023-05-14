@@ -22,7 +22,7 @@ root n x y
 --FUNÇÃO PRINCIPAL
 main::IO()
 main = do 
- putStr("Digite um inteiro correspondendo a ordem da raíz da função a ser calculada:\n")
+ putStr("Digite um inteiro correspondendo a ordem da raíz a ser calculada:\n")
  x1<-getLine
  let n = read x1::Double
  putStr("Digite o valor do radicando:\n")
