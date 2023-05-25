@@ -36,28 +36,17 @@ return key;
                                                 };
 
 //Algoritmo de Euclides - usado para se checar se um fator primo foi encontrado
+//Algoritmo de Euclides para calcular o mdc de dois inteiros
 uint64_t euclides_check(uint64_t a, uint64_t b){
-//Variáveis
-uint64_t bigger, smaller, residue;
-//Ajuste de variáveis
-if(a>b){
-bigger = a;
-smaller = b;
-       };
+//Procedimentos
+if(a==b)
+return a;
+if(a>b)
+return euclides_check((a-b), b);
+if(a<b)
+return euclides_check(a, (b-a));
 
-if(a<b){
-bigger = b;
-smaller = a;
-       };
-
-//Algoritmo de Euclides
-do{
-residue = (bigger%smaller);
-bigger= smaller;
-smaller= residue;
-  }while(residue>0);
-return bigger;
-                                              };
+                                               };
 
 //Função que calcula um expoente do algoritmo de Shor
 uint64_t get_exponent(uint64_t number1/*semente aleatória*/, uint64_t number2/*número a ser fatorado*/){
