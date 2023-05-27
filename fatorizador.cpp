@@ -7,9 +7,9 @@ using namespace std;
 
 int main(){
 //DEFINIÇÃO DE VARIÁVEIS
-long long int * variavel=(long long int *)malloc(sizeof(long long int));
-long long int * numero=(long long int *)malloc(sizeof(long long int));
-long long int i;
+uint64_t * variavel=(uint64_t *)malloc(sizeof(uint64_t));
+uint64_t * numero=(uint64_t *)malloc(sizeof(uint64_t));
+uint64_t i;
 //PROCEDIMENTOS EXECUTÁVEIS
 cout<<"Digite o número um número inteiro para ser decomposto em seus fatores primos: ";
 cin>> *numero;
