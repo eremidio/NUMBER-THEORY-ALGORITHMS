@@ -48,7 +48,7 @@ for(i=3; i<=limit; i+=2){
 if(number%(i*i)==0)
 return false;
                         };
-//Caso as consdições acima sejam satisfeitas
+//Caso as condições acima sejam satisfeitas
 return true;
                                             };
 
@@ -173,7 +173,7 @@ if(i==2 || i==3 || i==5)
 atkin_array[i]=true;
                           };
 
-//Calculando o resíduo dos números e aplicando os teoremas 1, 2, 3 para determinar se um número  é primo ou não
+//Calculando o resíduo dos números e aplicando os teoremas 1, 2, 3 para determinar se um número é primo ou não
 for(i=0; i<atkin_int; ++i){
 //Ignorando os casos triviais
 if(atkin_array[i]==true)
@@ -191,7 +191,7 @@ atkin_test= square_free_odd_checker(atkin_value);
 if(atkin_test==true)
 atkin_array[i]=true;
                                        };
-//Caso 2: teorema 2; n≡ 7, 19, 31, 43 mod(60);
+//Caso 2: teorema 2; n≡ 7, 19, 31, 43 mod(60)
 if(atkin_residue==7 || atkin_residue==19 || atkin_residue==31 || atkin_residue==43){
 atkin_value = theorem2(i);
 atkin_test= square_free_odd_checker(atkin_value);
