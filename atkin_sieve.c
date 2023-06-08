@@ -48,7 +48,7 @@ for(i=3; i<=limit; i+=2){
 if(number%(i*i)==0)
 return false;
                         };
-//Caso as condições acima sejam satisfeitas
+//Caso as consdições acima sejam satisfeitas
 return true;
                                             };
 
@@ -65,7 +65,7 @@ result = 0;
 //Contando soluções inteiras para a forma quadrática do teorema 1
 for(x=1; x<limit; ++x){
 for(y=1; y<limit; y+=2){
-temp=4*pow(x, 2)+pow(y,2);
+temp=(4*x*x)+(y*y);
 
 //Condição que a equação tenha solução
 if(temp==number)
@@ -93,7 +93,7 @@ result = 0;
 //Contando soluções inteiras para a forma quadrática do teorema 2
 for(x=1; x<limit; x+=2){
 for(y=2; y<limit; y+=2){
-temp=3*pow(x, 2)+pow(y,2);
+temp=(3*x*x)+(y*y);
 
 //Condição que a equação tenha solução
 if(temp==number)
@@ -123,7 +123,7 @@ for(x=2; x<=limit; ++x){
 //Caso 1: x é par
 if(x%2==0 && x>2){
 for(y=1; y<x; y+=2){
-temp=3*pow(x, 2)-pow(y,2);
+temp=(3*x*x)-(y*y);
 
 //Condição que a equação tenha solução
 if(temp==number)
@@ -138,7 +138,7 @@ result++;
 //Caso 2: x é ímpar
 if(x%2==1){
 for(y=2; y<x; y+=2){
-temp=3*pow(x, 2)-pow(y,2);
+temp=(3*x*x)-(y*y);
 
 //Condição que a equação tenha solução
 if(temp==number)
@@ -173,7 +173,7 @@ if(i==2 || i==3 || i==5)
 atkin_array[i]=true;
                           };
 
-//Calculando o resíduo dos números e aplicando os teoremas 1, 2, 3 para determinar se um número é primo ou não
+//Calculando o resíduo dos números e aplicando os teoremas 1, 2, 3 para determinar se um número  é primo ou não
 for(i=0; i<atkin_int; ++i){
 //Ignorando os casos triviais
 if(atkin_array[i]==true)
@@ -191,7 +191,7 @@ atkin_test= square_free_odd_checker(atkin_value);
 if(atkin_test==true)
 atkin_array[i]=true;
                                        };
-//Caso 2: teorema 2; n≡ 7, 19, 31, 43 mod(60)
+//Caso 2: teorema 2; n≡ 7, 19, 31, 43 mod(60);
 if(atkin_residue==7 || atkin_residue==19 || atkin_residue==31 || atkin_residue==43){
 atkin_value = theorem2(i);
 atkin_test= square_free_odd_checker(atkin_value);
