@@ -12,7 +12,11 @@ int status=0;
 bool id;
 //PROCEDIMENTOS EXECUTÁVEIS
 if (n>2){
- for(i=2; i<n; i++){
+ //Caso trivial pares exceto 2 não são primos
+ if(n%2==0)
+  return false;
+//Caso geral checando por fatores ímpares
+ for(i=3; i<n; i+=2){
   resultado=(n%i);
   if(resultado!=0)
   {continue;}
@@ -45,5 +49,3 @@ else if(!eprimo(i))
 cout<<" ...\n";
 return 0;
 }
-
-
