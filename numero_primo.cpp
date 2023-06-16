@@ -2,6 +2,7 @@
 
 /*CABEÇAHO*/
 #include<iostream>
+#include<cmath>
 using namespace std;
 
 //FUNÇÃO QUE CHECA SE UM NÚMERO É PRIMO
@@ -15,15 +16,15 @@ if (n>2){
  //Caso trivial pares exceto 2 não são primos
  if(n%2==0)
   return false;
-//Caso geral checando por fatores ímpares
- for(i=3; i<n; i+=2){
+
+ for(i=3; i<(int)sqrt(n); i+=2){
   resultado=(n%i);
   if(resultado!=0)
   {continue;}
   if(resultado==0)
 {status++; break;};
 };
-         };
+            };
 
 if(status==0)
 id=true;
@@ -49,3 +50,4 @@ else if(!eprimo(i))
 cout<<" ...\n";
 return 0;
 }
+
