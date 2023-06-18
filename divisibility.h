@@ -79,7 +79,7 @@ return extract_digits_interval(number, digit_number-last_digits+1, digit_number)
 
                                                               };
 
-//3. Extraindo os últimos dígitos de um número
+//3. Extraindo os primeiros dígitos de um número
 uint64_t extract_first_digits(uint64_t number, int first_digits){
 //Variáveis locais
 int digit_number=digits_counter(number);
