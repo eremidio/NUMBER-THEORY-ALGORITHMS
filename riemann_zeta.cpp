@@ -18,6 +18,7 @@ int main(){
 int argument1;
 double argument2;
 complex<double> argument3;
+complex<double> argument4(0.56, 3.2), argument5(-0.56, 3.2);
 
 //Procedimentos
 //Argumento inteiro
@@ -41,9 +42,14 @@ cout<<"η("<<argument3.algebraic()<<")= "<<dirichlet_eta_function(argument3).alg
 
 //Função xi de Riemann
 cout<<"χ("<<argument2<<")= "<<setprecision(10)<<riemann_xi_function(argument2)<<".\n";
-cout<<"χ("<<argument3.algebraic()<<")= "<<dirichlet_eta_function(argument3).algebraic()<<".\n";
+cout<<"χ("<<argument3.algebraic()<<")= "<<riemann_xi_function(argument3).algebraic()<<".\n";
+
+//Continuação analítica da função zeta de Riemann
+cout<<"ζ(0.5)= "<<setprecision(10)<<riemann_zeta_function_analytical_continuation(0.5)<<".\n";
+cout<<"ζ(-0.5)= "<<setprecision(10)<<riemann_zeta_function_analytical_continuation(-0.5)<<".\n";
+cout<<"ζ(0.56+3.2i)= "<<riemann_zeta_function_analytical_continuation(argument4).algebraic()<<".\n";
+cout<<"ζ(-0.56+3.2i)= "<<riemann_zeta_function_analytical_continuation(argument5).algebraic()<<".\n";
 
 //Finalizando a aplicação
 return 0;
           }
-
