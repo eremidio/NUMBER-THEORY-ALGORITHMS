@@ -42,6 +42,10 @@ complex<double> riemann_xi_function(complex<double>);
 double dirichlet_eta_function(double);
 complex<double> dirichlet_eta_function(complex<double>);
 
+double riemann_zeta_function_analytical_continuation(double);
+complex<double> complex_sine(complex<double>);
+complex<double> riemann_zeta_function_analytical_continuation(complex<double>);
+
 //**************************************************************************************************************************
 //DEFINIÇÃO DA FUNÇÃO ZETA DE RIEMANN PARA ARGUMENTOS VARIADOS
 //1. Números inteiros positivos
@@ -74,7 +78,7 @@ break;
 return sum;
                                       };
 
-//3.Números complexos: representaçãovia série de potências.
+//3.Números complexos: representação via série de potências.
 //Necessitaremos de uma função auxiliar para calcular potência de expoentes complexos.
 complex<double> int_complex_pow(long int n, complex<double> z){
 //Variáveis locais
@@ -154,4 +158,106 @@ result=result*(gamma(z*one_half)*riemann_zeta_function(z));
 return result;
                                                       };
 
+//**************************************************************************************************************************
+//CONTNUAÇÕES ANÁLITICAS DA FUNÇÃO ZETA DE RIEMANN
 
+//1.Argumentos reais
+double riemann_zeta_function_analytical_continuation(double x){
+//Caso 1:x>1
+if(x>=1)
+return riemann_zeta_function(x);
+
+//Caso 2: 0<x<1
+else if(x>0 && x<1){
+
+//Variáveis locais
+long int n_max=10000000;
+long int i;//Variável de iteração
+double sum=0.0;
+double parcel;
+
+//Procedimento 
+for(i=1; i<n_max; ++i){
+parcel= 1.0/std::pow(i, x);
+if(i%2==1)
+sum-=parcel;
+if(i%2==0)
+sum+=parcel;
+//Definindo um limite
+if(parcel<1e-20)
+break;
+                      };
+return sum/(1-std::pow(2, 1-x));
+
+                   }
+
+//Caso 3: x<0
+else{
+//Restrição de valores aceitáveis
+assert(x-floor(x)!=0);
+//Variáveis locais
+constexpr double pi=4.0*atan(1.0);
+//Procedimentos
+return std::pow(2, x)*std::pow(pi, x-1)*std::sin((pi*x)/2)*gamma(1-x)*riemann_zeta_function(1-x);
+    };
+
+                                                              };
+
+//2. Argumentos complexos
+//Função auxiliar para o cálculo do seno complexo
+//OBSERVAÇÃO:Usar sin(a+b)=sin(a)cos(b)+sin(b)cos(a) e o fato de que cos(ia)=cosh(a) e sin(ia)=sinh(a)
+complex<double> complex_sine(complex<double> z){
+//Váriaveis locais
+complex<double> result;
+//Procedimentos
+result.real = std::sin(z.real)*std::cosh(z.imag);
+result.imag = std::cos(z.real)*std::sinh(z.imag);
+return result; 
+                                               };
+
+
+//Computando a função ζ para argumentos complexos
+complex<double> riemann_zeta_function_analytical_continuation(complex<double> z){
+//Restrição de valores aceitáveis
+assert(z.real-floor(z.real)!=0);
+
+//Caso 1:Re(z)>1
+if(z.real>=1.0)
+return riemann_zeta_function(z);
+
+//Caso 2: 0<Re(z)<1
+if(z.real<1.0 && z.real>0){
+
+//Variáveis locais
+complex<double> sum(0.0, 0.0);
+long int n_max=10000000;
+complex<double> hum(1.0, 0);
+long int i;//Variável de iteração
+
+//Procedimentos
+for(i=1; i<n_max; ++i){
+if(i%2==0)
+sum = sum + int_complex_pow(i, z).inv();
+if(i%2==1)
+sum = sum - int_complex_pow(i, z).inv();
+                      };
+
+//Resultado
+return sum/(hum-int_complex_pow(2, hum-z));
+                          }
+
+
+//Caso 3: Re(z)<0
+else{
+//Variáveis locais
+complex<double> result;
+constexpr double pi= 4.0*atan(1.0);
+complex<double> hum(1.0, 0);
+complex<double> complex_half_pi(pi/2, 0);
+//Procedimento
+result=int_complex_pow(2, z)*double_complex_pow(pi, z-hum)*complex_sine(complex_half_pi* z);
+result = result*gamma(hum-z)*riemann_zeta_function(hum-z);
+return result;
+    };
+
+                                                                                };
