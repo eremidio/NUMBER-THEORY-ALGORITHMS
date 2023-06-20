@@ -71,17 +71,17 @@ return (result/x);
 
 
 //3. Números complexos com parte real maior que 1: vamos usar a aproximação de Stirling
-//Usamos o métodos .pow(double) e .exp() definido para a classe de números complexosno arquivo complex_numbers.hpp
+//Usamos o métodos .pow(double) e .exp() definido para a classe de números complexos no arquivo complex_numbers.hpp
 //Aproximação de ordem O(z^(35/2))
 complex<double> gamma (complex<double> z){
 //Restrição dos argumentos a números complexos cuja parte real é superior a 1
-assert(z.real>0);
+assert(z.real>1.0);
 
 //Variáveis 
 complex<double> log_result, result;
 complex<double> log_z(std::log(z.norm()), z.polar());
 complex<double> power_part, factor;
-complex<double> log_2pi(log(2*atan(1.0)), 0), hum(1, 0),one_half(0.5, 0);
+complex<double> log_2pi(log(8*atan(1.0)), 0), hum(1, 0),one_half(0.5, 0);
 
 
 //Procedimentos
@@ -151,4 +151,3 @@ return (gamma(x)*gamma(y))/gamma(x+y);
 complex<double> beta(complex<double> z1, complex<double> z2){
 return (gamma(z1)*gamma(z2))/gamma(z1+z2);
                                                             };
-
