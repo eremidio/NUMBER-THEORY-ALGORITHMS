@@ -47,10 +47,9 @@ else
 return (n-1)*gamma(n-1);
                           };
 
-//2. Números reais: vamos usar uma a definição via definição de Euler usando produtório
+//2. Números reais: vamos usar a definição de Euler usando produtório
 double gamma(double x){
 //Variáveis locais
-const long double factor = 1.0/x;
 long double result,  parcel; 
 int i = 1;//Variável de iteração
 
