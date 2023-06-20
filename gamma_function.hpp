@@ -18,6 +18,7 @@ https://en.wikipedia.org/wiki/Beta_function
 
 //**************************************************************************************************************************
 //CABEÇALHO
+#pragma once
 #include<cmath>
 #include<assert.h>
 #include<stdint.h>
