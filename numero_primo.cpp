@@ -6,37 +6,29 @@
 using namespace std;
 
 //FUNÇÃO QUE CHECA SE UM NÚMERO É PRIMO
-bool eprimo(int n){
-//DEFINIÇÃO DE VARIÁVEIS AUXILIARES
-int i, resultado;
-int status=0;
-bool id;
-//PROCEDIMENTOS EXECUTÁVEIS
-if (n>2){
- //Caso trivial pares exceto 2 não são primos
- if(n%2==0)
-  return false;
+bool eprimo(uint64_t n){
+//Variáveis
+uint64_t i;
 
- for(i=3; i<(int)sqrt(n); i+=2){
-  resultado=(n%i);
-  if(resultado!=0)
-  {continue;}
-  if(resultado==0)
-{status++; break;};
-};
-            };
+//Procedimentos
 
-if(status==0)
-id=true;
-if(status>0)
-id=false;
-return(id);}
+if (n == 2 || n == 3)
+return true;
 
+if (n <= 1 || n % 2 == 0 || n % 3 == 0)
+return false;
+
+for(i = 5; i * i <= n; i += 6){
+if (n % i == 0 || n % (i + 2) == 0)
+return false;
+                             };
+ return true;
+                       }
 
 //FUNÇÃO PRINCIPAL
 int main(){
 //DEFINIÇÃO DE VARIÁVEIS
-int limite, i;
+uint64_t limite, i;
 cout<<"Digite um limitante superior para sua sequência de números primos:\n";
 cin>>limite;
 //CRIANDO A LISTA DE NÚMEROS PRIMOS
