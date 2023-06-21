@@ -41,6 +41,25 @@ bool perfect_square(uint64_t n){
 return floor(sqrt(n))-sqrt(n)>=0;
                                };
 
+//Função que checa se um número é primo
+bool is_prime(uint64_t n){
+//Variáveis
+uint64_t i;
+
+//Procedimentos
+
+if (n == 2 || n == 3)
+return true;
+
+if (n <= 1 || n % 2 == 0 || n % 3 == 0)
+return false;
+
+for(i = 5; i * i <= n; i += 6){
+if (n % i == 0 || n % (i + 2) == 0)
+return false;
+                             };
+ return true;
+                       }
 
 //Função totiente para pequenos inteiros ≲250000
 uint64_t totient_function_small_numbers(uint64_t n){
@@ -71,7 +90,11 @@ uint64_t i;//Variável de iteração
 if(perfect_square(n)==true)
 return totient_function_small_numbers(limit)*totient_function_small_numbers(limit);
 
-//Caso 2: Encontrando fatores relativamente primos de um dado número
+//Caso 2: Números primos
+if(is_prime(n))
+return n-1;
+ 
+//Caso 3: Encontrando fatores relativamente primos de um dado número
 for(i=1; i<limit; ++i){
 if(n%(limit-i)==0){
 factor1=limit-i;
