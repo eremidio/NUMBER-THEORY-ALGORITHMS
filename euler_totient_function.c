@@ -5,7 +5,8 @@
 PARA UM ARGUMENTO n A FUNÇÃO φ(n) CONTABALIZA QUANTOS INTEIROS NO INTERVALO [1, 2, ..., n] SÃO RELATIVAMENTE PRIMOS COM n.
 ISTO É, DADO UM NÚMERO a NO INTERVALO 1, 2,..., n, φ(n) CONTABILIZA QUANTOS NÚMEROS SATISFAZEM A CONDIÇÃO mdc(a, n)=1.
 
-A FUNÇÃO φ(n) É MULTIPLICATIVA: φ(n)φ(m)=φ(nm) SE n E m FOREM  RELATIVAMENTE PRIMOS.
+A FUNÇÃO φ(n) É MULTIPLICATIVA: φ(n)φ(m)=φ(nm) SE n E m FOREM  REALATIVAMENTE PRIMOS.
+PARA UM NÚMERO PRIMO p: φ(p)=p-1 (APENAS 1 É RELATIVAMENTE PRIMO COM n).
 
 ESTA FUNÇÃO PODE SER DETERMINADA POR MEIO DE CONTAGEM DIRETA USANDO O ALGORITMO DE EUCLIDES OU USANDO-SE A FÓRMULA DE EULER, QUE FAZ USO DE UM PRODUTÓRIO ENVOLVENDO FATORES PRIMOS DE n.
 PARA MAIORES INFORMAÇÕES:https://en.wikipedia.org/wiki/Euler%27s_totient_function
@@ -35,6 +36,11 @@ if(a<b)
 return gdc_euclides(a, (b-a));
                                              };
 
+//Função que detecta se um número é quadrado perfeito
+bool perfect_square(uint64_t n){
+return floor(sqrt(n))-sqrt(n)>=0;
+                               };
+
 
 //Função totiente para pequenos inteiros ≲250000
 uint64_t totient_function_small_numbers(uint64_t n){
@@ -53,6 +59,7 @@ return counter;
                                                   };
 
 //Função totiente de Euler para números grandes (usamos a propriedade multiplicativa da função φ para ≲250000²)
+//Essa função não 
 uint64_t totient_function_large_numbers(uint64_t n){
 //Variáveis locais
 uint64_t factor1, factor2;
@@ -60,7 +67,11 @@ uint64_t limit=sqrt(n);
 uint64_t i;//Variável de iteração
 
 //Procedimentos
-//Encontrando fatores relativamente primos de um dado número
+//Caso 1: quadrados perfeitos
+if(perfect_square(n)==true)
+return totient_function_small_numbers(limit)*totient_function_small_numbers(limit);
+
+//Caso 2: Encontrando fatores relativamente primos de um dado número
 for(i=1; i<limit; ++i){
 if(n%(limit-i)==0){
 factor1=limit-i;
@@ -94,9 +105,6 @@ scanf("%li", &number);
 
 //Calculando o valor da função totiente de Euler
 printf("φ(%li) = %li.\n", number, euler_totient_function(number));
-
-for(uint64_t i=1; i<=0; ++i)
-printf("φ(%li) = %li.\n", i, euler_totient_function(number));
 
 //Finalizando a aplicação
 return 0;
