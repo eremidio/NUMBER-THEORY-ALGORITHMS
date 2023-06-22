@@ -107,6 +107,6 @@ printf("Provável primo encontrado!\n");
 else
 printf("Número composto.\n");
 
-//Finalizando a aplação
+//Finalizando a aplicação
 return 0;
           }
