@@ -88,7 +88,7 @@ uint64_t i;//Variável de iteração
 //Procedimentos
 //Caso 1: quadrados perfeitos
 if(perfect_square(n)==true)
-return totient_function_small_numbers(limit)*totient_function_small_numbers(limit);
+return totient_function_small_numbers(limit)*limit;
 
 //Caso 2: Números primos
 if(is_prime(n))
