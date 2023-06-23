@@ -1,5 +1,5 @@
 //VAMOS CRIAR UM PROGRAMA QUE IMPLMENTA O ALGORITMO DE MILLER-RABIN PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o miller_rabin miller_rabin.c -lm
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o miller_rabin miller_rabin.c
 /*
 O TESTE DE MILLE RABIN É UM TESTE DA PRIMALIDADE DE UM NÚMERO INTEIRO QUE GENERALIZA O TESTE DE PRIMALIDADE DE FERMAT.
 ELE É FUNDAMENTADO NO CHAMADO PEQUENO TEOREMA DE FERMAT QUE AFIRMA QUE PARA UM DADO NÚMERO PRIMO p E UM INTEIRO a COPRIMO COM ELE a^(p-1) = 1(mod p).
@@ -19,7 +19,7 @@ O ALGORITMO FUNCIONA DA SEGUINTE FORMA:
 #include<stdbool.h>
 #include<stdint.h>
 #include<time.h>
-#include<math.h>
+#include"mod_bin_exponentiation.h"
 
 
 //********************************************************************************************************************
@@ -27,12 +27,10 @@ O ALGORITMO FUNCIONA DA SEGUINTE FORMA:
 
 //Função que implementa o algoritmo de Euclides para se calcular o mdc de dois inteiros
 uint64_t gdc_euclides(uint64_t a, uint64_t b){
-if(a==b)
+if(b==0)
 return a;
-if(a>b)
-return gdc_euclides((a-b), b);
-if(a<b)
-return gdc_euclides(a, (b-a));
+else
+return gdc_euclides(b, a%b);
                                              };
 
 //Função que executa o teste para um dado número inteiro
@@ -65,12 +63,12 @@ s++;
 d=n_even;
 
 //Teste 1: a^(d)=1 mod(n)
-if((uint64_t)(pow(a, d))%n==1)
+if(mod_pow(a, d, n)==1)
 return true;
 
 //Teste 2: a^(2^(r)d)=1 mod(n) para r no intervalo 1, 2,..., s-1
 for(r=0; r<s; ++r){
-x=(uint64_t)pow(a, pow(2, r)*d)%n;
+x= mod_pow(a, bin_pow(2, r)*d, n);
 if((x*x)%n==1)
 return true;
                   };
@@ -80,10 +78,22 @@ return false;
 
 //Teste de Miller-Rabin
 bool miller_rabin_test(uint64_t n, int k){
-for(int i =0; i<=k; ++i){
+//Variáveis locais
+int i;
+int p_results=0;
+int f_results=0;//Variável de iteração e contagem de acertos e erros
+
+//Teste
+for(i=0; i<=k;  ++i){
 if(test(n)==false)
+++f_results;
+else if(test(n)==true)
+p_results++;
+                    };
+
+if(f_results>=p_results)
 return false;
-                        };
+if(f_results<p_results)
 return true;
                                         };
 
