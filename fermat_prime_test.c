@@ -22,6 +22,7 @@ O ALGORITMO FUNCIONA DA SEGUINTE FORMA:
 #include<stdint.h>
 #include<time.h>
 #include<math.h>
+#include"mod_bin_exponentiation.h"
 
 
 //********************************************************************************************************************
@@ -39,7 +40,7 @@ return gcd_euclides(b, a%b);
 //Teste unitário
 bool test(uint64_t n){
 //Descartando os casos trivais
-if(n%2==0)
+if(n%2==0 || n%3==0 || n%5==0)
 return false;
 
 //Semente para geração de números aleatórios,
@@ -56,7 +57,7 @@ if(gcd_euclides(n, a)!=1)
 goto pick;
 
 //Executando o teste
-result=(uint64_t)pow(a, n-1)%n;
+result=mod_pow(a, n-1, n);
 
 if(result==1)
 return true;
@@ -67,14 +68,21 @@ return false;
 //O Teste de Fermat
 bool fermat_test(uint64_t n, int k){
 //Variáveis locais
-int i;//Variável de iteração
+int i;
+int p_results=0;
+int f_results=0;//Variável de iteração e contagem de acertos e erros
 
 //Teste
 for(i=0; i<=k;  ++i){
 if(test(n)==false)
-return false;
+++f_results;
+else if(test(n)==true)
+p_results++;
                     };
 
+if(f_results>=p_results)
+return false;
+if(f_results<p_results)
 return true;
                                    };
 
@@ -96,6 +104,14 @@ if(fermat_test(number, k)==true)
 printf("Provável primo encontrado!\n");
 else
 printf("Número composto.\n");
+
+//Calculando os números primos até 100
+printf("Primos até 100:\n2, 3, ");
+for(uint64_t i=5; i<100; ++i){
+if(fermat_test(i, 20)==true)
+printf("%lu, ", i);
+                             };
+printf("...\n");
 
 //Finalizando a aplicação
 return 0;
