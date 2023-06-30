@@ -7,7 +7,8 @@ O TESTE DE PRIMALIDADE BAILLIE-PSW É UM DOS TESTE DE PRIMALIDADE MAIS IMPORTANT
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Baillie–PSW_primality_test
                           https://en.wikipedia.org/wiki/Lucas_pseudoprime#Strong_Lucas_pseudoprimes
-
+                          https://medium.com/@shruti.singh20/primality-testing-algorithms-dbea1ff9f0c7
+    
 */
 
 //********************************************************************************************************************
@@ -98,7 +99,7 @@ return false;
 return true;
                              };
 
-// Teste de Lucas usanddo sequências de Lucas
+// Teste de Lucas usando sequências de Lucas
 bool lucas_sequence_test(uint64_t n, uint64_t P, uint64_t Q){
 uint64_t U0 = 0, U1 = 1, V0 = 2, V1 = P;
 uint64_t k = 1;/*variável que registra o número de iterações (n-2) e (n-1)determinam o n-ésimo termo*/;
@@ -137,7 +138,8 @@ return true;
 D = (D + D) % n;
 P = (P * P - 2 * Q) % n;
 Q = (Q * Q) % n;
-if (Q < 0) Q += n;
+if (Q < 0)
+Q += n;
                }
 return false;
                                                        };
