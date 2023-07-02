@@ -3,7 +3,7 @@
 
 /*
 
-O TEOREMA DE RESÍDUO CHINÊS AFIMAR QUE DADO RELAÇÕES DE CONGRUÊNCIA:
+O TEOREMA DE RESÍDUO CHINÊS AFIMA QUE DADO RELAÇÕES DE CONGRUÊNCIA:
 x = a(1) mod(n(1))
 x = a(2) mod(n(2))
 ....
@@ -13,7 +13,7 @@ PROVIDO QUE O TERMOS DA SEQUÊNCIA n(1), n(2), ... ; SEJAM RELATIVAMENTE PRIMOS 
 EXISTE UM ÚNICO x QUE SATISFAZ ESTAS RELAÇÕES A MENOS DE UMA RELAÇÃO DE CONGRUÊNCIA COM N = n(1).n(2).(...).n(k).
 
 VÁRIAS TÉCNICAS EXISTEM PARA CALCULAR O VALOR DE x QUE SATIFAZ ESTAS RELAÇÕES.
-O TEOREMA PODE SER EXETENDIDO PARA CASOS EM QUE n(1), n(2), ... ; NÃO SÃO RELATIVAMENTE PRIMOS.
+O TEOREMA PODE SER EXTENDIDO PARA CASOS EM QUE n(1), n(2), ... ; NÃO SÃO RELATIVAMENTE PRIMOS.
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Chinese_remainder_theorem
 
@@ -92,4 +92,3 @@ printf("x = %lu+%luk\n", chinese_residue_theorem(a, n, k), N);
 //Finalizandoa palicação
 return 0;
           };
-
