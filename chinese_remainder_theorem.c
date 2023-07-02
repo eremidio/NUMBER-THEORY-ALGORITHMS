@@ -1,5 +1,5 @@
 //VAMOS CRIAR UM PROGRAMA EM C QUE CALCULA O VALOR DE x NO TEOREMADE RESÍDUO CHINÊS
-//COMPILAR ESTE PROGRAMA COM O COMCOMANDO: gcc -o chinese_remainder_theorem chinese_remainder_theorem.c
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o chinese_remainder_theorem chinese_remainder_theorem.c
 
 /*
 
