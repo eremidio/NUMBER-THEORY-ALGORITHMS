@@ -48,7 +48,7 @@ for(i=3; i<=limit; i+=2){
 if(number%(i*i)==0)
 return false;
                         };
-//Caso as consdições acima sejam satisfeitas
+//Caso as condições acima sejam satisfeitas
 return true;
                                             };
 
