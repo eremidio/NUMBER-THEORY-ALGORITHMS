@@ -142,7 +142,7 @@ void pi::fill_prime_buffer(){
 //Variáveis locais
 unsigned long i=2;
 //Procedimento
-while(i<n/2){
+while(i<(n/1e2)){
 if(is_prime(i)==true)
 prime_vector.push_back(i);
 i++;
