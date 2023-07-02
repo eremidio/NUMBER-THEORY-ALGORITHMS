@@ -103,7 +103,7 @@ unsigned long sqrt_n, cbrt_n, result, upper, lower;
 //Métodos da classe
 void get_input();//Função que recebe input do usuário
 void pi_function(); //Função principal 
-void fill_prime_buffer();//Função que estoca os número primos até n^(1/2)em um vetor
+void fill_prime_buffer();//Função que estoca os número primos até n^(2/3)em um vetor
 unsigned long phi(unsigned long, unsigned long);//Função Φ(m, n)
          };
 
@@ -125,7 +125,7 @@ fill_prime_buffer();
 
                     };
 
-//Função principalda classe
+//Função principal da classe
 void pi::pi_function(){
 if(n<=SIEVE_MAX)
 result=sieve_counting(n);
