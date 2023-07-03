@@ -7,12 +7,12 @@ O ALGORITMO DE EUCLIDES EXTENDIDO É USADO PARA COMPUTAR O MÁXIMO DIVISOR COMUM
 PORÉM AO CONTRÁRIO DO ALGORITMO USUAL QUE APENAS RETORNA O mmc DE DOIS NÚMEROS, O ALGORITMO EXTENDIDO DETERMINA OS CHAMADOS 
 COEFICIENTES DA IDENTIDADE DE BEZOUT.
 
-PARA DOIS NÚMEROS a, b A IDENTIDADE DE BEZOUT É ax+by=mmc(a, b).
+PARA DOIS NÚMEROS a, b A IDENTIDADE DE BÉZOUT É ax+by=mmc(a, b).
 
 QUANDO a E b SÃO RELATIVAMENTE PRIMOS ENTRE SI O ALGORITMO RETORNA O INVERSO MULTIPLICATIVO MODULAR DE UN NÚMERO.
 PARA UM NÚMERO a, SEU INVERSO MULTIPLICATIVO x MÓDULO m SATIFAZ A RELAÇÃO: a.x ≡ 1 mod(m)
 
-EM PARTICULAR PARA a E b RELATIVAMENTE PRIMOS mmc(a b)=1, NA IDENTIDADE DE BEZOUT x É O INVERSO MULTIPLICATIVO DE a MÓDULO b
+EM PARTICULAR PARA a E b RELATIVAMENTE PRIMOS mmc(a b)=1, NA IDENTIDADE DE BÉZOUT x É O INVERSO MULTIPLICATIVO DE a MÓDULO b
 E y É O INVERSO MULTIPLICATIVO DE b MÓDULO a.
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
@@ -72,7 +72,7 @@ if(y2<0)
 y2*=(-1);
 
 printf("mdc(%li, %li)= %li\n",a, b, r1);
-printf("Coeficiente da identidade de Bezout: %li, %li\n", x1, y1);
+printf("Coeficiente da identidade de Bézout: %li, %li\n", x1, y1);
 printf("Razão de %li e %li pelo mmc(%li, %li): %li, %li\n",a, b, a, b, y2, x2);
                                                       };
 
