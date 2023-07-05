@@ -29,7 +29,7 @@ return false;
 if (n <= 1)
 return false;
 
-for(i = 5; i * i <= n; i += 6){
+for(i = 101; i * i <= n; i += 6){
 if (n % i == 0 || n % (i + 2) == 0)
 return false;
                              };
