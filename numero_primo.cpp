@@ -1,6 +1,6 @@
 //VAMOS CRIAR UM PROGRAMA QUE EXIBE NA TELA UMA LISTA DE NÚMEROS PRIMOS ATÉ UM LIMITE DETERMINADO PELO USUÁRIO
 
-/*CABEÇAHO*/
+/*CABEÇALHO*/
 #include<iostream>
 #include<cmath>
 using namespace std;
@@ -44,8 +44,7 @@ cout<<"Digite um limitante superior para sua sequência de números primos:\n";
 cin>>limite;
 //CRIANDO A LISTA DE NÚMEROS PRIMOS
 cout<<"Eis a sua lista de números primos.\n";
-cout<<"2, ";
-for(i=3; i<=limite; i++){
+for(i=2; i<=limite; i++){
 if(eprimo(i))
 cout<<i<<", ";
 else if(!eprimo(i))
