@@ -15,8 +15,6 @@ vector<uint64_t>prime_buffer;
 
 //****************************************************************************************************************************
 //FUNÇÕES 
-//Função que determina se um número é primoou não
-
 //Função que calcula se um número é primo ou não
 bool is_prime(uint64_t n){
 //Casos triviais
