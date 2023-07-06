@@ -1,4 +1,4 @@
- //VAMOS CRIAR UM PROGRAMA PARA CALCULAR SE UM NÚMERO OU NÃO USANDO UM MÉTODO DE DIVISÃO
+ //VAMOS CRIAR UM PROGRAMA PARA CALCULAR SE UM NÚMERO É PRIMO OU NÃO USANDO UM MÉTODO DE DIVISÃO
 //COMPILAR ESTE PROGRAMA COM O COMANDO: g++ -o prime_number prime_number.cpp
 
 //*****************************************************************************************************
