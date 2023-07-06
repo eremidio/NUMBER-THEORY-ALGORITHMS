@@ -49,7 +49,7 @@ return true;
 
 
 
-//Função que preenche um buffer de númeror primosaté n^1/2
+//Função que preenche um buffer de númeror primos até n^1/2
 void fill_prime_buffer(uint64_t n){
 //Variáveis locais
 uint64_t sqrt_n=floor(sqrt(n));
@@ -60,7 +60,7 @@ prime_buffer.emplace_back(i);
                                 };
                                   };
 
-//Função que printa os valores de primosat é um dado valor
+//Função que printa os valores de primos até um dado valor
 void segmented_sieve(uint64_t n, uint64_t max_size){
 //Variáveis locais
 uint64_t turns, upper, lower, mark_index/*index no array*/, real_value/*valor real*/, counter/*contador*/, prime;
