@@ -1,4 +1,7 @@
 //VAMOS ESCREVER UM PROGRAMA EM C++ QUE CALCULA A EXPANSÃO P-ÁDICA DE NÚMEROS INTEIROS E RACIONAIS
+/*
+PARA MAIORES INFORMAÇÕES SOBRE NÚMEROS P-ÁDICOS: https://en.wikipedia.org/wiki/P-adic_number
+*/
 //COMPILAR ESTE PROGRAMA COM O COMANDO: g++ -o p_adic p_adic.cpp
 
 //***************************************************************************************************************************
