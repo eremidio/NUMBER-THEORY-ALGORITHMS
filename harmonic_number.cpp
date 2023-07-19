@@ -32,6 +32,11 @@ cout<<"Ψ("<<n<<") = "<<digamma(n)<<"\n";
 cout<<"Ψ("<<x<<") = "<<digamma(x)<<"\n";
 cout<<"Ψ("<<z.algebraic()<<") = "<<digamma(z).algebraic()<<"\n";
 
+//Aproximação da constante de Euler-Mascheroni
+cout<<"Para n=100000, γ = "<<euler_mascheroni_approximation(100000)<<"\n";
+cout<<"Para n=1000000, γ = "<<euler_mascheroni_approximation(1000000)<<"\n";
+cout<<"Para n=10000000, γ = "<<euler_mascheroni_approximation(10000000)<<"\n";
+
 //Finalizando a aplicação
 return 0;
           }
