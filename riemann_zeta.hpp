@@ -168,7 +168,7 @@ if(x>=1)
 return riemann_zeta_function(x);
 
 //Caso 2: 0<x<1
-else if(x>0 && x<1){
+else if(x>=0 && x<1){
 
 //Variáveis locais
 long int n_max=10000000;
@@ -193,14 +193,15 @@ return sum/(1-std::pow(2, 1-x));
 
 //Caso 3: x<0
 else{
-//Restrição de valores aceitáveis
-assert(x-floor(x)!=0);
+//Zeros triviais ocorrem em -2, -4, ...
+int n=(-1)*x;
+if(n%2==0)
+return 0;
 //Variáveis locais
 constexpr double pi=4.0*atan(1.0);
 //Procedimentos
 return std::pow(2, x)*std::pow(pi, x-1)*std::sin((pi*x)/2)*gamma(1-x)*riemann_zeta_function(1-x);
     };
-
                                                               };
 
 //2. Argumentos complexos
