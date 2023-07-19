@@ -59,7 +59,7 @@ complex<double> digamma(complex<double>);
 //**************************************************************************************************************************
 // FUNÇÕES
 //Argumentos inteiros
-double hamonic_number(uint64_t n){
+double harmonic_number(uint64_t n){
 //Variáveis locais
 uint64_t i;
 double soma=0.0;
@@ -77,7 +77,7 @@ return harmonic_number(n_);
 
 
 //Argumentos reais não inteiros
-double harmonic(double x){
+double harmonic_number(double x){
 //Variáveis locais
 uint64_t i;
 double soma=0.0;
@@ -86,7 +86,7 @@ for(i=1; i<=100000000; ++i)
 soma+=(1.0/(i*(i+x)));
 
 return soma*x;
-                         };
+                                };
 
 //Argumentos complexos
 complex<double> harmonic_number(complex<double> z){
