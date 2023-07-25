@@ -6,7 +6,6 @@
 #include"integer_partition.h"
 
 
-
 //Função principal
 int main(){
 //Variáveis locais
