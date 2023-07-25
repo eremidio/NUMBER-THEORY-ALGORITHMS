@@ -25,7 +25,7 @@ REPRESENTAÇÃO DE CONJUNTOS, TENDO APLICAÇÕES IMPORTANTES EM FÍSICA TEÓRICA
 A CHAMADA FUNÇÃO PARTIÇÃO p(n) CONTABILIZA O NÚMERO DE PARTIÇÕES DE UM NÚMERO INTEIRO n.
 NÃO EXISTE UMA FÓRMULA EXPLÍCITA PARA O CÁLCULO DE p(n), PORÉM SEU VALOR PODE SER EXPLICITAMENTE CALCULADO USANDO RELAÇÕES 
 RECURSIVAS OU APROXIMADO PARA GRANDES VALORES USANDO EXPRESSÕES QUE CONVERGEM PARA O VALOR CORRETO COM GRANDE PRECISÃO.
-UMA FUNÇÃO GERADORA USANDO SÉRIES GEOMÉTRICAS PODE SER USADA PARA CALCULAR OS VALORES DE p(n) PARA UMA DADOP VALOR DE n.
+UMA FUNÇÃO GERADORA USANDO SÉRIES GEOMÉTRICAS PODE SER USADA PARA CALCULAR OS VALORES DE p(n) PARA UMA DADO VALOR DE n.
 
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Partition_(number_theory)
@@ -39,13 +39,13 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Partition_(number_theo
 #ifndef INTEGER_PARTITON_H
 #define INTEGER_PARTITON_H
 #include<math.h>
+#include<stdint.h>
 
 
 //****************************************************************************************************************************
 //PROTÓTIPO DE FUNÇÕES
 unsigned int sum_of_divisors(unsigned int);//FUNÇÃO QUE CALCULA A SOMA DE DIVISORES DE UM NÚMERO
 unsigned int partition_function(unsigned int);//FUNÇÃO QUE CALCULA O NÚMERO DE PARTIÇÕES DE UM INTEIRO
-
 
 //****************************************************************************************************************************
 //FUNÇÕES
@@ -94,7 +94,6 @@ sum+=(sum_of_divisors(n-i)*partition_function(i));
 //Resultado
 return sum/n;
                                               };
-
 
 //****************************************************************************************************************************
 //FIM DO HEADER
