@@ -17,7 +17,7 @@ f(n)= Σμ(d)g(n/d)
 
 A FÓRMULA DE INVERSÃO É UM CASO PARTICULAR DE UMA CONVOLUÇÃO DE DIRICHLET.
 
-ALGUMAS GENERALIZAÇÕES DA FUNÇÃO DE MÖBIUS SÃO TAMBṔEM DENOTADAS POR μ(n).
+ALGUMAS GENERALIZAÇÕES DA FUNÇÃO DE MÖBIUS SÃO TAMBÉM DENOTADAS POR μ(n).
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Möbius_inversion_formula
 https://en.wikipedia.org/wiki/Möbius_function#cite_note-FOOTNOTEBostConnes1995411–457-6
