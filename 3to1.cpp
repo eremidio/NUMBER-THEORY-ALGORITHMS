@@ -1,5 +1,5 @@
-//Vamos criar um programa básico em C++ para verificar a conjectura 3n+1
-
+//Vamos criar um programa básico em C++ para verificar a conjectura 3n+1, também conhecida como conjectura de Collatz
+//Para maiores informações: https://en.wikipedia.org/wiki/Collatz_conjecture#Cycles
 
 
 //Cabeçalho
