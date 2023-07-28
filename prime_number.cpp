@@ -37,7 +37,7 @@ uint64_t sqrt_n =std::sqrt(n);
 
 //Procedimento usando uma otimização 30k+1
 for(uint64_t i=31; i<sqrt_n+1; i+=30){
-if((n%i)==0 || (n%(i+6))==0 || (n%(i+10))==0 || (n%(i+12))==0 || (n%(i+16))==0 || (n%(i+22))==0 || (n%(i+28))==0)
+if((n%i)==0 || (n%(i+6))==0 || (n%(i+10))==0 || (n%(i+12))==0 || (n%(i+16))==0 || n%(i+18))==0 || (n%(i+22))==0 || (n%(i+28))==0)
 return false;
                                      };
 return true;
