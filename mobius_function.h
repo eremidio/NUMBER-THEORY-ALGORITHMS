@@ -94,33 +94,34 @@ return 1;
 //Variáveis locais
 uint64_t prime_factor_number=0;
 int result = 1;
+uint64_t n1=n;
 
 //Procedimentos
 //Testando a divisibilidade por 2
 if((n%2)==0){
-n/=2;
-if(n==1)
+n1/=2;
+if(n1==1)
 return (-1)*result;
 prime_factor_number++;
-if((n%2)==0)
+if((n1%2)==0)
 return 0;
             };
 
 //Testando a divisibilidade por números primos ímpares
-for(uint64_t i=3; i<n; i+=2){
-if((n%i)==0){
-n/=i;
-if(n==1)
-break;
+for(uint64_t i=3; n1>1; i+=2){
+if((n1%i)==0){
+n1/=i;
 prime_factor_number++;
-if((n%i)==0)
+if(n1==1)
+break;
+if((n1%i)==0)
 return 0;
             };
-                            };
+                             };
 //Resultado
-if(prime_factor_number%2==0)
+if((prime_factor_number%2)==0)
 return result;
-if(prime_factor_number%2==1)
+if((prime_factor_number%2)==1)
 return (-1)*result;
 
                                     };
@@ -183,7 +184,7 @@ int64_t result=0;
 
 //Procedimento
 for(uint64_t i=1; i<=n; ++i)
-result+= mobius_function(n);
+result+= mobius_function(i);
 
 //Resultado
 return result;
