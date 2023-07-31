@@ -17,7 +17,7 @@ f(n)= Σμ(d)g(n/d)
 
 A FÓRMULA DE INVERSÃO É UM CASO PARTICULAR DE UMA CONVOLUÇÃO DE DIRICHLET.
 
-ALGUMAS GENERALIZAÇÕES DA FUNÇÃO DE MÖBIUS SÃO TAMBÉM DENOTADAS POR μ(n).
+ALGUMAS GENERALIZAÇÕES DA FUNÇÃO DE MÖBIUS SÃO TAMBṔEM DENOTADAS POR μ(n).
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Möbius_inversion_formula
 https://en.wikipedia.org/wiki/Möbius_function#cite_note-FOOTNOTEBostConnes1995411–457-6
@@ -93,11 +93,14 @@ return 1;
 
 //Variáveis locais
 uint64_t prime_factor_number=0;
+int result = 1;
 
 //Procedimentos
 //Testando a divisibilidade por 2
 if((n%2)==0){
 n/=2;
+if(n==1)
+return (-1)*result;
 prime_factor_number++;
 if((n%2)==0)
 return 0;
@@ -107,6 +110,8 @@ return 0;
 for(uint64_t i=3; i<n; i+=2){
 if((n%i)==0){
 n/=i;
+if(n==1)
+break;
 prime_factor_number++;
 if((n%i)==0)
 return 0;
@@ -114,9 +119,9 @@ return 0;
                             };
 //Resultado
 if(prime_factor_number%2==0)
-return 1;
+return result;
 if(prime_factor_number%2==1)
-return (-1);
+return (-1)*result;
 
                                     };
 
@@ -128,14 +133,16 @@ else
 return euclides_check(b, a%b);
                                                };
 
-//Função de Möbius para pequenos valores
+//Função de Möbius para grandes valores
 int mobius_large_integer(uint64_t n){
+//Variáveis locais
+int result = 1;
 //Caso 1: quadrados perfeitos
 if(is_square(n)==true)
 return 0;
 //Caso2 : números primos
 if(is_prime(n)==true)
-return (-1);
+return (-1)*result;
 
 //Caso 3: explorando a propriedade multiplicativa da função de Möbius 
 //Variáveis
