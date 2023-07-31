@@ -26,34 +26,23 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Pépin%27s_test
 //FUNÇÕES
 //Função que determina se um número inteiro positivo é um número de Fermat
 bool is_fermat_number(uint64_t n){
-//Caso trivial
-if(n==3)
-return true;
-if(n<3)
-return false;
-
 //Variáveis locais
-uint64_t fermat, result;//Primeiro número na sequência
-
-//Ajuste de variáveis
-fermat=3;
-result=0;
-
-//Procedimento
-while(result<n){
-result=((fermat-1)*(fermat-1))-1;
-//Atualizando variáveis para pr[oxim iteração
-fermat = result;
+uint64_t i, tester;
+//Procedimentos
+for(i=0; ; ++i){
+tester = bin_pow(2, bin_pow(2, i))+1 ;
+if(tester==n)
+return true;
+if(tester>n)
+return false;
                };
-
-//Resultado
-return (result==n);
                                  };
 
 //Teste de Pépin para testar a primalidade de um número
 void pepin_test(uint64_t n){
 //Checando se o número em questão é um número de Fermat
 bool test1=is_fermat_number(n);
+
 if(test1==false){
 printf("O número em questão não é um número de Fermat!\n");
 return;
