@@ -52,7 +52,7 @@ std::cout<<"}\n";
                                                    };
 
 
-//Função que calcula de um número é um quadrado perfeito
+//Função que calcula se um número é um quadrado perfeito
 bool is_square(uint64_t n){
 //Procedimentos
 for(uint64_t i=2; ; ++i){
@@ -63,14 +63,6 @@ return false;
                         };
                           };
 
-//Função que calcula a raíz quadrada de um número inteiro
-uint64_t square_roor(uint64_t n){
-//Procedimentos
-for(uint64_t i=2; ; ++i){
-if(i*i==n)
-return i;
-                        };
-                                };
 //**************************************************************************************************************************
 //CLASSE DO ALGORITMO
 class rational_sieve{
