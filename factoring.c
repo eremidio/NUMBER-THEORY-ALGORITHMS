@@ -47,7 +47,7 @@ while(n%89==0){ n/=89; printf("89, "); };
 while(n%97 ==0){ n/=97; printf("97, "); };
 
 //Loop principal
-for(i=101; i<n; i+=6){
+for(i=101; i<=n; i+=6){
 while((n%i)==0){
 n/=i;
 printf("%lu, ", i);
@@ -57,7 +57,8 @@ while((n%(i+2))==0){
 n/=(i+2);
 printf("%lu, ", (i+2));
                    };
-
+if(n==1)
+break;
                      };
 if(n==1)
 printf("...\n");
@@ -77,4 +78,3 @@ factorize(number);
 return 0;
 
           };
-
