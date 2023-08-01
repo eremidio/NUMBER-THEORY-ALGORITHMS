@@ -1,4 +1,4 @@
-//VAMOS IMPLEMENTAR O ALGORITMO DE POLLARD PARA FATORAR NÚMEROS INTEIROSEM DOIS FATORES DISTINTOS
+//VAMOS IMPLEMENTAR O ALGORITMO DE POLLARD PARA FATORAR NÚMEROS INTEIROS EM DOIS FATORES DISTINTOS
 // COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o pollard_rho_factorization2 pollard_rho_factorization2.c -lm
 
 /*
@@ -38,7 +38,7 @@ else
 return euclides_check(b, a%b);
                                                };
 
-//Função que usa um gerador de números para gerar um número usado no teste do algoritmo de Pollard rho (p-1)
+//Função que usa um gerador de números para gerar um número usado no teste do algoritmo de Pollard rho
 uint64_t generate_key (uint64_t value){
 //Caso geral escolhendo um palpite maior do que 7
 //Semente para geração de números aleatórios
@@ -104,7 +104,7 @@ uint64_t number;
 printf("Digite o número a ser fatorado.\n->");
 scanf("%li", &number);
 
-//Aplicando o algoritmo de Pollard rho (p-1)
+//Aplicando o algoritmo de Pollard rho
 pollard_rho(2, 2, number);
 
 //Finalizando a aplicação
