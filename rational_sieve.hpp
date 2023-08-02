@@ -52,7 +52,7 @@ std::cout<<"}\n";
                                                    };
 
 
-//Função que calcula de um número é um quadrado perfeito
+//Função que calcula se um número é um quadrado perfeito
 bool is_square(uint64_t n){
 //Procedimentos
 for(uint64_t i=2; ; ++i){
