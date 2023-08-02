@@ -2,8 +2,8 @@
 
 /*
 O ALGORITMO DA PENEIRA RACIONAL É UM ALGORITMO PARA FATORAR NÚMEROS INTEIROS BASEADO NA SEGUINTE PROPOSIÇÃO:
-SEJA n UM NÚMERO A SER FATORADO SE EXISTIREM a E b, TAIS QUE a²=b² mod(n), POSSÍVEIS FATORES DE n TEM A FORMA mmc(a-b, n) OU
-mmc(a-b, n).
+SEJA n UM NÚMERO A SER FATORADO SE EXISTIREM a E b, TAIS QUE a²=b² mod(n), POSSÍVEIS FATORES DE n TEM A FORMA mdc(a-b, n) OU
+mdc(a-b, n).
 A IDEIA É USAR UMA PEQUENA BASE DE NÚMEROS PRIMOS PARA TENTAR ENCONTRAR a E b SATISFAZENDO ESTA PROPOSIÇÃO.
 
 ESTE ALGORITMO NÃO FUNCIONA PARA NÚMEROS CONTENDO POTÊNCIAS UM ÚNICO FATOR PRIMO p^k, COM p PRIMO E k INTEIRO.
@@ -42,7 +42,7 @@ else
 return euclides_algorithm(b, a%b);
                                                    };
 
-//Função que printa um vetor de inteirona tela (função de teste)
+//Função que printa um vetor de inteiros na tela (função de teste)
 void print_vector(std::vector<uint64_t> vector_int){
 std::cout<<"{";
 for(auto y:vector_int){
@@ -52,7 +52,7 @@ std::cout<<"}\n";
                                                    };
 
 
-//Função que calcula se um número é um quadrado perfeito
+//Função que calcula de um número é um quadrado perfeito
 bool is_square(uint64_t n){
 //Procedimentos
 for(uint64_t i=2; ; ++i){
@@ -71,7 +71,7 @@ public:
 uint64_t number;//Número a ser fatorado
 int smoothness;//Tamanho da base de primos
 std::vector<uint64_t> factor_base_vector;//Base de primos
-std::vector<uint64_t> number_vector1, number_vector2;//Array depossíveis candidatos a
+std::vector<uint64_t> number_vector1, number_vector2;//Array depossíveis candidatos para as relações constitutivas
 uint64_t factor1, factor2;//Fatores
 uint64_t selection1, selection2;//Candidatos que satisfazem as relações constitutivas
 bool selection_check;//Variável para checar se o número de  candidatos as relações consititutivas falhou
@@ -112,7 +112,7 @@ generate_factors();
 return;
                                                                             };
 
-//Busca rápida por números satisfazendo a relação constitutiva encotrados na etapa anterior
+//Busca por números compostos satisfazendo a relação constitutiva encotrados na etapa anterior
 slow_constitutive_relation();
 if(selection1>1 && selection1!=number && selection2>1 && selection2!=number){
 generate_factors();
@@ -232,7 +232,7 @@ break;
 
                                                  };
 
-//Busca por fatores quadráticos encontrados na etapa anterior do algoritmo
+//Busca por fatores quadráticos compostos encontrados na etapa anterior do algoritmo
 void rational_sieve::slow_constitutive_relation(){
 
 //Variáveis locais
@@ -244,7 +244,7 @@ int i, j, k;
 selection1=0;
 selection2=0;
 
-//Esquadrinhandos os vetores de possíveis candidatos para as relações constitutivas
+//Esquadrinhando os vetores de possíveis candidatos para as relações constitutivas
 for(int i=0; i<smoothness; i++){
 for(int j=0; j<smoothness; j++){
 //Restrição a índices repetidos
