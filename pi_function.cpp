@@ -6,12 +6,12 @@
 
 A FUNÇÃO π(x) É UMA DAS FUNÇÕES MAIS IMPORTANTES EM MATEMÁTICA E CONTABILIZA O NÚMERO DE PRIMOS DADO UM CERTO LIMITE.
 
-O CHAMADO TEOREMA DE NÚMEROS PRIMOS ESTABELECE QUE PARA VALORES GRANDES DE x π(x)=x/ln(x) OU π(x)=li(x).
+O CHAMADO TEOREMA DE NÚMEROS ṔRIMOS ESTABELECE QUE PARA VALORES GRANDES DE x π(x)=x/ln(x) OU π(x)=li(x).
 ln(x) DENOTA O LOGARITMO NATURAL.
 li(x) DENOTA A CHAMADA INTEGRAL LOGARÍTMICA, A INTEGRAL DEFINIDA DE 1/ln(x) DE 0 ATÉ x.
 
-A FUNÇÃO π(x) É EXTREMAMENTE IMPORTANTE PARA ESTUDAR A DENSIDADE DE NÚMEROS PRIMOS NO CONJUNTO DOS INTEIROS POSITIVOS,
-ESTANDO CONECTADO DIRETAMENTE A CHAMADA HIPÓTESE DE RIEMANN QUE ESTABELECE LIMITES PRECISOS PARA A FUNÇÃO π(x).
+A FUNÇÃO π(x) É EXTREMAMENTE IMPORTANTE PARA ESTUDAR A DENSIDADE DE NÚMEROS PRIMOS NO CONJUNTODOS INTEIROS POSITIVOS,
+ESTANDO CONECTADO DIRETAMENTE A CHAMADA HIPÓTESE DE RIEMANN QUE ESTABELECE K]LIMITES PRECISOS PARA A FUNÇÃO π(x).
 
 DIVERSOS ALGORITMOS COMO A PENEIRA DE ERATÓSTENES PODEM SER USADOS PARA CONTABILIZAR A FUNÇÃO π(x).
 NESTE PROGRAMA IMPLEMENTAMOS UM MÉTODO MISTO USANDO A PENEIRA DE ERATÓSTENES E O ALGORITMO DE MEISSEL-LEHMER.
@@ -37,7 +37,6 @@ const long long unsigned PRIME_MAX=540;
 
 //****************************************************************************************************************************
 //FUNÇÃO AUXILIAR QUE CHECA SE UM NÚMERO É PRIMO
-//Função que calcula se um número é primo ou não
 bool is_prime(uint64_t n){
 //Casos triviais
 //0,1
@@ -62,12 +61,13 @@ return false;
 uint64_t sqrt_n =std::sqrt(n);
 
 //Procedimento usando uma otimização 30k+1
-for(uint64_t i=31; i<sqrt_n+1; i+=30){
-if((n%i)==0 || (n%(i+6))==0 || (n%(i+10))==0 || (n%(i+12))==0 || (n%(i+16))==0 || (n%(i+22))==0 || (n%(i+28))==0)
+for(uint64_t i=101; i<sqrt_n+1; i+=30){
+if((n%i)==0 || (n%(i+2))==0 ||(n%(i+6))==0 || (n%(i+8))==0 || (n%(i+10))==0 || (n%(i+12))==0 || (n%(i+16))==0 || (n%(i+18))==0 || (n%(i+22))==0 || (n%(i+26))==0 || (n%(i+28))==0)
 return false;
                                      };
 return true;
                          };
+
  
 //Função de contagem de primos para números pequenos usando a peneira de Eratóstenes
 //Função de contagem para pequenos números primos
