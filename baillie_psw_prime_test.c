@@ -20,6 +20,7 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Baillie–PSW_primalit
 #include<math.h>
 #include<time.h>
 #include"mod_bin_exponentiation.h"
+#include"jacobi_symbol.h"
 
 
 
@@ -53,7 +54,7 @@ if(mersenne<n){
 p++;
 continue;
               };
-if(mersenne>n)//O número em questão não é um número de Merssene
+if(mersenne>n)//O número em questão não é um número de Mersenne
 return false;//Vai para o próxima etapa
            };
 
@@ -134,7 +135,7 @@ return U1 == 0;
 if (D == 1)
 return true;
 
-//Atualizando os parâmetros paraa proxima iteração
+//Atualizando os parâmetros para a proxima iteração
 D = (D + D) % n;
 P = (P * P - 2 * Q) % n;
 Q = (Q * Q) % n;
@@ -161,13 +162,32 @@ return true;
 //Teste3: Realizando o teste de Baillie para primalidade
 else if (baillie_test(n)==false)
 return false;
-//Teste 4: Teste PSW da sequência de Lucas
+  
+//Teste 4: Calculando o símbolo de Jacobi 
+if((jacobi(2, n)*jacobi(2, n))!=1)
+return true;
+if((jacobi(3, n)*jacobi(3, n))!=1)
+return true;
+if((jacobi(5, n)*jacobi(5, n))!=1)
+return true;
+if((jacobi(7, n)*jacobi(7, n))!=1)
+return true;
+if((jacobi(11, n)*jacobi(11, n))!=1)
+return true;
+if((jacobi(13, n)*jacobi(13, n))!=1)
+return true;
+if((jacobi(17, n)*jacobi(17, n))!=1)
+return true;
+
+
+//Teste 5: Teste PSW da sequência de Lucas
 else if(lucas_sequence_test(n, 2, 1)==false || lucas_sequence_test(n, 3, 1)==false || lucas_sequence_test(n, 5, 1)==false)
 return false;
 else if(lucas_sequence_test(n, 7, 1)==false || lucas_sequence_test(n, 11, 1)==false || lucas_sequence_test(n, 13, 1)==false)
 return false;
 else if(lucas_sequence_test(n, 17, 1)==false)
 return false;
+
 //Caso o número passe no testes acima, um primo foi encontrado
 else
 return true;
