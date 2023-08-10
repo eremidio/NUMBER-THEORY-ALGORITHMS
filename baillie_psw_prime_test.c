@@ -101,17 +101,17 @@ return true;
                              };
 
 // Teste de Lucas usando sequências de Lucas
-bool lucas_sequence_test(uint64_t n, uint64_t P, uint64_t Q){
-uint64_t U0 = 0, U1 = 1, V0 = 2, V1 = P;
-uint64_t k = 1;/*variável que registra o número de iterações (n-2) e (n-1)determinam o n-ésimo termo*/;
-uint64_t D =  P * P - 4 * Q;//Discrimante da equação característica x²-Px+Q=0
+bool lucas_sequence_test(int64_t n, int64_t P, int64_t Q){
+int64_t U0 = 0, U1 = 1, V0 = 2, V1 = P;
+int64_t k = 1;/*variável que registra o número de iterações (n-2) e (n-1)determinam o n-ésimo termo*/;
+int64_t D =  P * P - 4 * Q;//Discrimante da equação característica x²-Px+Q=0
 while (k <= n){
 //Caso trivial
 if (k == n)
 return U1 == 0;
 //Calculando os termos da sequência de Lucas de primeiro e segundo tipo usando as relações recursivas:
 //x(n)=p.x(n-1)-q.x(n-2),com U(0)=1, U(1)=1 e V(0)=2, V(1)=P
-uint64_t U2 = P * U1 - Q * U0, V2 = P * V1 - Q * V0;
+int64_t U2 = P * U1 - Q * U0, V2 = P * V1 - Q * V0;
 
 //Assegurando que os termos da sequência estão dentro do limite de validade
 if (U1 % 2 == 0)
