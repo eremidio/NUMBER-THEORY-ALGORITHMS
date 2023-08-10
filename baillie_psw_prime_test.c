@@ -162,7 +162,6 @@ return true;
 //Teste3: Realizando o teste de Baillie para primalidade
 else if (baillie_test(n)==false)
 return false;
-  
 //Teste 4: Calculando o símbolo de Jacobi 
 if((jacobi(2, n)*jacobi(2, n))!=1)
 return true;
@@ -178,6 +177,16 @@ if((jacobi(13, n)*jacobi(13, n))!=1)
 return true;
 if((jacobi(17, n)*jacobi(17, n))!=1)
 return true;
+if((jacobi(19, n)*jacobi(19, n))!=1)
+return true;
+if((jacobi(23, n)*jacobi(23, n))!=1)
+return true;
+if((jacobi(29, n)*jacobi(29, n))!=1)
+return true;
+if((jacobi(31, n)*jacobi(31, n))!=1)
+return true;
+if((jacobi(37, n)*jacobi(37, n))!=1)
+return true;
 
 
 //Teste 5: Teste PSW da sequência de Lucas
@@ -185,9 +194,10 @@ else if(lucas_sequence_test(n, 2, 1)==false || lucas_sequence_test(n, 3, 1)==fal
 return false;
 else if(lucas_sequence_test(n, 7, 1)==false || lucas_sequence_test(n, 11, 1)==false || lucas_sequence_test(n, 13, 1)==false)
 return false;
-else if(lucas_sequence_test(n, 17, 1)==false)
+else if(lucas_sequence_test(n, 17, 1)==false || lucas_sequence_test(n, 19, 1)==false || lucas_sequence_test(n, 23, 1)==false)
 return false;
-
+else if(lucas_sequence_test(n, 29, 1)==false || lucas_sequence_test(n, 31, 1)==false || lucas_sequence_test(n, 37, 1)==false)
+return false;
 //Caso o número passe no testes acima, um primo foi encontrado
 else
 return true;
