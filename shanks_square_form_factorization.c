@@ -83,6 +83,9 @@ q1=(k*n-(p0*p0));
 //Loop1
 while(perfect_square_checker(q1)==false){
 ++i;
+if(n>1000000 && i>sqrt(n))
+break;
+
 //Cálculo das variáveis
 b=floor((p0+p1)/q1);
 p2=(b*q1)-p1;
@@ -114,6 +117,9 @@ i=0;
 //Loop retógrado
 do{
 ++i;
+if(n>1000000 && i>sqrt(n))
+break;
+
 b=floor((p0+p1)/q1);
 p2=b*q1-p1;
 q2= q0+(b*(p1-p2));
@@ -163,4 +169,3 @@ shanks_algorithm(number);
 //Finalizando a aplicação
 return 0;
           }
-
