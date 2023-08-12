@@ -25,13 +25,13 @@ PARA MAIORES INFORMAÇÕES:https://en.wikipedia.org/wiki/Euler%27s_totient_funct
 //FUNÇÕES
 
 //Função que implementa o algoritmo de Euclides para se calcular o mdc de dois inteiros
-uint64_t gdc_euclides(uint64_t a, uint64_t b){
+uint64_t gcd_euclides(uint64_t a, uint64_t b){
 if(a==b)
 return a;
 if(a>b)
-return gdc_euclides((a-b), b);
+return gcd_euclides((a-b), b);
 if(a<b)
-return gdc_euclides(a, (b-a));
+return gcd_euclides(a, (b-a));
                                              };
 
 //Função que detecta se um número é quadrado perfeito
@@ -81,7 +81,7 @@ uint64_t i;//Variável de iteração
 
 //Procedimentos
 for(i=1; i<n; ++i){
-if(gdc_euclides(i, n)==1)
+if(gcd_euclides(i, n)==1)
 ++counter;
                   };
 
@@ -110,7 +110,7 @@ for(i=1; i<limit; ++i){
 if(n%(limit-i)==0){
 factor1=limit-i;
 factor2=n/factor1;
-if(gdc_euclides(factor1, factor2)==1 && factor1<=PHI_MAX && factor2<=PHI_MAX)
+if(gcd_euclides(factor1, factor2)==1 && factor1<=PHI_MAX && factor2<=PHI_MAX)
 break;
                   };
                       };
@@ -130,4 +130,3 @@ return totient_function_small_numbers(n);
 //*************************************************************************************************************************
 //FIM DO HEADER
 #endif
-
