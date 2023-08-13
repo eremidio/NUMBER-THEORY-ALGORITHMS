@@ -105,7 +105,7 @@ if(gcd_euclides(i, n)>1)
 continue;
 //Testando possíveis candidatos
 for(j=1; j<(validator+2); ++j){
-if(mod_bin_pow(i, j, n)==1)
+if(mod_pow(i, j, n)==1)
 break;
                               };
 if(j==validator){
@@ -130,4 +130,3 @@ free(primitive_root_array);
 //*************************************************************************************************************************
 //FIM DO HEADER
 #endif
-
