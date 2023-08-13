@@ -34,7 +34,6 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Discrete_logarithm
 int64_t discrete_logarithm(int64_t a, int64_t c, int64_t m){
 //Variáveis locais
 std::unordered_map<int64_t, int64_t> power_in;
-std::unordered_map<int64_t, int64_t> power_j;
 std::unordered_map<int64_t, int64_t>::iterator it1;
 
 int64_t n=std::ceil(std::sqrt(m));//Limitante superior;
@@ -42,10 +41,8 @@ int64_t i, j, k;//Resultado
 
 //Procedimento
 //Pré-computando valores de a^(in)/ a^j (mod m)
-for(int64_t i=0; i<n; ++i){
+for(int64_t i=0; i<n; ++i)
 power_in.insert({i, mod_pow(a, (i*n), m)});
-power_j.insert({i, mod_pow(a, i, n)});
-                          };
 
 //Iterando sobre os valores anteriores para calcula o valor do logaritmo
 for(it1=power_in.begin(); it1!=power_in.end(); ++it1){
