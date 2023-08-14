@@ -17,3 +17,11 @@ I DON'T IMPLEMENT THE AKS_PRIMALITY_TEST WHICH IS A DETERMINISTIC TEST FOR THE P
 BUT GOOD IMPLEMENTATION ARE ALSO AVAILABLE ONLINE:
 https://en.wikipedia.org/wiki/AKS_primality_test
 https://github.com/kikawet/AKSPrimalityTest-CPP/tree/main
+
+
+
+THE PRESENT REPOSITORY COVERS ELEMENTARY ASPESCTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
+
+
+Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
+Elements of Number Theory by I. M. Vinogradov
