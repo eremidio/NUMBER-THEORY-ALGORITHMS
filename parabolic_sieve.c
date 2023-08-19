@@ -1,5 +1,6 @@
 //VAMOS CRIAR UM PROGRAM QUE IMPLMENTA O ALGORITMO DA PENEIRA QUADRÁTICA (PARABÓLICIA) PARA COMPUTAR NÚMEROS PRIMOS
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o parabolic_sieve parabolic_sieve.c -lm
+//COMPILAR ESTE PROGRAMA COM O COMANDO: clang -o parabolic_sieve parabolic_sieve.c
+
 
 /*
 O ALGORITMO DA PENEIRA QUADRÁTICA (PARABÓLICA) USA A CURVA DE EQUAÇÃO x=y², PARA GERA NÚMEROS PRIMOS. PONTOS NESTA CURVA TEM AS
@@ -16,11 +17,27 @@ PARA MAIORES INFORMAÇÕES: https://mathworld.wolfram.com/QuadraticSieve.html
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdint.h>
-#include<math.h>
+#include<stdbool.h>
 
 
 //**************************************************************************************************************************
 //FUNÇÕES
+
+//Função que determina se um  número é quadrado perfeito
+bool perfect_square_check(int64_t n){
+//Variáveis locais
+int64_t odd=1;
+//Procedimentos
+while(n>0){
+n-=odd;
+odd+=2;
+if(n<0)
+return false;
+          };
+
+return true;
+                                    };
+
 //Função que implementa o algoritmo da peneira parábolica
 void parabolic_sieve(int n){
 int x1, x2, y1, y2, intersection;
@@ -67,7 +84,9 @@ slope=(x2-x1)/(y2-y1);
 
 //Calculando a intesercção da reta com o ponto
 intersection = x1-(slope*y1);
+if(intersection<n)
 boolean[intersection]=0;
+
                    };
 
                    };
@@ -78,7 +97,7 @@ boolean[intersection]=0;
 //Printando os números primos na tela
 printf("Eis a sua lista de primos até %d: ", n);
 for(i=0; i<n; i++){
-if(boolean[i]==1)
+if(boolean[i]==1 && perfect_square_check(i)==false)
 printf("%d, ", i);
                   };
 printf("...\n");
