@@ -1,13 +1,11 @@
 //VAMOS IMPLEMENTAR O ALGORITMO DA PENEIRA DE SUNDARAM  PARA CALCULAR NÚMEROS PRIMOS ARTÉ UM CERTO LIMITE
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o sundaram_sieve sundaram_sieve.c -lm
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o sundaram_sieve sundaram_sieve.c 
 
 /*CABEÇALHO*/
 #include<stdbool.h>
 #include<stdint.h>
 #include<stdio.h>
 #include<stdlib.h>
-#include<math.h>
-
 
 //Função que determina se um  número é quadrado perfeito
 bool perfect_square_check(int64_t n){
@@ -30,20 +28,11 @@ void sundaram_sieve(int64_t n){
 //VARIÁVEIS LOCAIS
 bool number_list[n+1];
 int64_t i, j, k;
-int64_t ground;
-double sqrt_n;
 
 //PROCEDIMENTOS
 //INICIALIZANDO A LISTA DE BOOLEANOS
 for(k=0; k<n+2; ++k)
 number_list[k]=true;
-
-//AJUSTE DE VARIÁVEIS
-
-sqrt_n=sqrt(n);
-ground=floor(sqrt_n);
-
-
 
 //APLICANDO A PENEIRA DE SUNDARAM A LISTA DE BOOLEANOS
 for(j=1; j<n; ++j){
@@ -52,10 +41,6 @@ if((i+j+2*i*j)<n)
 number_list[i+j+2*i*j]=false;
                   };
                   };
-
-
-
-
 
 //PRINTANDO A LISTA DE NÚMEROS PRIMOS
 printf("2, 3, ");
