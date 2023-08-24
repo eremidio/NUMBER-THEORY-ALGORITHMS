@@ -27,8 +27,8 @@ AS DUAS TÉCNICAS PODEM SEM COMBINADAS PARA O CÁLCULO DE EXPONENCIAIS MAIS RAPI
 
 //***********************************************************************************************************************
 //CABEÇALHO (usaremos apenas headers básicos de C para maior compatibilidade com C++)
-
-#pragma once
+#ifndef MOD_BIN_EXPONENTIATION_H
+#define MOD_BIN_EXPONENTIATION_H
 #include<stdint.h>
 #include<inttypes.h>
 #include<stdlib.h>
@@ -61,13 +61,13 @@ return result;
 
 /*OBSERVAÇÃO:
 NO PRESENTE ALGORITMO USAMOS OS OPERADORES BITWISE & E >>.
-O OPERADOR >> REALIZA UMA TRANSLAÇÃO DOS BITS DE UM NÚMERO INTEIRO PARA A DIREITA PREENCHENDO OS BITS RESTANTES COM 0'S.
+O OPERADOR >> REALIZA UMA TRANSLAÇÃO DOS BITS DE UM NÚMERO INTEIRO PARA A DIREITA PREENCHENDPO OS BITS RESTANTES COM 0'S.
 ÚTIL PARA FAZER DIVISÃO POR POTÊNCIAS DE 2.
 EXEMPLO:
 24=16+8 EM BINÁRIO É 11000 (16+8+0+0+0)
 24/4 = 24>>2, POIS:
 1º SHIFT: 01100 QUE É 12 (0+8+4+0+0) EM BINÁRIO
-2º SHIFT: 00110 QUE É 6 (0+0+4+2+0) EM BINÁRIO
+2º SHIFT: 00110 QUE É 12 (0+0+4+2+0) EM BINÁRIO
 
 A PARIDADE DO MENOR BIT É TESTADA COM O OPERADOR and '&', QUE SATIFAZ AS RELAÇÕES:
 0 & 0 = 0
@@ -112,3 +112,7 @@ b >>= 1;
 //Resultado
 return result;
                                                         };
+
+//***********************************************************************************************************************
+//FIM DO HEADER
+#endif
