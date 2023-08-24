@@ -7,8 +7,9 @@ O SÍMBOLO DE LEGENDRE (a/b) É DEFINIDO COMO:
 (a/b)= { +1 SE a ≠ 0 mod(b) E PARA ALGUM x SE VERIFICA A RELAÇÃO a = x² mod(b) 
        { -1 SE a ≠ 0 mod(b) E PARA NENHUM x SE VERIFICA A RELAÇÃO a = x² mod(b) 
  
-OS SÍMBOLOS DE JACOBI SÃO CALCULADOS MULTIPLICANDO-SE OS REPECTIVOS SÍMBOLOS DE LEGENDRE DOS FATORES PRIMOS UM DADO NÚMERO ELEVADO AO SEU NÚMERO DE OCORRÊNCA NESTE NÚMERO.
+OS SÍMBOLOS DE JACOBI SÃO CALCULADOS MULTIPLICANDO-SE OS REPECTIVOS SÍMBOLOS DE LEGENDRE DOS FATORES PRIMOS UM DADO NÚMERO ELEVADO AO SEU NÚMERO DE OCORRÊNCIA DE CADA FATOR NESTE NÚMERO.
 PARA NÚMEROS PRIMOS AMBOS DOS SÍMBOLOS SÃO IGUAIS.
+
 UMA SÉRIE DE  RELAÇÕES RECURSIVAS PERMITE OBTER O SÍMBOLO DE JACOBI DE FORMA SIMPLES.
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Jacobi_symbol
 
@@ -20,6 +21,8 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Dirichlet_character
 
 //********************************************************************************************************************
 //CABEÇALHO
+#ifndef JACOBI_SYMBOL_H
+#define JACOBI_SYMBOL_H
 #include<stdint.h>
 #include<assert.h>
 
@@ -70,7 +73,7 @@ b=temp;
 if(a%4==3 && b%4==3)
 j*=(-1);
 
-//Reduzindo o númerador
+//Reduzindo o numerador
 a%=b;
 
 //Caso geral
@@ -79,3 +82,7 @@ return j;
            };
                                   }; 
 
+
+//********************************************************************************************************************
+//FIM DO HEADER
+#endif
