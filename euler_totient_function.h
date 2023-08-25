@@ -20,7 +20,7 @@ PARA MAIORES INFORMAÇÕES:https://en.wikipedia.org/wiki/Euler%27s_totient_funct
 #include<stdint.h>
 #include<math.h>
 
-#define PHI_MAX 250000
+#define PHI_MAX 500000
 //*************************************************************************************************************************
 //FUNÇÕES
 
