@@ -26,12 +26,10 @@ PARA MAIORES INFORMAÇÕES:https://en.wikipedia.org/wiki/Euler%27s_totient_funct
 
 //Função que implementa o algoritmo de Euclides para se calcular o mdc de dois inteiros
 uint64_t gcd_euclides(uint64_t a, uint64_t b){
-if(a==b)
+if(b==0)
 return a;
-if(a>b)
-return gcd_euclides((a-b), b);
-if(a<b)
-return gcd_euclides(a, (b-a));
+else
+return gcd_euclides(b, a%b);
                                              };
 
 //Função que detecta se um número é quadrado perfeito
@@ -55,9 +53,9 @@ return true;
 //Testando divisibilidade por primos menores do que 100
 if(n%2==0 || n%3==0 || n%5==0 || n%7==0 || n%11==0|| n%13==0|| n%17==0 || n%19==0 || n%23==0 || n%29==0|| n%31==0 || n%37==0 || n%41==0)
 return false;
-else if(n%43==0|| n%47==0 || n%53==0 || n%59==0|| n%61==0 || n%67==0 || n%71==0 || n%73==0|| n%79==0 || n%83==0 || n%89==0)
+if(n%43==0|| n%47==0 || n%53==0 || n%59==0|| n%61==0 || n%67==0 || n%71==0 || n%73==0|| n%79==0 || n%83==0 || n%89==0)
 return false;
-else if(n%97==0)
+if(n%97==0)
 return false;
 
 //Variáveis locais
@@ -68,6 +66,7 @@ for(uint64_t i=101; i<sqrt_n+1; i+=6){
 if((n%i)==0 || (n%(i+2))==0)
 return false;
                                      };
+
 return true;
                          };
 
