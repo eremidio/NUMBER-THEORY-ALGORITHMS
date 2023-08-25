@@ -105,16 +105,21 @@ if(is_prime(n))
 return n-1;
  
 //Caso 3: Encontrando fatores relativamente primos de um dado número
-for(i=1; i<limit; ++i){
+for(i=2; i<limit; ++i){
 if(n%(limit-i)==0){
 factor1=limit-i;
 factor2=n/factor1;
-if(gcd_euclides(factor1, factor2)==1 && factor1<=PHI_MAX && factor2<=PHI_MAX)
+if(gcd_euclides(factor1, factor2)==1)
 break;
                   };
                       };
 //Resultado
-return totient_function_small_numbers(factor1)*totient_function_small_numbers(factor2);
+if(factor1>PHI_MAX && factor2<=PHI_MAX)
+return totient_function_large_numbers(factor1)*totient_function_small_numbers(factor2);
+if(factor2>PHI_MAX && factor1<=PHI_MAX)
+return totient_function_large_numbers(factor2)*totient_function_small_numbers(factor1);
+else
+return totient_function_small_numbers(factor2)*totient_function_small_numbers(factor1);
                                                    };
 
 
@@ -122,7 +127,7 @@ return totient_function_small_numbers(factor1)*totient_function_small_numbers(fa
 uint64_t euler_totient_function(uint64_t n){
 if(n>PHI_MAX)
 return totient_function_large_numbers(n);
-if(n<=PHI_MAX)
+else
 return totient_function_small_numbers(n);
                                            };
 
