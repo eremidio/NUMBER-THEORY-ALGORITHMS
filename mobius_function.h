@@ -32,7 +32,6 @@ https://en.wikipedia.org/wiki/Dirichlet_convolution
 #include<stdint.h>
 #include<stdbool.h>
 #include<math.h>
-#include<assert.h>
 
 //CONSTANTES GLOBAIS
 const unsigned int MOBIUS_BOUND = 100000;
@@ -78,11 +77,10 @@ return true;
 bool is_square(uint64_t n){
 //Procedimentos
 for(uint64_t i=10000; i<n; ++i){
-if(i*i==n)
-return true;
 if(i*i>n)
 return false;
                                };
+return true;
                           };
 
 //Função de Möbius para pequenos valores
@@ -152,14 +150,15 @@ uint64_t sqrt_n=sqrt(n);
 
 //Procedimentos
 //Loop principal encontrando fatores relativamente primos entre si
-for(uint64_t i=2; i<=sqrt_n; ++i){
+for(uint64_t i=sqrt_n; i>1; --i){
+if(n%i==0){
 factor1=i;
 factor2=n/i;
+          };
+
 if(euclides_check(factor1, factor2)==1)
 break;
-                                 };
-//Restrição de valores 
-assert(factor1<=MOBIUS_BOUND && factor2<=MOBIUS_BOUND);
+                                };
 
 //Resultado
 return(mobius_small_integer(factor1)*mobius_small_integer(factor2));
