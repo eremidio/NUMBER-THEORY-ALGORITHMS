@@ -51,9 +51,11 @@ break;
 int main(){
 //Variáveis locais
 uint64_t number;
-//Prcedimento
+//Procedimentos
+//Recebendo input do usuário
 printf("Digite um número para ser fatorado: ");
 scanf("%lu", &number);
+
 //Fatorando o número
 factorize(number);
 
