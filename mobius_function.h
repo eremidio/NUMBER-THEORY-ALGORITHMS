@@ -35,7 +35,7 @@ https://en.wikipedia.org/wiki/Dirichlet_convolution
 #include<assert.h>
 
 //CONSTANTES GLOBAIS
-const unsigned int MOBIUS_BOUND = 50000;
+const unsigned int MOBIUS_BOUND = 100000;
 
 //*************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
