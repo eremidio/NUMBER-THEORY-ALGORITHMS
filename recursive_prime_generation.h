@@ -24,7 +24,6 @@ PARA MAIORES INFORMAÇÕES: https://www.youtube.com/watch?v=OpaKpzMFOpg
 
 //**************************************************************************************************************************
 //FUNÇÕES
-
 //Função que implementa o algoritmo de Euclides para calcular o mdc de dois inteiros
 uint64_t gcd(uint64_t a, uint64_t b){
 //Procedimentos
