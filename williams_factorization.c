@@ -1,8 +1,8 @@
-//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE WILLIAN (p+1) PARA FATORAR NÚMEROS INTEIROS
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o williams_factorization williams_factorization.c -lm
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE WILLIAMS (p+1) PARA FATORAR NÚMEROS INTEIROS
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o williams_factorization williams_factorization.c
 
 /*
-O ALGORITMO DE WILLIAN (p+1) USA SEQUÊNCIAS DE LUCAS PARA FATORAR NÚMEROS INTEIROS. 
+O ALGORITMO DE WILLIAMS (p+1) USA SEQUÊNCIAS DE LUCAS PARA FATORAR NÚMEROS INTEIROS. 
 A SEQUÊNCIAS DE LUCAS SÃO DEFINIDAS POR: 
 V(0)=2, V(1)=A, E V(i)=AV(i-1)-V(i-2).
 
@@ -36,18 +36,19 @@ return gcd(b, a%b);
                                  };
 
 //Função que calcula o fatorial de um inteiro
-int64_t factorial(int64_t n){
+__int128_t factorial(int64_t n){
 if(n==0 || n==1)
 return 1;
 else
 return n*factorial(n-1);
-                            };
+                               };
 
-//Função que implementa o algoritmo de Wilians (p+1)
+//Função que implementa o algoritmo de Wiliams (p+1)
 void williams_algorithm(int64_t n){
 //Variáveis locais
-int64_t x, y, M, A=1, V;
+int64_t x, y, A=1, V;
 int64_t factor1=1, factor2; 
+__int128_t M;
 
 //Procedimentos
 //Ajuste de variáveis
