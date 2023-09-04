@@ -44,7 +44,7 @@ return n*factorial(n-1);
                             };
 
 //Função que implementa o algoritmo de Wilians (p+1)
-void willian_algorithm(int64_t n){
+void williams_algorithm(int64_t n){
 //Variáveis locais
 int64_t x, y, M, A=1, V;
 int64_t factor1=1, factor2; 
@@ -85,7 +85,7 @@ return;
                             }
 else
 goto pick;
-                                 };
+                                  };
 
 
 //**************************************************************************************************************************
@@ -100,9 +100,8 @@ printf("Digite un número inteiro para que fatores deste número seja calculado:
 scanf("%li", &number);
 
 //Calculando os fatores do número a ser decomposto
-willian_algorithm(number);
+williams_algorithm(number);
 
 //Finalizando a aplicação
 return 0;
           }
-
