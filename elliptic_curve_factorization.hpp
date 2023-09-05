@@ -183,7 +183,7 @@ std::cout<<"Digite o valor inicial da coordenada y0 de um ponto na curva: ";
 std::cin>>y0;
 std::cout<<"Digite o valor inicial do parâmetro a que define a curva a ser testada: ";
 std::cin>>a;
-std::cout<<"Digite o uma fator de 2 a 500 que determina a profundidade da busca a ser realizada por fatores primos: ";
+std::cout<<"Digite o uma fator de 2 a 250 que determina a profundidade da busca a ser realizada por fatores primos: ";
 std::cin>>B;
 
 
