@@ -29,7 +29,7 @@ https://zafirr31.github.io/posts/lenstra-elliptic-curve-method-of-factorization/
 #include<random>
 
 //CONSTANTES GLOBAIS
-#define MAX_TRIALS 10000 //Variável para se restringir o número de tentativas
+#define MAX_TRIALS 100000 //Variável para se restringir o número de tentativas
 
 //***************************************************************************************************************************
 //FUNÇÕES AUXILIARES
