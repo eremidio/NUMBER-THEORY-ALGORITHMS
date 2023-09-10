@@ -186,7 +186,7 @@ atkin_algorithm (uint64_t atkin_int)
   bool atkin_test; // Variável que determina se um número é primo ou não
   uint64_t atkin_residue, atkin_value; // Módulo 60 e número de soluções as
                                        // formas quadrátricas dos teoremas
-  uint64_t i; // Variável de iteração
+  uint64_t i;                          // Variável de iteração
 
   // Procedimentos
   // Inicializando o array de booleanos com o valor falso
