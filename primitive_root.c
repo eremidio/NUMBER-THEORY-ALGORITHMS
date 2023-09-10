@@ -1,24 +1,26 @@
-//VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO primitive_root.h
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o primitive_root primitive_root.c
+// VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO
+// primitive_root.h COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o primitive_root
+// primitive_root.c
 
-//Cabeçalho
-#include<stdio.h>
-#include"primitive_root.h"
+// Cabeçalho
+#include "primitive_root.h"
+#include <stdio.h>
 
-//Função principal
-int main(){
-//Variáveis locais
-uint64_t number;
+// Função principal
+int
+main ()
+{
+  // Variáveis locais
+  uint64_t number;
 
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um número inteiro: ");
-scanf("%lu", &number);
+  // Procedimentos
+  // Recebendo input do usuário
+  printf ("Digite um número inteiro: ");
+  scanf ("%lu", &number);
 
-//Calculando as raízes primitivas de n
-primitive_root(number);
+  // Calculando as raízes primitivas de n
+  primitive_root (number);
 
-//Finalizando a aplicação
-return 0;
-          }
-
+  // Finalizando a aplicação
+  return 0;
+}
