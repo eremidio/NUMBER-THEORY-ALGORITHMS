@@ -1,7 +1,8 @@
 //ESTE ARQUIVO PROVÊ UMA CLASSE DE NÚMEROS COMPLEXOS EM C++
 
 //Cabeçalho
-#pragma once
+#ifndef COMPLEX_NUMBERS_H
+#define COMPLEX_NUMBERS_H
 #include<iostream>
 #include<string>
 #include<sstream>
@@ -234,3 +235,6 @@ z1.real= std::pow(z_norm, n)*std::cos(z_angle*n);
 z1.imag= std::pow(z_norm, n)*std::sin(z_angle*n);
 return z1;
                                     };
+
+//Fim do header
+#endif 
