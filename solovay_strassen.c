@@ -22,9 +22,9 @@ ONDE (a/n) DENOTA O SÍMBOLO DE LEGENDRE.
 //********************************************************************************************************************
 //FUNÇÕES 
 //Função que calcula a exponencial modular a^b mod(n)
-int64_t mod_pow(int64_t a, int64_t b, int64_t n){
+__int128_t mod_pow(int64_t a, int64_t b, int64_t n){
 //Variáveis locais
-int64_t result=1;
+__int128_t result=1;
 int64_t i;//Variável de iteração
 
 //Procedimento
@@ -32,7 +32,7 @@ for(i=0; i<b; ++i)
 result= (result*a)%n;
 
 return result;
-                                                };
+                                                   };
 
 
 //Função que executa um teste unitário
@@ -52,7 +52,7 @@ if(euclides_check(a, n)!=1)
 goto pick;
 
 //Variáveis usadas no teste
-int64_t power_result=mod_pow(a, (n-1)/2, n);
+__int128_t power_result=mod_pow(a, (n-1)/2, n);
 int j_symbol = jacobi(a, n);
 //Realizando teste 
 if(j_symbol==0 && power_result==0)
