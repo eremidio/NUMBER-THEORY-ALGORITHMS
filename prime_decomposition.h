@@ -16,7 +16,7 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Arithmetic_function
 //CABEÇALHO
 #ifndef PRIME_DECOMPOSITION_H
 #define PRIME_DECOMPOSITION_H
-#include"euler_totient_function.h"
+#include<math.h>
 #include<stdio.h>
 #include<stdint.h>
 #include<stdlib.h>
@@ -44,7 +44,10 @@ int64_t liouville_function(int64_t);
 
 //Função que implementa o algoritmo de Euclides
 int64_t euclides_algorithm(int64_t a, int64_t b){
-return gcd_euclides((uint64_t)a, (uint64_t)b);
+if(b==0)
+return a;
+else
+return euclides_algorithm(b, a%b);
                                                 };
 
 //Função que testa a primalidade de um númeiro inteiro
