@@ -16,6 +16,7 @@ DE ACORDO O TEOREMA DA SOMA DE QUADRADOS EM TEORIA DOS NÚMEROS SE n TIVER UM FA
 ÍMPAR NÃO EXISTE VALORES DE a, b, c, d SATISFAZENDO A RELAÇÃO ACIMA.
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Euler%27s_factorization_method
+                          https://en.wikipedia.org/wiki/Sum_of_two_squares_theorem
 
 */
 
