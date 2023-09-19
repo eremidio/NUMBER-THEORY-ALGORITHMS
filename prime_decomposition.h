@@ -204,9 +204,10 @@ break;
 //Resultado
 return (factor1*arithmetic_derivative(factor2))+(factor2*arithmetic_derivative(factor1));
                                         };
+
 //Derivada logarítmica
 double logarithmic_derivative(int64_t n){
-return (arithmetic_derivative(n)/n);
+return (arithmetic_derivative(n)/(n*1.0));
                                         };
 
 //Função de Liouville λ
