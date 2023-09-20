@@ -1,9 +1,7 @@
 //VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA UM ALGORITMO PARA FATORAR INTEIROS GAUSSIANOS
 
 /*
-NOTA: NO PRESENTE ALGORITMO SE O RESULTIDO OBTIDO TIVER FATORES 1+0i,  -1+0i; BASTA INVERTER AS PARTE REAIS E IMAGINÁRIAS.
-FATORES (1+i) PERMANECEM INALTERADOS, PORÉM RESULTADOS DO TIPO a+bi COM a>1 OU b>1 SÃO SUBSTITUÍDOS PELOS RESPECTIVOS CONJUGADOS COMPLEXOS.
-E O RESULTADO FICA DEFINIDO A MENOS DE UMA CONSTANTE MULTIPLICATIVA (-1), i, (-i).
+NOTA: NO PRESENTE ALGORITMO O RESULTADO FICA DEFINIDO A MENOS DE UMA CONSTANTE MULTIPLICATIVA (-1), i, (-i).
 
 PARA EXEMPLOS, CONSULTAR: https://en.wikipedia.org/wiki/Table_of_Gaussian_integer_factorizations# 
 
@@ -143,9 +141,9 @@ gaussian_factor.imag=imag_part;
 
 gaussian_gcd=gaussian_euclides_algorithm(z, gaussian_factor);
 
-if(gaussian_gcd.real!=0 && gaussian_gcd.imag==1)
-std::cout<<(gaussian_gcd.conj()).algebraic()<<", ";
-else
+if(gaussian_gcd.real==0 || gaussian_gcd.imag==0)
+gaussian_gcd=gaussian_euclides_algorithm(z, gaussian_factor.conj());
+
 std::cout<<gaussian_gcd.algebraic()<<", ";
 
             };
@@ -158,5 +156,4 @@ std::cout<<"...\n";
 //**********************************************************************************************************************************
 //FIM DO HEADER
 #endif
-
 
