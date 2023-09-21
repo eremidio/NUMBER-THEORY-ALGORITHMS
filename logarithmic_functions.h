@@ -113,7 +113,7 @@ result+=von_mangoldt_function(i);
                    };
 return result;
                                            };
-//Função Π 
+//Função Π de contagem de primos de Riemann
 double pi_weight_function(uint64_t n){
 //Variáveis locais
 uint64_t i, j, tester;
@@ -121,8 +121,11 @@ double sum=0.0;
 
 //Procedimentos
 //Fatores 2
-tester=1;
-for(j=1; j<n; ++j){
+tester=2;
+if(n>=2)
+sum+=1.0;
+
+for(j=2; j<n; ++j){
 tester*=2;
 if(tester<=n)
 sum+=(1.0)/j;
@@ -132,11 +135,11 @@ break;
                   };
 
 //Loop principal
-for(i=3; i<=sqrt(n); i++){
+for(i=3; i<=n; i++){
 tester=i;
 if(is_integer_prime(tester)){
-
-for(j=1; j<n; ++j){
+sum+=1.0;
+for(j=2; j<n; ++j){
 tester*=i;
 if(tester<=n)
 sum+=(1.0)/j;
@@ -145,7 +148,7 @@ break;
                   };
                             };
 
-                         };
+                   };
 
 //Resultado
 return sum;
