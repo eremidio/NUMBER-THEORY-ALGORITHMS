@@ -29,7 +29,7 @@ https://zafirr31.github.io/posts/lenstra-elliptic-curve-method-of-factorization/
 #include<random>
 
 //CONSTANTES GLOBAIS
-#define MAX_TRIALS 100000 //Variável para se restringir o número de tentativas
+#define MAX_TRIALS 50000 //Variável para se restringir o número de tentativas
 
 //***************************************************************************************************************************
 //FUNÇÕES AUXILIARES
@@ -79,7 +79,7 @@ return x1;
 int64_t generate_random_number(int64_t number){
 //Variáveis locais
 int64_t result;
-int64_t limit= std::sqrt(number);
+int64_t limit= std::cbrt(number)*std::cbrt(number);
 
 //Ajuste da distribuição de números aleatórios
 std::random_device generator_x;
