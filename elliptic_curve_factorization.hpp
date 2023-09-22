@@ -79,7 +79,7 @@ return x1;
 int64_t generate_random_number(int64_t number){
 //Variáveis locais
 int64_t result;
-int64_t limit= std::cbrt(number)*std::cbrt(number);
+int64_t limit= std::sqrt(number);
 
 //Ajuste da distribuição de números aleatórios
 std::random_device generator_x;
