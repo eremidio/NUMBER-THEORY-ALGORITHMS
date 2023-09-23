@@ -4,7 +4,7 @@
 O ALGORITMO DE EUCLIDES PODE SER OTIMIZADO BASEANDO-SE NAS SEGUINTES PROPOSIÇÕES FACILMENTE DEMONSTRÁVEIS:
 1. SE a E b SÃO AMBOS PARES mdc(a, b) = 2.mdc(a/2, b/2)
 2. SE a FOR ÍMPAR E b FOR PAR mdc(a, b) = mdc(a, b/2)
-3. SE a E b SÃO AMBOS ÍMPARES mdc(a, b) = 2.mdc((a-b)/2, b)
+3. SE a E b SÃO AMBOS ÍMPARES mdc(a, b) = mdc((a-b)/2, b)
 
 PARA MAIORES INFORMAÇÕES: https://bjpcjp.github.io/pdfs/math/number-theory-ITA.pdf
 
@@ -27,7 +27,7 @@ int64_t binary_gcd(int64_t , int64_t);
 //Algoritmo de euclides usando operações binárias
 //Usaremos a subtração via operadores bitwise bit_sub() disponível no arquivo arithmetic.h nesta implementação
 int64_t binary_gcd(int64_t a, int64_t b){
-//Procedimento
+//Procedimentos
 //Caso trivial
 if(b==a)
 return a;
@@ -36,21 +36,20 @@ return a;
 if(a<b)
 return binary_gcd(b, a);
 
-//Caso 1: a e b diferentes e ambos pares
+//Recursão
+//Caso 1: ambos pares
 if(!(a&1) && !(b&1))
-return 2*binary_gcd((a>>1),(b>>1));
-
-//Caso 2: a e b diferentes, a é ímpar e b é par
-if((a&1) && !(b&1))
-return binary_gcd(a,(b>>1));
-
-//Caso 3: a e b diferentes e ambos ímpares
+return 2*binary_gcd((a>>1), (b>>1));
+//Caso 2: ambos ímpares
 if((a&1) && (b&1))
-return binary_gcd((bit_sub(a, b)>>1), b);
-
-//Caso 4: a e b diferentes, a é par e b é ímpar
+return binary_gcd(((a-b)>>1), b);
+//Caso 3: a ímpar e b par
+if((a&1) && !(b&1))
+return binary_gcd(a, (b>>1));
+//Caso 4: a par e b ímpar
 if(!(a&1) && (b&1))
-return binary_gcd(bit_sub(a, b), b);
+return binary_gcd((a>>1), b);
+
                                          };
 
 
