@@ -12,18 +12,17 @@
 //Função principal 
 int main(){
 //Variáveis locais
-uint64_t n;
+uint64_t i;
 
 //Procedimentos
-//Recebendo input do usuário
-printf("Digite um número inteiro: ");
-scanf("%lu", &n);
-
 //Testando a primalidade de um número
-if(aks_primality_test(n)==true)
-printf("%lu é primo.\n", n);
+for(i= 1; i<114; i++){
+if(aks_primality_test(i)==true)
+printf("%lu é primo\n", i);
 else
-printf("%lu não é primo.\n", n);
+printf("%lu não é primo\n", i);
+                     };
+
 
 
 //TESTES USE UM // APÓS OS MESMOS
