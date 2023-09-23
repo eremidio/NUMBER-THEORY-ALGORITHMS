@@ -186,12 +186,11 @@ return true;
 uint64_t lowest_multiplicative_order(uint64_t n){
 //Váriáveis
 uint64_t ord=multiplicative_order(n, 2), tester;
-uint64_t limit=sqrt(n);
 uint64_t i;
 
 //Procedimentos
 //Loop principal
-for(i=3; i<=limit; i++){
+for(i=3; i<n; i++){
 if(fast_euclides_algorithm(n,i)==1)
 tester=multiplicative_order(n, i);
 if(tester<ord)
