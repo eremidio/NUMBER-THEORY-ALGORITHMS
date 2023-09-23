@@ -86,6 +86,12 @@ return result;
 if(a<0 && n<0)
 return (-1)*kronecker((-1)*a, (-1)*n);
 
+//Caso a ou n negativo
+if(a<0 && n>=0)
+return kronecker((-1)*a, n);
+if(a>=0 && n<0)
+return kronecker(a, (-1)*n);
+
 //Caso geral n é composto
 if(quick_prime_checking(n)==false){
 //Variáveis locais
