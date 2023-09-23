@@ -250,6 +250,9 @@ return true;
 //Função que implementa o teste de primalidade AKS
 bool aks_primality_test(uint64_t n){
 //Caso trivial
+if(n<2)
+return false;
+
 if((n%2)==0)
 return false;
 
