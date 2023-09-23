@@ -20,9 +20,8 @@ printf("Digite um inteiro: ");
 scanf("%li", &n);
 
 //Calculando o símbolo de Legendre
-printf("(%lu/%lu) = %i\n", a, n, kronecker(a, n));
+printf("(%li/%li) = %i\n", a, n, kronecker(a, n));
 
 //Finalizando a aplicação
 return 0;
           }
-
