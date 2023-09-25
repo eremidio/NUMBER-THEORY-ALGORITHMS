@@ -11,6 +11,7 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Kronecker_symbol
 #ifndef KRONECKER_SYMBOL_H
 #define KRONECKER_SYMBOL_H
 #include"legendre_symbol.h"//Dependências necessárias estão inclusas
+#include<stdio.h>
 
 //*****************************************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
@@ -52,10 +53,6 @@ int result=1;
 if(euclides_algorithm(a, n)>1)
 return 0;
 
-//n é primo
-if(a>0 && n>0 && quick_prime_checking(n)==true)
-return legendre((uint64_t)a, (uint64_t)n);
-
 //n=2
 if(n==2){
 if((a%8)==1 || (a%8)==7)
@@ -82,6 +79,10 @@ else
 return result;
            };
 
+//n é primo
+if(a>0 && n>0 && quick_prime_checking(n)==true)
+return legendre((uint64_t)a, (uint64_t)n);
+
 //Caso ambos sejam negativos
 if(a<0 && n<0)
 return (-1)*kronecker((-1)*a, (-1)*n);
@@ -95,36 +96,36 @@ return kronecker(a, (-1)*n);
 //Caso geral n é composto
 if(quick_prime_checking(n)==false){
 //Variáveis locais
-int64_t a_=a;
+int64_t n_=n;
 int64_t i;
 int64_t limit=sqrt(n);
+int result=1;
 
 //Procedimentos
-//Caso o número seja um quadrado perfeito p^2 com p primo
-if(quick_prime_checking(limit)==true)
-return kronecker(a, limit)*kronecker(a, limit);
 
 //Fatores 2
-while((a_%2)==0){
+while((n_%2)==0){
 result*=kronecker(a, 2);
-a_/=2;
+n_/=2;
                 };
 
 //Fatores ímpares
-for(i=3; i<= limit; ++i){
-while((a_%i)==0){
+for(i=3; i<=limit; i+=2){
+while((n_%i)==0){
 result*=kronecker(a, i);
-a_/=i;
+n_/=i;
                 };
 
-                        };
+                            };
 
 //Resultado
-if(a_==1)
+if(n_<=1)
 return result;
+
 //Caso o número em questão tenha um fator primo maior que n^(1/2)
-if(a_>1)
-return result*legendre(a, a_);
+if(n_>1)
+return result*legendre(a, n_);
+
                                   };
 
 
