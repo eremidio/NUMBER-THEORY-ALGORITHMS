@@ -9,7 +9,7 @@ O PRINCIPAL OBJETIVO DESTE ALGORITMO É PRODUZIR  RELAÇÕES DE CONGRUÊNCIA DA 
 TRIVIAIS SÃO OBTIDOS VIA mdc(a+b, n) E mdc(a-b, n).
 
 PARA PRODUZIR TAIS RELAÇÕES DE CONGRUÊNCIA O ALGORITMO USA A EXPANSÃO DE n^(1/2) EM FRAÇÕES PARCIAIS. O TEOREMA DE LEGENDRE
-AFIRMA QUE PARA UM NÚMERO IRRACIONAL SUA EXPANSÃO EM FRAÇÕES PARCIAIS É PERIÓDICA. O ALGORITMO USA ESTE TEOREMA E TAMBÉM UM PEQUENA BASE DE NÚMEROS PRIMOS PARA GERA RELAÇÕES CONSTITUTIVAS SATISFEITAS PELOS NÚMEROS SLECIONADOS.
+AFIRMA QUE PARA UM NÚMERO IRRACIONAL SUA EXPANSÃO EM FRAÇÕES PARCIAIS É PERIÓDICA. O ALGORITMO USA ESTE TEOREMA E TAMBÉM UM PEQUENA BASE DE NÚMEROS PRIMOS PARA GERAR RELAÇÕES CONSTITUTIVAS SATISFEITAS PELOS NÚMEROS SELECIONADOS.
 
 ESTE ALGORITMO TAMBÉM PODE SER USADOS PARA SE RESOLVER A EQUAÇÃO DE PELL QUE DEFINE A IRRACIONALIDADE DE n^(1/2).
 
@@ -89,7 +89,7 @@ std::cout<<"}\n";
 OBSERVAÇÃO: Neste algotitmo usamos uma busca envolvendo no máximo duas equações para encontrar equações consitutivas do tipo
 a²=b²(mod n). Alguns números compostos não podem ser fatorados usando este algoritmo puramente, pois a fração contínua de
 n^(1/2) possui um período muito curto. E talvez não seja possível obter relações constitutivas rk=(Ak)² (mod n) suficiente.
-Neste caso podemos multiplicar n por um inteiro k e checa se o símbolo de Kronecker (nk|p)=1, no nomento de construir a base de
+Neste caso podemos multiplicar n por um inteiro k e checa se o símbolo de Kronecker (nk|p)=1, no momento de construir a base de
 números primos.
 
 */
