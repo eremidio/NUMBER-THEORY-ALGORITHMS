@@ -102,10 +102,10 @@ uint64_t result = 1;
 //Procedimentos
 while (b > 0) {
 if (b & 1) {
-result = (result*a)%n;
+result = ((result%n)*(a%n))%n;
            };
 
-a = a*a;
+a = (a%n)*(a%n);
 b >>= 1;
               };
 
