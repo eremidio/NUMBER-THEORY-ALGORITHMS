@@ -123,7 +123,7 @@ return r;
 //Função que calcula uma raíz quadrada modular de um número usando o algoritmo de Tonelli-Shanks para o caso p=3 (mod4)
 int64_t modular_sqrt2(int64_t n, int64_t p){
 //Variáveis locais
-int64_t r=mod_pow(n, ((p+1)/4), p);
+int64_t r=pow_mod(n, ((p+1)/4), p);
 
 //Procedimentos
 if(((r*r)%p)==n)
