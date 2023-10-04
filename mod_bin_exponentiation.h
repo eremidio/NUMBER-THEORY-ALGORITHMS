@@ -1,4 +1,4 @@
-//VAMOS ESCREVER UM PROGRAMA QUEM IMPLMENTA AS ROTINAS DE EXPONENCIAÇÃO BINÁRIA MODULAR E EXPONENCIAL MODULAR
+//VAMOS ESCREVER UM PROGRAMA QUEM IMPLEMENTA AS ROTINAS DE EXPONENCIAÇÃO BINÁRIA MODULAR E EXPONENCIAL MODULAR
 
 /*
 A EXPONENCIAÇÃO BINÁRIA É UM MECANISMO PARA PERMITIR UMA EXPONENCIAÇÃO MAIS RÁPIDA ENVOLVENDO NÚMEROS INTEIROS.
@@ -36,24 +36,45 @@ AS DUAS TÉCNICAS PODEM SEM COMBINADAS PARA O CÁLCULO DE EXPONENCIAIS MAIS RAPI
 
 //***********************************************************************************************************************
 //PROTÓTIPOS DE FUNÇÕES
-uint64_t mod_pow(uint64_t, uint64_t, uint64_t);
+uint64_t mul_mod(uint64_t, uint64_t, uint64_t);
+uint64_t pow_mod(uint64_t, uint64_t, uint64_t);
 uint64_t bin_pow(uint64_t, uint64_t);
 uint64_t mod_bin_pow(uint64_t, uint64_t, uint64_t);
 
 //***********************************************************************************************************************
 //EXPONENCIAÇÃO MODULAR
 
-//Função que calcula a exponencial modular a^b mod(n)
-uint64_t mod_pow(uint64_t a, uint64_t b, uint64_t n){
+//Função que calcula uma relação do tipo a*b (mod m)
+uint64_t mul_mod(uint64_t a, uint64_t b, uint64_t m){
 //Variáveis locais
-uint64_t result=1;
-uint64_t i;//Variável de iteração
+long double x;
+uint64_t c;
+int64_t r;
 
-//Procedimento
-for(i=0; i<b; ++i)
-result= (result*a)%n;
+//Procedimentos
+if (a >= m) a %= m;
+if (b >= m) b %= m;
+x = a;
+c = x * b / m;
+r = (int64_t)(a * b - c * m) % (int64_t)m;
+return r < 0 ? r + m : r;
+                                                    };
 
-return result;
+//Função que calcula uma relação do tipo a^b (mod m)
+uint64_t pow_mod(uint64_t a, uint64_t b, uint64_t m){
+//Variáveis  locais
+uint64_t r = m == 1 ? 0 : 1;
+
+//Procedimentos
+while (b > 0){
+if(b & 1)
+r = mul_mod(r, a, m);
+b = b >> 1;
+a = mul_mod(a, a, m);
+            };
+
+//Resultado
+return r;
                                                     };
 
 //***********************************************************************************************************************
