@@ -23,11 +23,10 @@ printf("Digite um inteiro congruente:\n->");
 scanf("%d", &n);
 //Testes
 printf("Resultado biblioteca <math.h>: %d\n", ((int)pow(a, b)%n));
-printf("Exponencial modular: %lu\n", mod_pow(a, b, n));
+printf("Exponencial modular: %lu\n", pow_mod(a, b, n));
 printf("Exponencial binária: %lu\n", bin_pow(a, b));
 printf("Exponencial binária modular: %lu\n", mod_bin_pow(a, b, n));
 
 //Finalizando a aplicação
 return 0;
           }
-
