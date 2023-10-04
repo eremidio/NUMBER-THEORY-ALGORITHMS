@@ -57,7 +57,7 @@ if(gcd_euclides(n, a)!=1)
 goto pick;
 
 //Executando o teste
-result=mod_pow(a, n-1, n);
+result=mod_bin_pow(a, n-1, n);
 
 if(result==1)
 return true;
@@ -104,14 +104,6 @@ if(fermat_test(number, k)==true)
 printf("Provável primo encontrado!\n");
 else
 printf("Número composto.\n");
-
-//Calculando os números primos até 100
-printf("Primos até 100:\n2, 3, ");
-for(uint64_t i=5; i<100; ++i){
-if(fermat_test(i, 20)==true)
-printf("%lu, ", i);
-                             };
-printf("...\n");
 
 //Finalizando a aplicação
 return 0;
