@@ -84,8 +84,10 @@ __int128_t  limit;
 
 //Procedimentos
 //Ajuste de variáveis
-if(number>1e24)
-limit=number/1e12;
+else if(number>1e32)
+limit=number/1e25;
+else if(number>1e24)
+limit=number/1e18;
 else if(number>1e16)
 limit=number/1e8;
 else
