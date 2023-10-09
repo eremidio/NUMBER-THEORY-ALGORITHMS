@@ -23,11 +23,16 @@ printf("Usuário digite um número a ser fatorado: ");
 scanf("%s", number_string);
 number=scanf128(number_string);
 
+printf("Etapa 1 concluída: input do usuário\n");
+
 //Parte 2: ajustando a base de primos
 printf("Digite um limitante superior para a busca da base de fatores primos a serem usados no algoritmo: ");
 scanf("%li", &smoothness_bound);
 
 set_prime_base();
+
+
+printf("Etapa 2 concluída: base de primos selecionada.\n");
 
 //Parte 3: checando se o número em questão é um quadrado perfeito neste caso uma fatoração é facilmente obtida
 perfect_square=square_root_checker(number_square_root, number);
@@ -38,6 +43,8 @@ factor2=number_square_root;
 return;
                                                    };
 
+printf("Etapa 3 concluída: busca por quadrados perfeitos.\n");
+
 //Parte 4: peneirando números suaves em relação a base de números primos
 printf("Digite um número que determina o intervalo de seleção de candidato para as possíveis relações constitutivas: ");
 scanf("%li", &sieve_interval);
@@ -45,8 +52,12 @@ scanf("%li", &sieve_interval);
 sieving_algorithm();
 build_matrices();
 
+printf("Etapa 4 concluída: busca por números suaves em relação a base de primos escolhidas.\n");
+
 //Parte 5: busca por relações constitutivas do tipo
 congruence_finder_algorithm();
+
+printf("Etapa 5 concluída: busca por relações de congruência.\n");
 
 //Parte 6: calculando fatores primos de um número
 factors_calculation();
