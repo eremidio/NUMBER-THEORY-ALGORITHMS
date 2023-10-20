@@ -16,7 +16,6 @@ PARA MAIORES INFORMAÇÕES: https://bjpcjp.github.io/pdfs/math/number-theory-ITA
 #ifndef BINARY_GCD_H
 #define BINARY_GCD_H
 #include<stdint.h>
-#include"arithmetic.h"
 
 //*************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
