@@ -199,19 +199,23 @@ char number_string4[40];
 //Procedimentos recebendo input do usuário
 
 std::cout<<"Digite o número a ser fatorado: ";
-scanf("%s", number_string1);
+if(scanf("%s", number_string1)!=1)
+return;
 number=scanf128(number_string1);
 
 std::cout<<"Digite o valor inicial da coordenada x0 de um ponto na curva: ";
-scanf("%s", number_string2);
+if(scanf("%s", number_string2)!=1)
+return;
 x0=scanf128(number_string2);
 
 std::cout<<"Digite o valor inicial da coordenada y0 de um ponto na curva: ";
-scanf("%s", number_string3);
+if(scanf("%s", number_string3)!=1)
+return;
 y0=scanf128(number_string3);
 
 std::cout<<"Digite o valor inicial do parâmetro a que define a curva a ser testada: ";
-scanf("%s", number_string4);
+if(scanf("%s", number_string4)!=1)
+return;
 a=scanf128(number_string4);
 
 std::cout<<"Digite o uma fator de 2 a 250 que determina a profundidade da busca a ser realizada por fatores primos: ";
