@@ -1,5 +1,5 @@
 //VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS DEFINIDAS NO ARQUIVO elliptic_curve_factorization.hpp
-//COMPILAR ESTE PROGRAMA COM: g++ -o elliptic_curve_factorization elliptic_curve_factorization.cpp
+//COMPILAR ESTE PROGRAMA COM: g++ -o elliptic_curve_factorization elliptic_curve_factorization.cpp -O2
 
 //CABEÇALHO
 #include"elliptic_curve_factorization.hpp"
