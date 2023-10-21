@@ -45,6 +45,12 @@ printf("...\n");
 break;
         };
                };
+
+if(n==1)
+printf("...\n");
+else
+printf("%lu, ...\n", n);
+
                      };
 
 //FUNÇÃO PRINCIPAL
@@ -54,7 +60,8 @@ uint64_t number;
 //Procedimentos
 //Recebendo input do usuário
 printf("Digite um número para ser fatorado: ");
-scanf("%lu", &number);
+if(scanf("%lu", &number)!= 1)
+return 1;
 
 //Fatorando o número
 factorize(number);
