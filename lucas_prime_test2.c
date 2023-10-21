@@ -91,15 +91,9 @@ first_part:
 if(mod_bin_pow(a, exponent, n)==1)
 goto second_part;
 else{ 
-printf("%lu certfica a composição de %lu\n", a, n);
+printf("%lu certifica a composição de %lu\n", a, n);
 return false;
     };
-
-if(a>bound){
-printf("Teste inconclusivo!\n");
-return false;
-           };
-
 
 //Fatorando o expoente
 factor(prime_array, exponent);
@@ -115,19 +109,25 @@ printf("%lu", prime_array[i]);
                     }
 else{
 printf("%lu certfica a primalidade de %lu\n", a, n);
-break;
+return true;
     };
 
-if(mod_bin_pow(a, exponent2, n)==1){
+if(mod_bin_pow(a, exponent2, n)==1)
+break;
+                   };
+
+//Atualizando variáveis
 if(a==2)
 a++;
 else
 a+=2;
 goto first_part;
-                                   };
 
-
-                   };
+//Em caso de falhas
+if(a>bound){
+printf("Teste inconclusivo!\n");
+return false;
+           };
 
 //Caso o número falhe nos teste acima
 return true;
