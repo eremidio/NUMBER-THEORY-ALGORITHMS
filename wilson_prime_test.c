@@ -3,12 +3,13 @@
 
 /*
 O CHAMADO TEOREMA DE WILSON AFIRMA QUE UM NÚMERO p É PRIMO SE E SOMENTE SE (p-1)!=(p-1) mod(p).
-ESTE TEOREMA FORNECE UM TESTE EXTREMAMENTE BÁSICO PARA TESTAR A PRIMALIDADE DE UM NÚMERO.
+ESTE TEOREMA FORNECEUM TESTE EXTREMAMENTE BÁSICO PARA TESTAR A PRIMALIDADE DEUM NÚMERO.
 
 */
 
 //**************************************************************************************************************************
 //CABEÇALHO
+#include"mod_bin_exponentiation.h"
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdint.h>
@@ -22,7 +23,7 @@ bool wilson_test(uint64_t n){
 uint64_t result=1;
 //Procedimentos
 for(uint64_t i=2; i<n; ++i)
-result=(result*i)%n;
+result=mul_mod(result, i, n);
 
 if(result==(n-1))
 return true;
