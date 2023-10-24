@@ -105,11 +105,10 @@ if(prime_array[i]>0){
 exponent2=exponent/prime_array[i];
 
 //TESTE
-printf("%lu", prime_array[i]);
+//printf("%lu", prime_array[i]);
                     }
 else{
 printf("%lu certfica a primalidade de %lu\n", a, n);
-return true;
     };
 
 if(mod_bin_pow(a, exponent2, n)==1)
