@@ -35,7 +35,6 @@ https://mathworld.wolfram.com/ClassNumber.html
 #ifndef CLASS_NUMBER_QUADRATIC_FIELD_H
 #define CLASS_NUMBER_QUADRATIC_FIELD_H
 #include"kronecker_symbol.h"//Inclui os headers <stdint.h>, <stdbool.h>, <math.h> e <stdint.h>
-#include"gcd"
 #include<assert.h>
 
 //*********************************************************************************************************************************************************************
@@ -45,7 +44,6 @@ bool is_integer_prime(int64_t);
 bool is_fundamental_discriminant(int64_t);
 int64_t substitution_number(int64_t);
 int64_t class_number_negative_discriminant(int64_t);
-int64_t class_number_negative_discriminant2(int64_t);
 
 //*********************************************************************************************************************************************************************
 //FUNÇÕES 
