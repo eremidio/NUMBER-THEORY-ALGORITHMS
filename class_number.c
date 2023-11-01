@@ -32,7 +32,6 @@ printf("%li não é um discrimante fundamental.\n", minus_n);
 //Calculando o número de classe
 if(is_fundamental_discriminant(minus_n)==true)
 printf("h(%li)=%li (fórmula de Dirichlet)\n", minus_n, class_number_negative_discriminant(minus_n));
-printf("h(%li)=%li (contagem de formas quadráticas)\n", minus_n, class_number_negative_discriminant(minus_n));
 
 //Finalizando a aplicação
 return 0;
