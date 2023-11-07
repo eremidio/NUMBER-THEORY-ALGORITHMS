@@ -1,5 +1,5 @@
 //ESTE ARQUIVO CONTERÁ UMA IMPLEMENTAÇÃO DA PENEIRA DE ATKINS, UM DOS ALGORITMOS MAIS EFICIENTES PARA SE CALCULAR NÚMEROS PRIMOS
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o atkin_sieve atkin_sieve.c -lm
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o atkin_sieve atkin_sieve.c -lm -O2
 
 /*
 O ALGORITMO DE ATKIN USA FORMAS QUADRÁTICAS PARA CALCULAR NÚMEROS PRIMOS.
@@ -44,11 +44,16 @@ if(number%2==0)
 return false;
 
 //Condição 2: o número não deve ter fatores primos quadráticos (2²=4 já está automaticamente descartado)
-for(i=3; i<=limit; i+=2){
-if(number%(i*i)==0)
+//Fator 3
+if((number%9)==0)
+return false;
+
+//Loop principal com otimização 6k+1
+for(i=5; i<=limit; i+=6){
+if((number%(i*i))==0 || (number%((i+2)*(i+2)))==0)
 return false;
                         };
-//Caso as condições acima sejam satisfeitas
+//Caso as consdições acima sejam satisfeitas
 return true;
                                             };
 
@@ -229,7 +234,7 @@ uint64_t number;
 //Procedimentos
 //Recebendo o input do usuário
 printf("Usuário digite um limitante superior para sua sequência de números primos:\n->");
-scanf("%li", &number);
+if(scanf("%lu", &number));
 
     //TESTES USE UM // APÓS OS MESMOS
     //bool test1=square_free_odd_checker(551);
