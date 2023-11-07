@@ -53,7 +53,7 @@ for(i=5; i<=limit; i+=6){
 if((number%(i*i))==0 || (number%((i+2)*(i+2)))==0)
 return false;
                         };
-//Caso as consdições acima sejam satisfeitas
+//Caso as condições acima sejam satisfeitas
 return true;
                                             };
 
