@@ -4,6 +4,7 @@
 #ifndef QUADRATIC_SIEVE_DATA_PROCESSING_H
 #define QUADRATIC_SIEVE_DATA_PROCESSING_H
 #include"quadratic_sieve_class.h"
+#include<time.h>
 
 //********************************************************************************************************************************************
 //FUNÇÕES
@@ -11,11 +12,6 @@
 void quadratic_sieve::congruence_finder_algorithm(){
 //Ajuste do vetor usado no cálculo
 selection_tester=(dimension+1);
-if(selection_tester>126){
-printf("Algoritmo não ajustável a inteiros 128 bits!\n");
-return;
-                        };
-
 check_vector.reshape(selection_tester, 1);
 congruence_vector.reshape(selection_tester, 1);
 
@@ -47,6 +43,23 @@ return;
 
 //Função que calcula um vetor que gera relações de congruência
 void quadratic_sieve::generate_check_vector(int64_t k){
+//Caso geral: alto número de relações constitutivas
+if(selection_tester>126){
+//Variáveis locais
+int64_t j, random_int;
+
+//Procedimentos
+for(j=0; j<selection_tester; ++j){
+random_int=rand()%101;
+
+if(random_int&1)
+check_vector.matrix[j][0]=1;
+else
+check_vector.matrix[j][0]=0;
+                                 };
+                        };
+
+//Caso particular: baixo número de relações constitutivas
 //Variáveis locais
 int64_t i;
 //Procedimentos
