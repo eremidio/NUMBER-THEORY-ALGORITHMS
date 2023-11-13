@@ -153,8 +153,8 @@ algebraic_polynomial=algebraic_polynomial*factor_polynomial;
 reduced_polynomial=remainder(algebraic_polynomial, f_polynomial);
 
 //Cálculo da raíz algébrica
-algebraic_square_root=((reduced_polynomial.evaluate_polynomial(m)%m)*(f_derivative.evaluate_polynomial(m)%m))%m;
-
+algebraic_selection=((reduced_polynomial.evaluate_polynomial(m)%m)*(f_derivative.evaluate_polynomial(m)%m))%m;
+square_root_128(algebraic_square_root, algebraic_selection);
                                                                     };
 
 //Função que calcula fatores primos
