@@ -51,7 +51,7 @@ def bin_pow(a:int, b:int)->int:
 
 
 def mod_bin_pow(a:int, b:int, m:int)->int:
- '''Exponenciação binária''' 
+ '''Função que implementa a exponenciação binária modular''' 
  result:int=1
 
  while(b>0):#Loop principal
@@ -94,12 +94,12 @@ def fill_prime_buffer(B:int)->list:
  
 
 def pollard_rho_minusone_factorization(n:int, smoothness:int)->int:
- '''Função que cálcula um fator primo dado uma base de primos'''
+ '''Função que calcula um fator primo dado uma base de primos'''
  #Caso trivial:
  if((n%2)==0):
   return 2, (n//2)
 
- #Etapa 1: prenchendo um buffer de fatores primos e ajsutando variáveis no algoritmo
+ #Etapa 1: prenchendo um buffer de fatores primos e ajustando variáveis no algoritmo
  prime_list:list=fill_prime_buffer((smoothness+1))
  
  #Etapa2: Calculando o expoente M usado no algoritmo
@@ -125,4 +125,3 @@ B:int = int(input('Digite um limite para a base de primos usados no algoritmo:')
 #EXECUTANDO O ALGORITMO
 prime_factor:int=pollard_rho_minusone_factorization(n, B)
 print("Fatores de {} encotrados:  {} e {}".format(n, prime_factor, (n//prime_factor)))
-
