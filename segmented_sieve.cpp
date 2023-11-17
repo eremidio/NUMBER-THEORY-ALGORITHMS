@@ -41,7 +41,7 @@ uint64_t sqrt_n =std::sqrt(n);
 
 //Procedimento usando uma otimização 30k+1
 for(uint64_t i=31; i<sqrt_n+1; i+=30){
-if((n%i)==0 || (n%(i+6))==0 || (n%(i+10))==0 || (n%(i+12))==0 || (n%(i+16))==0 || (n%(i+22))==0 || (n%(i+28))==0)
+if((n%i)==0 || (n%(i+6))==0 || (n%(i+8))==0 || (n%(i+10))==0 || (n%(i+12))==0 || (n%(i+16))==0 ||  (n%(i+18))==0 || (n%(i+22))==0 ||  (n%(i+26))==0 || (n%(i+28))==0)
 return false;
                                      };
 return true;
@@ -49,7 +49,7 @@ return true;
 
 
 
-//Função que preenche um buffer de númeror primos até n^1/2
+//Função que preenche um buffer de númeror primosaté n^1/2
 void fill_prime_buffer(uint64_t n){
 //Variáveis locais
 uint64_t sqrt_n=floor(sqrt(n));
@@ -60,7 +60,7 @@ prime_buffer.emplace_back(i);
                                 };
                                   };
 
-//Função que printa os valores de primos até um dado valor
+//Função que printa os valores de primosat é um dado valor
 void segmented_sieve(uint64_t n, uint64_t max_size){
 //Variáveis locais
 uint64_t turns, upper, lower, mark_index/*index no array*/, real_value/*valor real*/, counter/*contador*/, prime;
