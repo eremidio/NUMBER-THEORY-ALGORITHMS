@@ -14,9 +14,9 @@ CÁLCULO DO mdc EVENTUALMENTE IRÁ FORNECER UM FATOR NÃO TRIVIAL DO NÚMERO A S
 ESTE ALGORITMO É UMA VARIANTE DO MÉTODO DE POLLARD RHO (p-1).
 
 PARA MAIORES INFORMAÇÕES: https://medium.com/@gaelfoppolo/elliptic-curve-cryptography-ecc-6af6142b0dd1
-https://en.wikipedia.org/wiki/Lenstra_elliptic-curve_factorization
-https://zafirr31.github.io/posts/lenstra-elliptic-curve-method-of-factorization/
-
+                          https://en.wikipedia.org/wiki/Lenstra_elliptic-curve_factorization
+                          https://zafirr31.github.io/posts/lenstra-elliptic-curve-method-of-factorization/
+                          https://members.loria.fr/PZimmermann/records/ecm/params.html
 
 */ 
 
@@ -218,7 +218,7 @@ if(scanf("%s", number_string4)!=1)
 return;
 a=scanf128(number_string4);
 
-std::cout<<"Digite o uma fator de 2 a 250 que determina a profundidade da busca a ser realizada por fatores primos: ";
+std::cout<<"Digite o uma fator de 2 a 25000000 que determina a profundidade da busca a ser realizada por fatores primos: ";
 std::cin>>B;
 
 
