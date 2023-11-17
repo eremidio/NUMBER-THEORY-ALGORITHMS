@@ -72,7 +72,7 @@ uint64_t odd_prime_factors=0;
 if(n%2==0)
 n/=2;
 
-//Testando porfatores primos ímpares (um número não pode ser divisível por dois ímpares diferentes)
+//Testando por fatores primos ímpares (um número não pode ser divisível por dois ímpares diferentes)
 for(uint64_t i=3; i<sqrt(n); ++i){
 if((n%i)==0)
 odd_prime_factors++;
@@ -103,9 +103,10 @@ for(i=1; i<n; ++i){
 //Apenas números coprimos podem ser raízes primitivas
 if(gcd_euclides(i, n)>1)
 continue;
+
 //Testando possíveis candidatos
 for(j=1; j<(validator+2); ++j){
-if(mod_pow(i, j, n)==1)
+if(mod_bin_pow(i, j, n)==1)
 break;
                               };
 if(j==validator){
