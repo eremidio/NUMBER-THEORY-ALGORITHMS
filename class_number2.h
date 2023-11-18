@@ -96,7 +96,7 @@ NOTA: Para este cálculo existe uma fórmula relacionando h(d) com h(d0) onde d=
 A fórmula explicita é:
 
 h(d)/w(d) = [h(d0)/w(d0)]f Π{1-(d0|p)/p}, na qual o produtório é tomado sobre todos os primos p que dividem o fator multiplicativo f.
-w(d) é a função substitution_number definida no noheader class_number.h que calcula o número de substituições que deixam uma forma quadrática invariante.
+w(d) é a função substitution_number definida no header class_number.h que calcula o número de substituições que deixam uma forma quadrática invariante.
 Esta fórmula fornce um resultado preciso.
 */
 
