@@ -53,14 +53,14 @@ result[0]=(result[0]%prime);
 //Calculando a 2ª parcela do resultado  
 result[1]=(parcel1[0]*parcel2[1])+(parcel1[1]*parcel2[0]);
 
-//Ajuste do valor da 2ª parcela  módulo primo congruente 
+//Ajuste do valor da 2ª parcela módulo primo congruente 
 while(result[1]<0 && abs(result[1])>prime)
 result[1]=result[1]+prime;
 if(result[1]>prime)
 result[1]=(result[1]%prime);
                                                                                                                           };
 
-//Função quer implmenta o algoritmo de Cipolla
+//Função que implementa o algoritmo de Cipolla
 int64_t cipolla_algorithm(int64_t n, int64_t prime){
 
 //Variáveis locais
@@ -70,7 +70,7 @@ int64_t power=0;
 int64_t algebraic_number[2], algebraic_product[2], algebraic_squared[2], temp[2];
 
 //Procedimento
-//Seleção do parâmetro tal que (a²-n|p)=1
+//Seleção do parâmetro a tal que (a²-n|p)=1
 for(a=2; ;a++){
 tester=(a*a)-n;
 root=tester;
