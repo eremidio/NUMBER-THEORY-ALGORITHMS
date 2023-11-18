@@ -73,14 +73,18 @@ if(n%2==0)
 n/=2;
 
 //Testando por fatores primos ímpares (um número não pode ser divisível por dois ímpares diferentes)
-for(uint64_t i=3; i<sqrt(n); ++i){
-if((n%i)==0)
+if(n%3==0)
+odd_prime_factors=1;
+
+//Loop principal com otimização 6k+1
+for(uint64_t i=5; i<(sqrt(n)+10); i+=6){
+if((n%i)==0 || (n%(i+2))==0){
 odd_prime_factors++;
 if(odd_prime_factors>1)
 return false;
-                                 };
+                            };
+                                       };
 return true;
-
                                        };
 
 //Função que calcula as raízes primitivas de um número inteiro
