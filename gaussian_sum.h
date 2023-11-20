@@ -95,7 +95,7 @@ return;
 
 //Função que calcula a soma de Gauss
 /*
-NOTA: Notações diferentes são encontradas na literatura. Usaremos a  notação usada em 
+NOTA: Notações diferentes são encontradas na literatura. Usaremos a  notação usada em https://en.wikipedia.org/wiki/Quadratic_Gauss_sum
 
 */
 
