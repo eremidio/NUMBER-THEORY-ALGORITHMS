@@ -1,15 +1,14 @@
 #VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE STRASSEN PARA FATORAR NÚMEROS INTEIROS
 '''
-O ALGORITMO DE STRASSEN (POLLARD) É O ALGORITMO MAIS RÁPIDO PARA FATORAR NÚMEROS INTEIROS CUJA COMPLEXIDADE E TEMPO DE EXECUÇÃO SÃO RIGOROSAMENTE DETERMINADOS
-O(n^(1/4)log(n)).
+O ALGORITMO DE STRASSEN (POLLARD) É O ALGORITMO MAIS RÁPIDO PARA FATORAR NÚMEROS INTEIROS CUJA COMPLEXIDADE E TEMPO DE EXECUÇÃO SÃO RIGOROSAMENTE DETERMINADOS EM NOTAÇÃO
+BIG-O SUA COMPLEXIDADE É O(n^(1/4)log(n)).
 
-O ALGORITMO É EXTREMAMENTE SIMPLES E BASEIA-SE NA OBSERVAÇÃO DE QUE SE UM FOR COMPOSTO ELE TEM PELO MENOS UM FATOR INFERIOR A n^(1/2) SENDO d=n^(1/4), ENTÃO PARA UM 
-NÚMERO COMPOSTO mmc(d²! mod n, n)>1. 
+O ALGORITMO É EXTREMAMENTE SIMPLES E BASEIA-SE NA OBSERVAÇÃO DE QUE UM NUMERO COMPOSTO TEM PELO MENOS UM FATOR PRIMO INFERIOR A n^(1/2) SENDO d=n^(1/4), ENTÃO 
+mmc(d²! mod n, n)>1. 
 
 NESTE CASO d²! mod n =b(0)b(1)...b(d-1), ONDE DEFINE-SE PARA i INTEIRO b(i)=(i.d+1)(i.d+2)...(i.d+d) mod n
 
 PARA MAIORES INFORMAÇÕES: https://web.maths.unsw.edu.au/~davidharvey/talks/factoring.pdf
-
 '''
 
 
@@ -19,12 +18,12 @@ from math import sqrt, gcd
 #FUNÇÕES USADAS NO ALGORITMO
 
 def quartic_root(n:int)->int:
- '''Função que  extrai a raíz quarta de um número'''
+ '''Função que extrai a raíz quarta de um número'''
  return int(sqrt(sqrt(n)))
 
 
 def generate_divisor(multiplier:int, bound:int, number:int)->int:
- '''Função que calcula um valor que possivel compartilha algum valor com o número a ser fatorado'''
+ '''Função que calcula um divisor que possivel compartilha algum fator primo com o número a ser fatorado'''
  result:int=1
  for i in range((multiplier*bound), ((multiplier*bound)+bound+1)):
   result=(result*i)%number
@@ -34,7 +33,7 @@ def generate_divisor(multiplier:int, bound:int, number:int)->int:
 
 def strassen_pollard_factorization(n:int)->int:
  '''Função que implementa o algoritmo de Strassen-Pollard'''
- #Cálculo da raíz quártica donúmero a ser fatorado
+ #Cálculo da raíz quártica do número a ser fatorado
  d:int=quartic_root(n)
 
  factor:int=1 #Variável local
@@ -63,7 +62,3 @@ factor:int=strassen_pollard_factorization(number)
 
 if(factor>1):
  print('Fatores de {} : {} e {}'.format(number, factor, (number//factor))) 
-
-
-
-
