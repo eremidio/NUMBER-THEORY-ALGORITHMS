@@ -1,7 +1,8 @@
 //VAMOS CRIAR UM PROGRAMA QUE IMPLMENTA O ALGORITMO DE MILLER-RABIN PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
 //COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o miller_rabin miller_rabin.c
+
 /*
-O TESTE DE MILLE RABIN É UM TESTE DA PRIMALIDADE DE UM NÚMERO INTEIRO QUE GENERALIZA O TESTE DE PRIMALIDADE DE FERMAT.
+O TESTE DE MILLER-RABIN É UM TESTE DA PRIMALIDADE DE UM NÚMERO INTEIRO QUE GENERALIZA O TESTE DE PRIMALIDADE DE FERMAT.
 ELE É FUNDAMENTADO NO CHAMADO PEQUENO TEOREMA DE FERMAT QUE AFIRMA QUE PARA UM DADO NÚMERO PRIMO p E UM INTEIRO a COPRIMO COM ELE a^(p-1) = 1(mod p).
 
 O ALGORITMO FUNCIONA DA SEGUINTE FORMA:
@@ -63,12 +64,12 @@ s++;
 d=n_even;
 
 //Teste 1: a^(d)=1 mod(n)
-if(mod_pow(a, d, n)==1)
+if(mod_bin_pow(a, d, n)==1)
 return true;
 
 //Teste 2: a^(2^(r)d)=1 mod(n) para r no intervalo 1, 2,..., s-1
 for(r=0; r<s; ++r){
-x= mod_pow(a, bin_pow(2, r)*d, n);
+x= mod_bin_pow(a, bin_pow(2, r)*d, n);
 if((x*x)%n==1)
 return true;
                   };
