@@ -186,35 +186,50 @@ return true;
 uint64_t lowest_multiplicative_order(uint64_t n){
 //Váriáveis
 uint64_t ord=multiplicative_order(n, 2), tester;
-uint64_t limit=sqrt(n);
+uint64_t limit=(log2(n)*log2(n));
 uint64_t i;
 
 //Procedimentos
 //Loop principal
-for(i=3; i<n; i++){
+for(i=(limit+1); i<n; i++){
 if(fast_euclides_algorithm(n,i)==1)
 tester=multiplicative_order(n, i);
 if(tester<ord)
 ord=tester;
 
-                       };
+                          };
 //Resultado
 return ord;
                                                 };
 
-//Função que dermina se n é divisível por algum fator no intervalo (2, Ord(n))
+//Função que determina se n é divisível por algum fator no intervalo (2, min{Ord(n), (n-1)})
 bool trial_division(uint64_t n, uint64_t ord){
+//Variáveis locais
+uint64_t upper_bound;
+
 //Procedimentos
-for(uint64_t i=2; i<=ord; i++){
+//Calculando o limite superior
+if((n-1)>=ord)
+upper_bound=ord;
+else
+upper_bound=(n-1);
+
+//Teste da divisão
+for(uint64_t i=2; i<=upper_bound; i++){
 if(fast_euclides_algorithm(n, i)>1)
 return false;
-                              };
+                                      };
 
 //Caso o número a ser testado passe no teste acima
 return true;
                                              };
 
 //Função que testa a relação de congruência (x+a)^n = x^n+a (mod [x^r-1], n)
+/*
+NOTA: Estritamente o algoritmo requer que sejam testados valores no intervalo 2 ≲ a ≲ (√φ(r))log₂(n). Porém,certas conjecturas ainda não comprovadas postulam que o
+teste com a=1 é suficiente para produzir resultados corretos.
+*/
+
 bool polinomial_test(uint64_t n, uint64_t r){
 //Variáveis locais
 uint64_t i, j, counter=0, polynomial_coefficient;
@@ -248,11 +263,14 @@ return true;
 
                                             };
 
-//Função que implementa o teste de primalidade AKS
+//Função que implementa o teste de primalidade AKS (Agrawal-Kayal-Saxena)
 bool aks_primality_test(uint64_t n){
 //Caso trivial
 if(n<2)
 return false;
+
+if(n==2)
+return true;
 
 if((n%2)==0)
 return false;
