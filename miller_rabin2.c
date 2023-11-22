@@ -88,7 +88,6 @@ return true;
 int main(){
 //Váriaveis locais
 uint64_t number;
-int k;
 
 //Procedimentos
 //Recebendo input do usuário
