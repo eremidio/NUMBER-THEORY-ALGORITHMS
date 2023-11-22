@@ -218,7 +218,7 @@ if(scanf("%s", number_string4)!=1)
 return;
 a=scanf128(number_string4);
 
-std::cout<<"Digite o uma fator de 2 a 25000000 que determina a profundidade da busca a ser realizada por fatores primos: ";
+std::cout<<"Digite um fator de 2 a 25000000 que determina a profundidade da busca a ser realizada por fatores primos: ";
 std::cin>>B;
 
 
