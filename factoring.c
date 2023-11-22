@@ -18,7 +18,7 @@ void factorize(uint64_t n){
 //Variáveis locais
 uint64_t i;
 uint64_t limit = sqrt(n);
-uint64_t divisors[7]={1, 7, 11, 13, 17, 23, 29};//Números coprimos com 30 no intervalo 1,...,30
+uint64_t divisors[8]={1, 7, 11, 13, 17, 19, 23, 29};//Números coprimos com 30 no intervalo 1,...,30
 
 //Procedimentos
 printf("Eis os fatores primos de %lu:\n", n);
@@ -47,7 +47,7 @@ return;
 
 //Loop principal
 //1º iteração
-for(i=1; i<7; ++i){
+for(i=1; i<8; ++i){
 while((n%divisors[i])==0){
 printf("%lu, ", divisors[i]);
 n/=divisors[i];
@@ -61,13 +61,13 @@ return;
         };
 
 //Demais interações
-while(divisors[6]<limit){
+while(divisors[7]<limit){
 //Atualizando variáveis
-for(i=0; i<7; ++i)
+for(i=0; i<8; ++i)
 divisors[i]=divisors[i]+30;
 
 //Testando possíveis divisores
-for(i=0; i<7; ++i){
+for(i=0; i<8; ++i){
 while((n%divisors[i])==0){
 printf("%lu, ", divisors[i]);
 n/=divisors[i];
