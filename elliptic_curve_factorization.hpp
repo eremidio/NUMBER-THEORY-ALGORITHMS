@@ -24,28 +24,31 @@ PARA MAIORES INFORMAÇÕES: https://medium.com/@gaelfoppolo/elliptic-curve-crypt
 //CABEÇALHO
 #ifndef ELLIPTIC_CURVE_METHOD_H
 #define ELLIPTIC_CURVE_METHOD_H
-#include"int128.h"
+#include<boost/multiprecision/cpp_int.hpp>
+#include<boost/cstdint.hpp>
+#include<string>
 #include<stdint.h>
 #include<iostream>
 #include<random>
+using namespace boost::multiprecision;
 
 //CONSTANTES GLOBAIS
-#define MAX_TRIALS 50000 //Variável para se restringir o número de tentativas
+#define MAX_TRIALS 60000 //Variável para se restringir o número de tentativas
 
 //***************************************************************************************************************************
 //FUNÇÕES AUXILIARES
 //Função que implementa o algoritmo de Euclides
-__int128_t euclides_algorithm(__int128_t a, __int128_t b){
+int512_t euclides_algorithm(int512_t a, int512_t b){
 if(b==0)
 return a;
 else
 return euclides_algorithm(b, a%b);
-                                                        };
+                                                  };
 
 //Função que calcula o inverso modular de um número inteiro a (mod n) usando o algoritmo extendido de euclides
-__int128_t  modular_inverse(__int128_t  a, __int128_t  n){
+int512_t  modular_inverse(int512_t  a, int512_t  n){
 //Variáveis locais
-__int128_t  r0,r1, x0, x1, r2, x2;
+int512_t  r0,r1, x0, x1, r2, x2;
 //Procedimentos 
 //Ajuste de variáveis
 r0=a;
@@ -56,7 +59,7 @@ x1=0;
 
 //Calculando os valores finais coeficientes recursivamente
 while(r2>0){
-__int128_t  quotient= r0/r1;
+int512_t quotient= r0/r1;
 
 r2=r0-quotient*r1;
 x2=x0-quotient*x1;
@@ -74,24 +77,25 @@ if(x1<0)
 return(x1+n);
 else
 return x1;
-                                                         };
+                                                     };
 
 //Função usada para se gerar um número inteiro aleatório da ordem 64 bits 
-__int128_t  generate_random_number(__int128_t  number){
+int512_t  generate_random_number(int512_t  number){
 //Variáveis locais
+__int128_t  number_=static_cast<__int128_t>(number/100000);
 __int128_t  result;
 __int128_t  limit;
 
 //Procedimentos
 //Ajuste de variáveis
-if(number>1e32)
-limit=number/1e25;
-else if(number>1e24)
-limit=number/1e18;
-else if(number>1e16)
-limit=number/1e8;
+if(number_>1e32)
+limit=number_/1e25;
+else if(number_>1e24)
+limit=number_/1e18;
+else if(number_>1e16)
+limit=number_/1e8;
 else
-limit=number;
+limit=number_;
 
 
 //Ajuste da distribuição de números aleatórios
@@ -110,13 +114,13 @@ return result;
 class elliptic_curve_method{
 public:
 //Membros da classe
-__int128_t number;//Número a ser fatorado
-__int128_t x0, y0;//Coordenadas do ponto inicial da curva elíptica
-__int128_t xp, yp, xq, yq, xr, yr, slope;//Coordenadas de pontos na curva elíptica usados no cálculo
-__int128_t a, b;//Parâmetros que definem a curva usada
+int512_t number;//Número a ser fatorado
+int512_t x0, y0;//Coordenadas do ponto inicial da curva elíptica
+int512_t xp, yp, xq, yq, xr, yr, slope;//Coordenadas de pontos na curva elíptica usados no cálculo
+int512_t a, b;//Parâmetros que definem a curva usada
 int64_t B;//Pârametro que define a profundidade do algoritmo na busca de pontos na curva elíptica
-__int128_t selection;//Número inteiro não congruente modulo o número a ser fatorado que serve de detecção de fatores não triviais
-__int128_t factor1, factor2;//Fatores calculados usando este algoritmo
+int512_t selection;//Número inteiro não congruente modulo o número a ser fatorado que serve de detecção de fatores não triviais
+int512_t factor1, factor2;//Fatores calculados usando este algoritmo
 int64_t number_trial;//Função que controla o número de testagens até o algoritmo encontrar um fator não trivial
 bool restart;//Variável para se reiniciar o teste usando uma outra curva
 
@@ -176,8 +180,8 @@ if(selection>1 && selection<number){
 factor1=selection;
 factor2=number/factor1;
 std::cout<<"Fatores encontrados: \n";
-printf128(factor1);
-printf128(factor2);
+std::cout<<factor1<<'\n';
+std::cout<<factor2<<'\n';
 std::cout<<"Número de curvas usadas no cálculo: "<< number_trial<<"\n";
                                    };
 
@@ -191,32 +195,32 @@ goto mainloop;
 //Função que recebe input do usuário para ajuste inicial do algoritmo
 void elliptic_curve_method::setup(){
 //Variáveis locais
-char number_string1[40];
-char number_string2[40];
-char number_string3[40];
-char number_string4[40];
+std::string number_string1;
+std::string number_string2;
+std::string number_string3;
+std::string number_string4;
 
 //Procedimentos recebendo input do usuário
 
 std::cout<<"Digite o número a ser fatorado: ";
-if(scanf("%s", number_string1)!=1)
-return;
-number=scanf128(number_string1);
+std::cin>>number_string1;
+int512_t temp1(number_string1);
+number=temp1;
 
 std::cout<<"Digite o valor inicial da coordenada x0 de um ponto na curva: ";
-if(scanf("%s", number_string2)!=1)
-return;
-x0=scanf128(number_string2);
+std::cin>>number_string2;
+int512_t temp2(number_string2);
+x0=temp2;
 
 std::cout<<"Digite o valor inicial da coordenada y0 de um ponto na curva: ";
-if(scanf("%s", number_string3)!=1)
-return;
-y0=scanf128(number_string3);
+std::cin>>number_string3;
+int512_t temp3(number_string3);
+y0=temp3;
 
 std::cout<<"Digite o valor inicial do parâmetro a que define a curva a ser testada: ";
-if(scanf("%s", number_string4)!=1)
-return;
-a=scanf128(number_string4);
+std::cin>>number_string4;
+int512_t temp4(number_string4);
+a=temp4;
 
 std::cout<<"Digite um fator de 2 a 25000000 que determina a profundidade da busca a ser realizada por fatores primos: ";
 std::cin>>B;
