@@ -1,8 +1,8 @@
-//VAMOS IMPLEMENTAR O ALGORITMO DE POLLARD PARA FATORAR NÚMEROS INTEIROS EM DOIS FATORES DISTINTOS
-// COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o pollard_rho_factorization pollard_rho_factorization.c -lm
+//VAMOS IMPLEMENTAR O ALGORITMO DE POLLARD PARA FATORAR NÚMEROS INTEIROSEM DOIS FATORES DISTINTOS
+// COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o pollard_rho_factorization pollard_rho_factorization.c -O2
 
 /*
-O ALGORITMO DE POLLARD É UM ALGORITMO BEM EFICIENTE PARA DECOMPOR UM NÚMERO INTEIRO EM DOIS FATORES PRIMOS.
+O ALGORITMO DE POLLARD É UMA ALGORITMO BEM EFICIENTE PARA DECOMPOR UM NÚMERO INTEIRO EM DOIS FATORES PRIMOS.
 O ALGORITMO BASEIA-SE NA GERAÇÃO GERAÇÃO DE UMA SEQUÊNCIA PSEUDO-ALEATÓRIA USANDO UM POLONÔMIO COMO p(x)=x²+1 OU 
 p(x)=x²+1 mod(n), ONDE n É UM NÚMERO A SER FATORADO.
 
@@ -21,11 +21,7 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Pollard%27s_rho_algori
 //*********************************************************************************************************************
 //CABEÇALHO
 #include<stdio.h>
-#include<stdlib.h>
 #include<stdint.h>
-#include<math.h>
-#include<time.h>
-
 
 //*********************************************************************************************************************
 //FUNÇÕES
@@ -38,34 +34,17 @@ else
 return euclides_check(b, a%b);
                                                };
 
-//Função que usa um gerador de números para gerar um número usado no teste do algoritmo de Pollard rho
-uint64_t generate_key (uint64_t value){
-//Caso geral escolhendo um palpite maior do que 7
-//Semente para geração de números aleatórios
-srand(time(NULL));
-//Variáveis locais
-uint64_t key;
-//Selecionando uma chave aleatoriamente
-selection:
-key= 2+rand()%value-2;
-//A chave escolhida deve ser coprima do número a ser fatorado 
-if(euclides_check(value, key)!=1)
-goto selection;
-
-return key;
-                                                };
-
 //Função que implementa o algoritmo de Pollard
-void pollard_rho(uint64_t x_, uint64_t y_, uint64_t n){
+void pollard_rho(uint64_t x, uint64_t y, uint64_t n){
 //Variáveis locais
 uint64_t factor1, factor2;
 uint64_t remainder=1;
-uint64_t x=x_, y=y_;
+uint64_t a=1, counter=0;
 
 //Procedimentos
 //Testando inicialmente com x=2, y=2
 restart:
-while(remainder=1){
+while(remainder==1){
 x=((x*x+1)%n);
 y=((y*y+1)%n);
 y=((y*y+1)%n);
@@ -82,19 +61,21 @@ printf("Fatores não triviais encontrados: %lu e %lu\n", factor1, factor2);
 return;
                               };
 
-if(remainder==n)
+//Atualizando variáveis
+counter++;
+if(counter>1e10){
+counter=0;
+a++;
+                };
+
+if(remainder==n){
 printf("Teste falhou!");
+return;
+                };
                   };
 
-//Retestando com outras base
-if(x_==2 && y_==2){
-x=generate_key(n);
-y=generate_key(n);
-goto restart;
-                  };
-printf("Teste falhou!");
+                                                  };
 
-                                                    };
 //*********************************************************************************************************************
 //FUNÇÃO PRINCIPAL
 int main(){
@@ -102,9 +83,10 @@ int main(){
 uint64_t number;
 //Recebendo o input
 printf("Digite o número a ser fatorado.\n->");
-scanf("%li", &number);
+if(scanf("%li", &number)!=1)
+return 0;
 
-//Aplicando o algoritmo de Pollard rho
+//Aplicando o algoritmo de Pollard rho (p-1)
 pollard_rho(2, 2, number);
 
 //Finalizando a aplicação
