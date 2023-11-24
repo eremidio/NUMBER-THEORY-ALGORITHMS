@@ -10,7 +10,7 @@ DO GRUPO).
 LOGARITMOS DISCRETOS PODE SER COMPUTADOS USANDO-SE MULTIPLICAÇÃO ATÉ SE OBTER A RELAÇÃO DE CONGRUÊNCIA DESEJADA. O ALGORITMO
 DENOMINADO BABY_STEP_GIANT_STEP USA A SEGUINTE ABORDAGEM ESCREVEMOS k (b^k=c (mod m)) COMO k=in-j, COM i,j=0, ..., m^(1/2).
 NESTA SITUAÇÃO TEMOS b^(in-j)=c (mod m) DONDE b^(in)= c(b^j) (mod m), PRÉ-COMPUTANDO VALORES DE b^(in) E b^j, PODE-SE CHECAR
-RAPIDAMENTE QUAIS VALORES DE i, j SATISFAZEM ESTA RELAÇÃO  E O VALOR DO EXPOENTE k É FACILMENTE RECUPERADO. PARA OTIMIZAR ESTE
+RAPIDAMENTE QUAIS VALORES DE i, j SATISFAZEM ESTA RELAÇÃO  E OVALOR DO EXPOENTE k É FACILMENTE RECUPERADO. PARA OTIMIZAR ESTE
 ALGORITMO PODEMOS ALOCAR OS VALORES PRÉ COMPUTADOS EM UMA HASH TABLE.
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Discrete_logarithm
@@ -42,12 +42,12 @@ int64_t i, j, k;//Resultado
 //Procedimento
 //Pré-computando valores de a^(in)/ a^j (mod m)
 for(int64_t i=0; i<n; ++i)
-power_in.insert({i, mod_pow(a, (i*n), m)});
+power_in.insert({i, mod_bin_pow(a, (i*n), m)});
 
 //Iterando sobre os valores anteriores para calcula o valor do logaritmo
 for(it1=power_in.begin(); it1!=power_in.end(); ++it1){
 for(j=0;j<n;++j){
-if((it1->second%m)==((c*mod_pow(a, j, m))%m)){
+if((it1->second%m)==((c*mod_bin_pow(a, j, m))%m)){
 i=it1->first;
 return ((i*n)-j);
                                              };
