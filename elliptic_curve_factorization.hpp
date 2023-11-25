@@ -37,16 +37,8 @@ using namespace boost::multiprecision;
 
 //***************************************************************************************************************************
 //FUNÇÕES AUXILIARES
-//Função que implementa o algoritmo de Euclides
-int512_t euclides_algorithm(int512_t a, int512_t b){
-if(b==0)
-return a;
-else
-return euclides_algorithm(b, a%b);
-                                                  };
-
 //Função que calcula o inverso modular de um número inteiro a (mod n) usando o algoritmo extendido de euclides
-int512_t  modular_inverse(int512_t  a, int512_t  n){
+int512_t  modular_inverse(int512_t  a, int512_t n, int512_t& gcd){
 //Variáveis locais
 int512_t  r0,r1, x0, x1, r2, x2;
 //Procedimentos 
@@ -73,11 +65,13 @@ x1=x2;
             };
 
 //Resultado
+gcd=r1;//MMC
+
 if(x1<0)
 return(x1+n);
 else
 return x1;
-                                                     };
+                                                                 };
 
 //Função usada para se gerar um número inteiro aleatório da ordem 64 bits 
 int512_t  generate_random_number(int512_t  number){
@@ -268,12 +262,7 @@ return;
          };
 
 //Calculo da inclinação da curva, uma checagem é executada para verificar se um ponto não invertível foi encontrado
-if(euclides_algorithm((2*yp), number)!=1){
-selection=euclides_algorithm(2*yp, number);
-return;
-                                         };
-
-slope=((3*xp*xp+a)*modular_inverse(2*yp, number))%number;
+slope=((3*xp*xp+a)*modular_inverse(2*yp, number, selection))%number;
 
 //Calculo das coordenadas do novo ponto gerado
 xr=((slope*slope)-(2*xp))%number;
@@ -291,12 +280,7 @@ return;
           };
 
 //Calculo da inclinação da curva, uma checagem é executada para verificar se um ponto não invertível foi encontrado
-if(euclides_algorithm((xp-xq), number)!=1){
-selection=euclides_algorithm((xp-xq), number);
-return;
-                                          };
-
-slope=((yp-yq)*modular_inverse((xp-xq), number))%number;
+slope=((yp-yq)*modular_inverse((xp-xq), number, selection))%number;
 
 //Calculo das coordenadas do novo ponto gerado
 xr=((slope*slope)-xp-xq)%number;
