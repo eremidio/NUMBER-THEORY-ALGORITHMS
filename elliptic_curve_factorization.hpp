@@ -173,6 +173,8 @@ goto mainloop;
 if(selection>1 && selection<number){
 factor1=selection;
 factor2=number/factor1;
+std::cout<<"\nRelatório de execução do algoritmo:\n";
+std::cout<<"Curva usada para encontrar o fator: y²=x³+("<<a<<")x+("<<b<<")  (mod "<<number<<")\n";
 std::cout<<"Fatores encontrados: \n";
 std::cout<<factor1<<'\n';
 std::cout<<factor2<<'\n';
