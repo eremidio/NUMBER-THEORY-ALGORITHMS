@@ -1,241 +1,266 @@
-//VAMOS IMPLEMENTAR ROTINAS AUXILIARES USADAS NO ALGORITMO DE FATORAÇÃO VIA CURVAS ELÍPTICAS
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA A VARIANTE DE MONTGOMERY DO MÉTODO DE FATORAÇÃO VIA CURVAS ELÍPTICAS
 /*
-NOTA: Usaremos inteiros de 64 bits nas pré-computação de primos usados no algoritmo, a aritmética em curvas elípticas será feita usando-se inteiros de 512 bits para
-evitar overflow.
+O MÉTODO DE MONTGOMERY É UMA VARIAÇÃO DO MÉTODO ORIGINAL DE FATORAÇÃO VIA CURVAS ELÍPTICAS PROPOSTOPOR H. LENSTRA QUE USA AS CHAMADAS CURVAS DE MONTOGOMERY
+gy²=x³+Cx²+x (mod p). ASSIM COMO NO ALGORITMO ORIGINAL PONTOS SOBRE A CURVA FORMAM UM GRUPO ABELIANO COM AS OPERAÇÕES GEOMÉTRICAS DE ADIÇÃO DE PONTOS E MULTIPLICAÇÃO
+POR UM ESCALAR.
+
+ESTE ALGORITMO TEM A VANTAGEM DE NÃO REQUERER O CÁLCULO DE INVERSOS MODULARES USANDO-SE O ALGORITMO DE EUCLIDES EXTENDIDO COMO NO ALGORITMO ORIGINAL, ALÉM DE
+POSSIBILITAR A EXECUÇÃO DE UM SEGUNDO ESTÁGIO NO ALGORITMO QUE EMPREGA DOIS NÚMEROS B1 E B2 PARA CONTROLAR O INTERVALO DE BUSCA POR FATORES PRIMOS (FATORES NÃO TRIVIAIS
+SÃO ENCONTRADOS SE A ORDEM DO SUBGRUPO E(p) DE PONTOS EM CURVAS FOR SUAVE EM RELAÇÃO A ESTE PARÂMETROS, O TEOREMA DE HASSE ESTIMA QUE A ORDEM #E(p) ESTÁ NO INTERVALO
+(p+1)-2√p, ..., (p+1)+2√p). A ESCOLHA DE PARAMETRIZAÇÕES ADEQUADAS GARANTE QUE #E(p) É SUAVE EM RELAÇÃO AOS PARÂMETROS B1 E B2.
+
+PARA MAIORES INFORMAÇÕES:
+https://dspace.mit.edu/bitstream/handle/1721.1/97521/18-783-spring-2013/contents/lecture-notes/MIT18_783S13_lec12.pdf
+https://eprint.iacr.org/2017/212.pdf
+https://members.loria.fr/PZimmermann/papers/40760525.pdf
+https://members.loria.fr/PZimmermann/records/ecm/params.html
+https://en.wikipedia.org/wiki/Lenstra_elliptic-curve_factorization
 
 */
 
 //********************************************************************************************************************************************************************
 //CABEÇALHO
-#ifndef MONTGOMERY_ELLPITIC_CURVE_FACTORIZATION_AUXILIARY_FUNCTIONS_H
-#define MONTGOMERY_ELLPITIC_CURVE_FACTORIZATION_AUXILIARY_FUNCTIONS_H
-#include<boost/multiprecision/cpp_int.hpp>
-#include<boost/cstdint.hpp>
-#include<vector>
-#include<stdint.h>
-#include<cmath>
+#ifndef MONTGOMERY_ELLPITIC_CURVE_FACTORIZATION_H
+#define MONTGOMERY_ELLPITIC_CURVE_FACTORIZATION_H
+#include"montgomery_elliptic_curve_factorization_auxiliary_functions.hpp"
 #include<random>
-using namespace boost::multiprecision;
+#include<string>
+#include<iostream>
+
+//CONSTANTES GLOBAIS
+#define MAX_CURVES 30000
+
+//Parâmetros otimos para fatores de até 50 dígitos decimais
+uint64_t B1_table[8]={2000, 11000, 50000, 250000, 1000000, 3000000, 11000000, 43000000};
+int digits_table[8]= {15, 20, 25, 30, 35, 40, 45, 50};
 
 
 //********************************************************************************************************************************************************************
-//DECLARAÇÕES DE FUNÇÕES
-bool fast_prime_checking(uint64_t);
-void fill_prime_buffer(std::vector<uint64_t>&, uint64_t);
-void fill_prime_buffer(std::vector<uint64_t>&, uint64_t, uint64_t);
-int512_t euclides_algorithm(int512_t, int512_t);
-uint64_t euclides_algorithm(uint64_t, uint64_t);
-int64_t generate_random_number(int64_t);
-void extract_bits(std::vector<int8_t>&, int512_t);
+//CLASSE DO ALGORITMO
+class elliptic_curve_method{
+public:
+//Membros da classe
+int512_t number;//Número a ser fatorado
+std::string number_string;//Número a ser fatorado
+uint64_t B1, B2;//Variável usada na escolha de profundidade de busca por um número primo
+int512_t factor1, factor2, selection;//Fatores primos encontrados
+int64_t sigma_parameter;//Variável de seleção do ponto inicial usado nas curvas
+int512_t C;//Parâmetro que define a curva usada no algoritmo
+uint64_t curve_number;//Função que determina o número de curva testadas no algoritmo
 
-//Funções que definem a aritmética de em curvas elípticas na parametrização de Montgomery usando coordenadas projetivas
-void pointwise_doubling(int512_t&, int512_t&, int512_t, int512_t);
-void pointwise_addition(int512_t&, int512_t&, int512_t&, int512_t, int512_t, int512_t, int512_t, int512_t);
-void pointwise_scalar_multiplication(int512_t&, int512_t&, int512_t, int512_t, int512_t);
+std::vector<uint64_t> prime_buffer_B1, prime_buffer_B2;//Buffer de números primos usados no algoritmo
+
+int auto_setup;//Função usada para iniciar o estágio 2 do algoritmo
+int512_t up, vp, x0, z0, xp, zp;//Coordenadas das curvas usadas no cálculo no estágio 1 do algoritmo
+int512_t prime_power;//Variável usada para definir o fator multiplicativo no cálculo de pontos sobre a curva elíptica
+
+int512_t xq, zq, xr, zr;//Coordenadas das curvas usadas no cálculo no estágio 2 do algoritmo
+
+
+//Construtores e destruidores
+elliptic_curve_method(){ };
+~elliptic_curve_method(){ };
+
+//Métodos da classe
+void run();//Função principal do algoritmo
+void setup();//Função que recebe input do usuário e ajusta variáveis usadas no algoritmo
+void set_new_curve();//Função que reajusta a equação da curva para novos testes
+void first_stage();//Função que implementa o estágio 1 do algoritmo
+void second_stage();//Função que implementa o estágio 2 do algoritmo
+void calculate_factors();//Função que calcula fatores primos dos números a ser fatorado
+void print_result();//Função que exibe o resultado da execução do algoritmo
+                           };
 
 //********************************************************************************************************************************************************************
-//FUNÇÕES
-//Função que determina se um inteiro de 64 bits é primo ou não usando uma otimização 30k+1
-bool fast_prime_checking(uint64_t n){
-//Casos triviais: primos menores que 30
-if(n==2 || n==3 || n==5 || n==7 || n==11 || n==13 || n==17 || n==19 ||n==23 || n==29)
-return true;
+//MÉTODOS DA CLASSE
+//Função principal da classe
+void elliptic_curve_method::run(){
+//Etapa 1: configurando variáveis usadas no algoritmo
+step1:
+setup();
 
-//Variáveis locais
-uint64_t i;
-uint64_t limit = std::sqrt(n);
-uint64_t divisors[8]={1, 7, 11, 13, 17, 19, 23, 29};//Números coprimos com 30 no intervalo 1,...,30
+//Etapa 2: executando o estágio 1 do algoritmo
+step2:
+first_stage();
+if(selection>1 && selection!=number)
+goto step4;
 
-//Procedimentos
-//Teste de divisão por 2, 3, 5
-if((n%5)==0 || (n%3)==0 || (n%2)==0)
-return false;
+//Etapa 3: executando o estágio 2 do algoritmo
+step3:
+auto_setup=1;
+second_stage();
+if(selection>1 && selection!=number)
+goto step4;
+else
+goto step5;
 
-//Loop principal
-//1º iteração
-for(i=1; i<8; ++i){
-if((n%divisors[i])==0)
-return false;
-                  };
-
-//Demais interações
-while(divisors[7]<limit){
-//Atualizando variáveis
-for(i=0; i<8; ++i)
-divisors[i]=divisors[i]+30;
-
-//Testando possíveis divisores
-for(i=0; i<8; ++i){
-if((n%divisors[i])==0)
-return false;
-                  };
-
-                       };
-
-//Caso o número passe nos testes acima
-return true;
+//Etapa 4: calculando fatores primos
+step4:
+if(selection>1 && selection!=number){
+calculate_factors();
+print_result();
+return;
                                     };
 
-//Função que preenche um buffer de primos até um determinado valor
-void fill_prime_buffer(std::vector<uint64_t>& prime_vector, uint64_t upper_bound, uint64_t lower_bound){
-//Variáveis locais
-uint64_t i;
-
-//Procedimentos
-//Ajuste de variáveis
-prime_vector.resize(0);
-
-//Prrenchendo o buffer de primos
-for(i=lower_bound; i<=upper_bound; ++i){
-if(fast_prime_checking(i)==true)
-prime_vector.push_back(i);
-                                       };
-                                                                                                       };
-
-void fill_prime_buffer(std::vector<uint64_t>& prime_vector, uint64_t upper_bound){
-//Variáveis locais
-uint64_t i;
-
-//Procedimentos
-//Ajuste de variáveis
-prime_vector.resize(0);
-
-//Prrenchendo o buffer de primos
-for(i=2; i<=upper_bound; ++i){
-if(fast_prime_checking(i)==true)
-prime_vector.push_back(i);
-                             };
-                                                                                 };
-//Função que implementa o algoritmo de euclides para inteiro de 512 bits
-int512_t euclides_algorithm(int512_t a, int512_t  b){
-if(b==0)
-return a;
-else
-return euclides_algorithm(b, a%b);
-                                                    };
-
-uint64_t euclides_algorithm(uint64_t a, uint64_t b){
-if(b==0)
-return a;
-else
-return euclides_algorithm(b, a%b);
-                                                  };
-
-//Função usada para se gerar um número inteiro aleatório da ordem 64 bits 
-int64_t generate_random_number(int64_t number){
-//Variáveis locais
-uint64_t result;
-uint64_t limit;
-
-//Procedimentos
-//Ajuste devariáveis
-if(number<1e10)
-limit=(number*number);
-else
-limit=number;
-
-//Ajuste da distribuição de números aleatórios
-std::random_device generator_x;
-std::mt19937 gen(generator_x());
-std::uniform_int_distribution<int64_t> elliptic_distribution(1, limit);
-
-//Resultado
-result=elliptic_distribution(generator_x);
-return result;
-                                            };
-
-//Função extrai os bits de um inteiro de 512 bits e o aloca em um vetor
-void extract_bits(std::vector<short>& bit_vector, int512_t n){
-//Procedimentos
-//Ajuste de variáveis
-bit_vector.resize(0);
-
-//Extraindo os bits 
-while(n>0){
-if(n&1)
-bit_vector.push_back(1);
-else
-bit_vector.push_back(0);
-n>>=1;
-          };
-                                                             };
-
-//****************************************************************************************************************************************************************
-//ARITMÉTICA DE CURVAS ELÍPITICAS: 'a' é o parâmetro que define a curva e 'n' é o número a ser fatorado
-//Função que a partir de um ponto P=(x:y:z) computa [2]P=P+P
-void pointwise_doubling(int512_t& x_point, int512_t& z_point, int512_t a, int512_t n){
-//Variáveis locais
-int512_t x_temp=x_point;
-int512_t z_temp=z_point;
-
-//Procedimentos
-x_point = ((x_temp*x_temp)-(z_temp*z_temp))*((x_temp*x_temp)-(z_temp*z_temp));
-z_point = (4*z_temp)*((x_temp*x_temp*x_temp)+(a*x_temp*x_temp*z_temp)+(x_temp*z_temp*z_temp));
-
-x_point=(x_point%n);
-z_point=(z_point%n);
-                                                                                     };
-
-
-//Função que adiciona dois pontos na curva P=(xp:yp:zp) e Q=(xq:yq:zq) --> R=(xr:yr:zr)
-void pointwise_addition(int512_t& x_result, int512_t& z_result, int512_t x1, int512_t z1, int512_t x2, int512_t z2, int512_t x3, int512_t z3, int512_t n){
-//Procedimentos
-x_result = z3*((x1*x2)-(z1*z2))*((x1*x2)-(z1*z2));
-z_result = x3*((x1*z2)-(x2*z1))*((x1*z2)-(x2*z1));
-x_result=(x_result%n);
-z_result=(z_result%n);
-                                                                                                                                                         };
-
-
-//Função que multiplica dois pontos na curva por um escalar[k]P=P+...+P (k vezes)
-void pointwise_scalar_multiplication(int512_t& x_result, int512_t& z_result, int512_t x_point, int512_t z_point, int512_t scalar_factor, int512_t a, int512_t n){
-//Variáveis locais
-std::vector<short> bit_vector;
-int512_t u, v, u1, v1, t, w, t1, w1;
-
-//Procedimentos
-if(scalar_factor==1){
-z_result=z_point;
-x_result=x_point;
+//Etapa 5: Encerrando o algortimo caso um fator não tenha sido encontrado no estágio 2 do algoritmo
+step5:
+set_new_curve();
+curve_number++;
+if(curve_number<=MAX_CURVES){
+auto_setup=0;
+goto step2;
+                            }
+else{
+std::cout<<"O algoritmo não encontrou fatores primos do número em questão\n";
 return;
-                    }
-else if(scalar_factor==2){
-z_result=z_point;
-x_result=x_point;
-pointwise_doubling(x_result, z_result, a, n);
-return;
-                         }
-else if(scalar_factor>2){
+    };
+
+                                 };
+
+//Função que recebe input do usuário
+void elliptic_curve_method::setup(){
+//Recebendo input do usuário
+std::cout<<"Número a ser fatorado: ";
+std::cin>> number_string;
+int512_t temp1(number_string);
+number =temp1;
+
+
+std::cout<<"Fator de profundidade usado na busca por fatores primos: ";
+std::cin>>B1;
+
+std::cout<<"Fator σ que define a curva e ponto na curva a ser usada no cálculo: ";
+std::cin>>sigma_parameter;
+
+//Cálculos de outros parâmetros
+//Fator de profundidade usado na busca no estágio 2 do algoritmo
+B2=B1*40;
+
+//Parâmetros que definem o ponto da inicial curva
+while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
+sigma_parameter=generate_random_number(100000000000);
+
+up=((sigma_parameter*sigma_parameter)-5);
+vp=4*sigma_parameter;
+
+x0=((up%number)*(up%number)*(up%number))%number;
+z0=((vp%number)*(vp%number)*(vp%number))%number;
+
+//Parâmetro que define a curva
+C= ((( (vp-up)*(vp-up)*(vp-up)*((3*up)+vp) ) /(4*up*up*up*vp))-2) ;
+
+//Preenchendo o buffer de primos usados no estágio 1 do algoritmo
+fill_prime_buffer(prime_buffer_B1, B1);
+fill_prime_buffer(prime_buffer_B2, B1, B2);
+
+//Outros ajustes de parâmetros
+factor1=0;
+factor2=0;
+selection=0;
+prime_power=0;
+auto_setup=0;
+curve_number=1;
+
+//TESTES USE UM // APÓS O TESTE
+//std::cout<<number<<'\n';
+//for(auto x:prime_buffer_B1)
+//std::cout<<x<<" ";
+//std::cout<<'\n';
+
+//std::cout<<"Curva:\n";
+//std::cout<<x0<<'\n';
+//std::cout<<y0<<'\n';
+//std::cout<<C<<'\n';
+                                   };
+
+//Função que reajusta a equação da curva para novos testes
+void elliptic_curve_method::set_new_curve(){
+//Parâmetros que definem o ponto da inicial curva
+sigma_parameter=generate_random_number(100000000000);
+while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
+sigma_parameter=generate_random_number(100000000000);
+
+up=((sigma_parameter*sigma_parameter)-5);
+vp=4*sigma_parameter;
+
+x0=((up%number)*(up%number)*(up%number))%number;
+z0=((vp%number)*(vp%number)*(vp%number))%number;
+
+if(auto_setup>0){
+xq=x0;
+zq=z0;
+                };
+
+//Parâmetro que define a curva
+C= ((( (vp-up)*(vp-up)*(vp-up)*((3*up)+vp) ) /(4*up*up*up*vp))-2) ;
+                                           };
+
+
+
+//Função que calcula fatores primos dos números a ser fatorado
+void elliptic_curve_method::calculate_factors(){
+if(selection>1)
+factor1=selection;
+factor2=number/factor1;
+                                               };
+
+//Função que exibe o resultado da execução do algoritmo
+void elliptic_curve_method::print_result(){
+std::cout<<"\nRelatório de execução do algoritmo:\n";
+std::cout<<"Curva usada para encontrar o fator: gy²=x³+("<<C<<")x²+x (mod "<<number<<")\n";
+std::cout<<"Número de curvas testadas: "<<curve_number<<'\n';
+std::cout<<"B1: "<<B1<<'\n';
+if(auto_setup>1)
+std::cout<<"B2: "<<B2<<'\n';
+std::cout<<"Número a ser fatorado: "<<number<<'\n';
+std::cout<<"Fator encontrado: "<<factor1<<'\n';
+std::cout<<"Restante: "<<factor2<<'\n';
+
+                                          };
+
+//Função que implementa o estágio 1 do algoritmo
+void elliptic_curve_method::first_stage(){
 //Ajuste de variáveis
-extract_bits(bit_vector, scalar_factor);
-u=x_point;
-v=z_point;
-t=x_point;
-w=z_point;
-pointwise_doubling(t, w, a, n);
+curve_number++;
 
 //Loop principal
-for(int i=(bit_vector.size()-2); i>=0; --i){
-if(bit_vector[i]==1){
-u1=u;
-v1=v;
-pointwise_addition(u, v, t, w, u1, v1, x_point, z_point, n);
-pointwise_doubling(t, w, a, n);
-                    };
+for(auto x: prime_buffer_B1){
+prime_power=x;
 
-if(bit_vector[i]==0){
-t1=t;
-w1=w;
-pointwise_addition(t, w, u, v, t1, w1, x_point, z_point, n);
-pointwise_doubling(u, v, a, n);
-                    };
+while(prime_power<B1){
+pointwise_scalar_multiplication(xp, zp, x0, z0, prime_power, C, number);
+selection=euclides_algorithm(zp, number);
+if(selection>1)
+return;
+else
+prime_power=prime_power*x;
+                     };
+                            };
+                                         };
 
-                                           };
-x_result=(u%n);
-z_result=(v%n);
-                        };
-                                                                                                                                                                };
+//Função que implementa o estágio 2 do algoritmo
+/*
+NOTA: A abordagem mais eficiente que emprega o algoritmo baby step-giant step é excessivamente pesado para um desktop simples. Usaremos uma abordagem simples
+recalculando os pontos na curva partir do último ponto gerado no estágio 1 do algoritmo.
+*/
+void elliptic_curve_method::second_stage(){
+//Ajuste de variáveis
+xq=xp;
+zq=zp;
 
+//Loop principal
+for(auto x: prime_buffer_B2){
+prime_power=x;
+pointwise_scalar_multiplication(xr, zr, xq, zq, prime_power, C, number);
+selection=euclides_algorithm(zr, number);
+if(selection>1)
+return;
+selection=euclides_algorithm(xr, number);
+if(selection>1)
+return;
+                            };
+
+                                          };
 
 //********************************************************************************************************************************************************************
 //FIM DO HEADER
