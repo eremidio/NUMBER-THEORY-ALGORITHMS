@@ -16,12 +16,16 @@ http://kmgnfs.cti.gr/kmGNFS/Home.html
 
 FOR THE REASON OF COMPLEXITY WE HAVEN'T IMPLEMENTED YET THE ECPP (ELLIPTIC CURVE) PRIMALITY TEST AND THE APR-CL PRIMALITY TEST (WHICH USE ARITHMETIC ON CYCLOTOMIC FIELDS). THEY ARE THE MOST EFFICIENT PRIMALITY TESTS IN USE AVAILABLE TODAY (THEY HAVE BETTER RUNTIME THAN THE AKS TEST). GOOD IMPLEMENTATIONS ARE AVAILABLE ONLINE. SEE FOR INSTANCE: https://github.com/wacchoz/APR_CL/blob/master/APR_CL.py AND  https://github.com/onechip/ecpp
 
-
+DUE TO ITS COMPLEXITY WE SHALL NOT PROVIDE AN IMPLEMENTATION OF THE NUMBER FIELD SIEVE AND THE ALGEBRAIC FUNCTION FIELD SIEVE FOR THE DISCRETE LOGARITHM PROBLEM. THE READER INTERESTED MAY CONSULT THE BIBLIOGRAPHY: https://ntnuopen.ntnu.no/ntnu-xmlui/bitstream/handle/11250/2394427/14190_FULLTEXT.pdf?sequence=1&isAllowed=; https://jbootle.github.io/Misc/snfs.pdf, https://core.ac.uk/download/pdf/82604499.pdf. THE FOLLOWING IMPLEMENTATIONS ARE AVAILABLE IN LANGUAGES LIKE C/C++:https://github.com/pankajcharpe/FunctionFieldSeieve/tree/main; https://github.com/onechip/dlog-nfs
 
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
 
 Elements of Number Theory by I. M. Vinogradov
+
+A Course In Computational Algebraic Number Theory by Henri Cohen
+
+Advanced Topics In Computational Number Theory by Henry Cohen
 
 Prime Numbers And Computer Methods For Factorization, by Hans Riesel
