@@ -128,14 +128,14 @@ def extract_prime_factors(n:int)->list:
 def reduce_number(n:int):
  '''Função que reduz um inteiro a ser fatorado'''
 
- #Redução por fatores primos inferiores a 1000 usando o algoritmo de Euclides
+ #Redução por fatores primos inferiores a 1000 usando o algoritmo de Euclides para números superiores a 10^7
  common_factor_list:list=[2305567963945518424753102147331756070, 3383080509296917481189798760796480670771162183, 262025664754470334382813071883984477441, 49766523393936228750138598082752980119549, 1227453540237014997887615651109181957903188941, 253056306993037840092244562196981381959, 879031892818978804933065306274691112009314693, 16866467815653776127243907167629319108817, 83623435734606723958852552002152901629917681, 500139990716305530696933027389294139003181]
-
- for count in range(101):
-  for x in common_factor_list:
-   common_reducer:int=euclides_algorithm(x, n)
-   if(common_reducer>1):
-    n//=common_reducer
+ if(n>1e7):
+  for count in range(101):
+   for x in common_factor_list:
+    common_reducer:int=euclides_algorithm(x, n)
+    if(common_reducer>1):
+     n//=common_reducer
 
  #Variáveis locais
  limit:int=int(math.sqrt(n))
