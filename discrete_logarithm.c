@@ -6,7 +6,7 @@
 #include<stdint.h>
 #include"mod_bin_exponentiation.h"
 
-#define MAX_LOG 1e12
+#define MAX_LOG 100000
 
 //Funções
 /*
@@ -16,10 +16,10 @@ primitiva do número que define a ordem do grupo em questão.
 */
 int64_t discrete_logarithm(int64_t base, int64_t number, int64_t congruence){
 //Procedimentos
-for(int64_t i=0; i<=congruence; ++i){
-if(mod_pow(base, i, congruence)==number)
+for(int64_t i=0; i<=(MAX_LOG*congruence); ++i){
+if(pow_mod(base, i, congruence)==number)
 return i;
-                                    };
+                                              };
 return (-1);
                                                                             };
 
@@ -33,7 +33,7 @@ printf("Digite uma base: ");
 scanf("%li", &x);
 printf("Digite um logaritmando: ");
 scanf("%li", &y);
-printf("Digite uma im inteiro congruente: ");
+printf("Digite um inteiro congruente: ");
 scanf("%li", &z);
 
 //Calculando o logaritmo discreto
