@@ -1,12 +1,11 @@
-//VAMOS CRIAR UM PROGRAMA QUE INPLEMENTA O ALGORITMO DE POLLARD ρ PARA O CÁLCULO DE LOGARITMO DISCRETOS
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE POLLARD ρ PARA O CÁLCULO DE LOGARITMOS DISCRETOS
 
 /*
-O ALGORITMO DE POLLARD RHO É UM EFICIENTE E PROBABILÍSTICO ALGORITMO PARA O CÁLCULO DO LOGARITMO DISCRETO SIMILAR AO ALGORITMO DE MESMO NOME USADO PARA FATORAR NÚMEROS
+O ALGORITMO DE POLLARD RHO É UM EFICIENTE E PROBABILÍSTICO ALGORITMO PARA O CÁLCULO DE LOGARITMOS DISCRETOS SIMILAR AO ALGORITMO DE MESMO NOME USADO PARA FATORAR NÚMEROS
 INTEIROS.
  
-O ALGORITMO RESOLVE O SEGUINTE PROBLEMA SEJA G UM GRUPO DE ORDEM (p-1) POR EXEMPLO INTEIROS A MENOS DE UMA CONGRUÊNCIA MÓDULO p, E SEJAM g UM GERADOR DESTE GRUPO E h UM 
-ELEMENTO DESTE GRUPO ENTÃO EXISTE UM x TAL QUE g^x=h. PARA COMPUTAR x O ALGORITMO UMA FUNÇÃO QUE GERA DUAS TRIPLAS NÚMEROS PSEUDO ALEÁTÓRIOS (x1, a1, b1) E (x2, a2, b2)
-EM UM CONJUNTO FINITO S={0, ..., (p-1)}. SE f FOR UMA FUNÇÃO GERADORA AS SEQUÊNCIAS SÃO ATUALIZADAS USANDO-SE AS REGRAS: (x1, a1, b1) -> f(x1, a1, b1) E
+O ALGORITMO RESOLVE O SEGUINTE PROBLEMA SEJA G UM GRUPO DE ORDEM p-1), POR EXEMPLO, INTEIROS A MENOS DE UMA CONGRUÊNCIA MÓDULO p. SEJAM g UM GERADOR DESTE GRUPO E h UM 
+ELEMENTO DESTE GRUPO ENTÃO EXISTE UM x TAL QUE g^x=h. PARA COMPUTAR x O ALGORITMO USA UMA FUNÇÃO QUE GERA DUAS TRIPLAS DE SNÚMEROS PSEUDOALEÁTÓRIOS (x1, a1, b1) E (x2, a2, b2) EM UM CONJUNTO FINITO S={0, ..., (p-1)}. SE f FOR UMA FUNÇÃO GERADORA AS SEQUÊNCIAS SÃO ATUALIZADAS USANDO-SE AS REGRAS: (x1, a1, b1) -> f(x1, a1, b1) E
 (x2, a2, b2) -> f(x2, a2, b2) -> f²(x2, a2, b2). SE APÓS  UM CERTO NÚMERO DE ITERAÇÕES FOR POSSÍVEL ENCONTRAR VALORES x1=x2 (AS DUAS SEQUÊNCIAS COLIDEM), ENTÃO UMA 
 IDENTIDADE DO TIPO (b1-b2) x =(a1-a2) (mod p) É SATISFEITA. TAL EQUAÇÃO É FACILMENTE RESOLVIDA PELO ALGORITMO DE EUCLIDES EXTENDIDO.
 
@@ -33,7 +32,7 @@ int64_t pollard_rho_logarithm(int64_t, int64_t , int64_t);
 
 //******************************************************************************************************************************************************************
 //FUNÇÕES
-//Função que calcula o inverso modular de um número inteiro a (mod n) usando o algoritmo extendido de euclides
+//Função que calcula o inverso modular de um número inteiro a (mod n) usando o algoritmo extendido de Euclides
 int64_t  modular_inverse(int64_t a, int64_t n){
 //Variáveis locais
 int64_t  r0,r1, x0, x1, r2, x2;
@@ -45,12 +44,13 @@ r2=1;
 x0=1;
 x1=0;
 
-//Calculando os valores finais coeficientes recursivamente
+//Calculando os valores finais dos coeficientes recursivamente
 while(r2>0){
 int64_t quotient= r0/r1;
 
 r2=r0-quotient*r1;
 x2=x0-quotient*x1;
+
 //Atualizando variáveis para a próxima iteração
 if(r2>0){
 r0=r1;
@@ -67,7 +67,7 @@ else
 return x1;
                                               };
 
-//Função que produz triplas ordenadas de números pseualeatórios
+//Função que produz triplas ordenadas de números pseudoaleatórios
 void pseudo_randomwalk(int64_t* x, int64_t* a, int64_t* b, int64_t n, int64_t g, int64_t h){
 //Variáveis locais
 int64_t x_=(*x), a_=(*a), b_=(*b); 
@@ -153,5 +153,3 @@ return (result/2);
 //******************************************************************************************************************************************************************
 //FIM DO HEADER
 #endif
-
-
