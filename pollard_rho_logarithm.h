@@ -18,11 +18,10 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Pollard%27s_rho_algori
 //CABEÇALHO
 #ifndef POLLARD_RHO_LOGARITHM_H
 #define POLLARD_RHO_LOGARITHM_H
-#include<stdint.h>
-#include<inttypes.h>
+#include"mod_bin_exponentiation.h"
 #include<stdbool.h>
 #include<stdio.h>
-#include<stdlib.h>
+
 
 //******************************************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
@@ -146,8 +145,20 @@ b12+=n;
 //Cálculo do resultado
 result=(a12*modular_inverse(b12, n))%n;
 
+//Ajuste de resultado
+while(mod_bin_pow(g, result, N)!=h){
+result/=2;
+
+//Condição que detemina se o algoritmo falhou
+if(result==0){
+printf("O algoritmo não encontrou logaritmo de %li (mod %li), na base %li\n", h, N, g);
+return 0;
+             };
+
+                                   };
+
 //Resultado
-return (result/2);
+return result;
                                                               };
 
 //******************************************************************************************************************************************************************
