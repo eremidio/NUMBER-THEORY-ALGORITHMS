@@ -20,5 +20,8 @@ scanf("%li", &N);
 
 //Executando o algoritmo de Pollard ρ para o cálculo de logaritmos discretos
 log=pollard_kangaroo_logarithm(g, h, N);
-printf("Logaritmo de %li (mod %li), na base %li = %li\n", h, N, g, log);
+printf("Logaritmo de %li (mod %li) na base %li = %li\n", h, N, g, log);
+
+//Finalizando a aplicação
+return 0;
           }
