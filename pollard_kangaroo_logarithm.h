@@ -89,7 +89,7 @@ while(true){
 //Condições que determinam o fim do loop principal do algoritmo
 //Caso de falha
 if(ds>(N-1+d)){
-printf("O algoritmo não encontrou o logaritmode %li (mod %li)na base %li\n", h, g, N);
+printf("O algoritmo não encontrou o logaritmo de %li (mod %li) na base %li\n", h, g, N);
 return (-1);
               } ;
 
