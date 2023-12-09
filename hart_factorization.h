@@ -12,8 +12,7 @@ PARA MAIORES INFORMAÇÕES: http://selmer.warwick.ac.uk/onelinefactor.pdf
 //CABEÇALHO
 #ifndef HART_FACTORIZATION_H
 #define HART_FACTORIZATION_H
-#include<stdint.h>
-#include<inttypes.h>
+#include"mod_bin_exponentiation.h"
 #include<stdbool.h>
 #include<math.h>
 #include<stdio.h>
@@ -106,12 +105,13 @@ return;
          };
 
 //Etapa 2: loop principal
-for(i=1; i<n_; ++i){
-s=sqrt(i*n_);
-m=(s*s)%n;
+for(i=1; i<=n; ++i){
+
+m=mul_mod(i, n_, n);
 
 if(perfect_square_checker(m)==true){
 t=sqrt(m);
+s=sqrt(i*n_);
 
 if(s>t){
 factor = euclides_algorithm((s-t), n_);
@@ -122,7 +122,7 @@ factor = euclides_algorithm((t-s), n_);
 break;
     };
                                   };
-                   };
+                  };
 
 //Printando o resultado da execução da segunda etapa do algoritmo na tela
 printf("%li, %li, ...\n", factor, (n_/factor));
