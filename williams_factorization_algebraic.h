@@ -105,7 +105,6 @@ continue;
                      };
 
 //Caso 3
-if(power==(exponent-1)){
 algebraic_multiplication(temp, algebraic_product, algebraic_number, root_squared, number);
 
 //Ajuste de variáveis
@@ -115,7 +114,6 @@ algebraic_product[1]=temp[1];
 power++;
 //TESTE USE UM // APÓS O MESMO
 //printf("marco 5\n");
-                      };
 
                       };
 
@@ -215,4 +213,3 @@ printf128(factor2);
 //******************************************************************************************************************************************************************
 //FIM DO HEADER
 #endif
-
