@@ -76,22 +76,9 @@ return x1;
 //Função usada para se gerar um número inteiro aleatório da ordem 64 bits 
 int512_t  generate_random_number(int512_t  number){
 //Variáveis locais
-__int128_t  number_=static_cast<__int128_t>(number/100000);
-__int128_t  result;
-__int128_t  limit;
-
+__int128_t  limit=1e20;
+int512_t result;
 //Procedimentos
-//Ajuste de variáveis
-if(number_>1e32)
-limit=number_/1e25;
-else if(number_>1e24)
-limit=number_/1e18;
-else if(number_>1e16)
-limit=number_/1e8;
-else
-limit=number_;
-
-
 //Ajuste da distribuição de números aleatórios
 std::random_device generator_x;
 std::mt19937 gen(generator_x());
@@ -99,7 +86,8 @@ std::uniform_int_distribution<__int128_t> elliptic_distribution(1, limit);
 
 //Resultado
 result=elliptic_distribution(generator_x);
-return result;
+
+return (result*result)%number;
                                               };
 
 //***************************************************************************************************************************
