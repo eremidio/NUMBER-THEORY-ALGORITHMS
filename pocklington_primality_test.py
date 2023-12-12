@@ -72,17 +72,12 @@ def mod_bin_pow(a:int, b:int, m:int)->int:
 
 #Função que fatora um número inteiro e aloca fatores não respetidos em um array usaremos tentativa por divisão com otimização 6k+1
 def extract_prime_factors(n:int)->list:
- '''Função que fatora um número e alocam seus fatores em um array'''
- factors:list=[] #Lista de fatores primos
- limit:int = int(math.sqrt(n))
+ '''Função que fatora um número inteiro e aloca seus fatores primos em um array'''
+ #Variáveis locais
+ divisors:list=[1, 7, 11, 13, 17, 19, 23, 29]
+ factors:list=[]#Lista de fatores primos
 
- #Casos trivais:
- if(n<4):
-  factors.append(n)
-  factors =factors
-  return factors
-
- #Fatores 2 e 3
+ #Cálculos de fatores 2, 3, 5
  if((n%2)==0):
   factors.append(2)
   while((n%2)==0):
@@ -93,30 +88,55 @@ def extract_prime_factors(n:int)->list:
   while((n%3)==0):
    n//=3
 
+ if((n%5)==0):
+  factors.append(5)
+  while((n%5)==0):
+   n//=5
+
+ #Fim do algoritmo
+ if(n==1):
+  factors = factors
+  return factors
+
  #Loop principal
- for i in range (5, (limit+1), 6):
-  if((n%i)==0):
-   factors.append(i)
-  while((n%i)==0):
-   n//=i
+ #1ª iteração
+ for i in range(1,8,1):
+  if((n%divisors[i])==0):
+   factors.append(divisors[i])
+   n//=divisors[i]
+   while((n%divisors[i])==0):
+    n//=divisors[i]
 
+ #Fim do algoritmo
+ if(n==1):
+  factors = factors
+  return factors
+
+ #Demais iterações
+ root:int=int(math.sqrt(n))
+
+ while(divisors[0]<root):
+  #Atualizando a lista de possíveis divisores
+  new_divisors:list=[x+30 for x in divisors]
+  divisors=new_divisors
+
+  #Teste de divisibilidade pelos elementos da lista
+  for i in range(8):
+   if((n%divisors[i])==0):
+    factors.append(divisors[i])
+    n//=divisors[i]
+   while((n%divisors[i])==0):
+    n//=divisors[i]
+
+  #Fim do algoritmo
   if(n==1):
-   break
+   factors = factors
+   return factors
 
-  if((n%(i+2))==0):
-   factors.append(i+2)
-  while((n%(i+2))==0):
-   n//=(i+2)
-
-  if(n==1):
-   break
-
- #Fatores superiores a n^(1/2)
+ #Fatores superiores a raiz quadrada do número a ser fatorado
  if(n>1):
-  factors.append(int(n))
-
- #Resultado 
- factors=factors
+  factors.append(n)
+  factors = factors
  return factors
 
 '''TESTE USE UM # APÓS O MESMO'''
@@ -143,7 +163,7 @@ def reduce_number(n:int):
  current_value:int=int(n)
 
  #Loop principal com otimização 6k+1
- if(n>1e14):
+ if(n>1e16):
   for y in range(1001, (limit2+1), 6):
    while((n%y)==0):
     n//=y
