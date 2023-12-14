@@ -27,7 +27,6 @@ ARTIGO ORIGINAL DISPONÍVEL EM: https://www.sciencedirect.com/science/article/pi
 bool is_integer_prime(int64_t);
 bool trial_division_test(int64_t);
 bool perfect_square_check(int64_t);
-int jacobi_symbol_extension(int64_t, int64_t);
 void find_quadratic_coefficients(int64_t*, int64_t*, int64_t);
 bool quadratic_polynomial_test1(int64_t, int64_t, int64_t);
 bool quadratic_polynomial_test2(int64_t, int64_t, int64_t);
@@ -101,41 +100,6 @@ return false;
 
 return true;
                                     };
-
-//Função que extende o simbolo de jacobi para números negativos (a<0)
-int jacobi_symbol_extension(int64_t a, int64_t n){
-//Restrição
-assert(a<0);
-
-//Variáveis locais
-int64_t positive_a=(-1)*a;
-int64_t power2=0;
-int result;
-
-//Procedimentos
-//Determinando a paridade do numerador
-while((positive_a%2)==0){
-positive_a/=2;
-power2++;
-                        };
-
-//Definindo o símbolo de jacobi para |a|>0
-result=jacobi(positive_a, n);
-
-//DEterminando o sinal do resultado
-//Caso 1: |a| é par
-if(power2>0 && (power2%2)==1)
-result=(-1)*jacobi(positive_a, n);
-if(power2>0 && (power2%2)==0)
-return result;
-
-//Caso 2: |a| é ímpar
-if(power2==0)
-result=(-1)*jacobi(positive_a, n);
-
-//Resultado
-return result;
-                                                 };
 
 //Função que calcula os coeficientes do polinômion x²-bx-c usado no teste de Fröbenius (b<0, c<0)
 void find_quadratic_coefficients(int64_t* b, int64_t* c, int64_t n){
