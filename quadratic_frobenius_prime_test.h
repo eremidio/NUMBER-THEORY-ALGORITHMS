@@ -35,11 +35,11 @@ int64_t p, q=2, d;
 
 //Procedimentos
 //Loop principal: seleção do parâmetro P
-for(p=5; ;p++){
+for(p=5; ;p+=2){
 d=((p*p)-(4*q));
 if(euclides_check(n, (2*q*d))==1 && (jacobi(d, n)*(-1))==1)
 break;
-              };
+               };
 
 //Ajuste de variáveis
 (*P)=p;
