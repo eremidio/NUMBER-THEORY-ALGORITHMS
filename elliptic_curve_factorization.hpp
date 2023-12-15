@@ -76,7 +76,7 @@ return x1;
 //Função usada para se gerar um número inteiro aleatório da ordem 64 bits 
 int512_t  generate_random_number(int512_t  number){
 //Variáveis locais
-__int128_t  limit=1e20;
+__int128_t  limit=1e7;
 int512_t result;
 //Procedimentos
 //Ajuste da distribuição de números aleatórios
