@@ -138,7 +138,7 @@ B2=B1*40;
 
 //Parâmetros que definem o ponto da inicial curva
 while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
-sigma_parameter=generate_random_number(100000000000);
+sigma_parameter=generate_random_number(10000000);
 
 up=((sigma_parameter*sigma_parameter)-5);
 vp=4*sigma_parameter;
@@ -176,9 +176,9 @@ curve_number=1;
 //Função que reajusta a equação da curva para novos testes
 void elliptic_curve_method::set_new_curve(){
 //Parâmetros que definem o ponto da inicial curva
-sigma_parameter=generate_random_number(100000000000);
+sigma_parameter=generate_random_number(10000000);
 while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
-sigma_parameter=generate_random_number(100000000000);
+sigma_parameter=generate_random_number(10000000);
 
 up=((sigma_parameter*sigma_parameter)-5);
 vp=4*sigma_parameter;
