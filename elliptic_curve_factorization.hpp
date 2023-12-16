@@ -136,11 +136,11 @@ return;
                                };
 
 //Teste do discriminante da curva
+curve_selection:
 discriminant=(4*a*a*a)-(27*b*b);
 int512_t temp=modular_inverse(discriminant, number, selection);
-if(selection>1)
+if(selection>1 && selection<number)
 goto end;
-
 
 //Loop
 for(int64_t k=2; k<B; ++k){
