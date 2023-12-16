@@ -102,6 +102,7 @@ int512_t xp, yp, xq, yq, xr, yr, slope;//Coordenadas de pontos na curva elíptic
 int512_t a, b;//Parâmetros que definem a curva usada
 int64_t B;//Pârametro que define a profundidade do algoritmo na busca de pontos na curva elíptica
 int512_t selection;//Número inteiro não congruente modulo o número a ser fatorado que serve de detecção de fatores não triviais
+int512_t discriminant;//Discriminant da curva elíptica
 int512_t factor1, factor2;//Fatores calculados usando este algoritmo
 int64_t number_trial;//Função que controla o número de testagens até o algoritmo encontrar um fator não trivial
 bool restart;//Variável para se reiniciar o teste usando uma outra curva
@@ -134,6 +135,13 @@ std::cout<<"Teste não encontrou fatores primos do número em questão!\n";
 return;
                                };
 
+//Teste do discriminante da curva
+discriminant=(4*a*a*a)-(27*b*b);
+int512_t temp=modular_inverse(discriminant, number, selection);
+if(selection>1)
+goto end;
+
+
 //Loop
 for(int64_t k=2; k<B; ++k){
 point_scalar_multiplication(k);
@@ -158,6 +166,7 @@ goto mainloop;
                  };
 
 //Fatores não triviais encontrados
+end:
 if(selection>1 && selection<number){
 factor1=selection;
 factor2=number/factor1;
