@@ -86,8 +86,10 @@ std::uniform_int_distribution<__int128_t> elliptic_distribution(1, limit);
 
 //Resultado
 result=elliptic_distribution(generator_x);
-
+if(number<1000000000000000000)
 return (result*result)%number;
+else
+return (result*result*result*result)%number;
                                               };
 
 //***************************************************************************************************************************
