@@ -28,7 +28,7 @@ https://en.wikipedia.org/wiki/Lenstra_elliptic-curve_factorization
 #include<iostream>
 
 //CONSTANTES GLOBAIS
-#define MAX_CURVES 30000
+#define MAX_CURVES 15000
 
 //Parâmetros otimos para fatores de até 50 dígitos decimais
 uint64_t B1_table[8]={2000, 11000, 50000, 250000, 1000000, 3000000, 11000000, 43000000};
@@ -134,7 +134,7 @@ std::cin>>sigma_parameter;
 
 //Cálculos de outros parâmetros
 //Fator de profundidade usado na busca no estágio 2 do algoritmo
-B2=B1*40;
+B2=B1*100;
 
 //Parâmetros que definem o ponto da inicial curva
 while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
