@@ -250,6 +250,8 @@ auto_setup=1;
 //Loop principal
 for(auto x: prime_buffer_B2){
 prime_power=x;
+
+while(prime_power<B2){
 pointwise_scalar_multiplication(xr, zr, xq, zq, prime_power, C, number);
 selection=euclides_algorithm(zr, number);
 if(selection>1)
@@ -257,7 +259,21 @@ return;
 
 selection=euclides_algorithm(xr, number);
 if(selection>1)
+return; 
+
+pointwise_scalar_multiplication(xr, zr, x0, z0, prime_power, C, number);
+selection=euclides_algorithm(zr, number);
+if(selection>1)
 return;
+
+selection=euclides_algorithm(xr, number);
+if(selection>1)
+return; 
+
+//Ajuste de variável para a próxima iteração
+prime_power=prime_power*x;
+                     };
+
                             };
 
                                           };
