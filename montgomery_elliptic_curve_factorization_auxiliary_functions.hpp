@@ -30,7 +30,7 @@ void extract_bits(std::vector<int8_t>&, int512_t);
 
 //Funções que definem a aritmética de em curvas elípticas na parametrização de Montgomery usando coordenadas projetivas
 void pointwise_doubling(int512_t&, int512_t&, int512_t, int512_t);
-void pointwise_addition(int512_t&, int512_t&, int512_t&, int512_t, int512_t, int512_t, int512_t, int512_t);
+void pointwise_addition(int512_t&, int512_t&, int512_t, int512_t, int512_t, int512_t, int512_t, int512_t);
 void pointwise_scalar_multiplication(int512_t&, int512_t&, int512_t, int512_t, int512_t);
 
 //********************************************************************************************************************************************************************
