@@ -28,7 +28,7 @@ https://en.wikipedia.org/wiki/Lenstra_elliptic-curve_factorization
 #include<iostream>
 
 //CONSTANTES GLOBAIS
-#define MAX_CURVES 35000
+#define MAX_CURVES 15000
 
 //Parâmetros otimos para fatores de até 50 dígitos decimais
 uint64_t B1_table[8]={2000, 11000, 50000, 250000, 1000000, 3000000, 11000000, 43000000};
@@ -173,9 +173,9 @@ curve_number=1;
 //Função que reajusta a equação da curva para novos testes
 void elliptic_curve_method::set_new_curve(){
 //Parâmetros que definem o ponto da inicial curva
-sigma_parameter=generate_random_number(1000000000);
+sigma_parameter=generate_random_number(10000000);
 while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
-sigma_parameter=generate_random_number(1000000000);
+sigma_parameter=generate_random_number(10000000);
 
 up=((sigma_parameter*sigma_parameter)-5);
 vp=4*sigma_parameter;
@@ -254,6 +254,7 @@ pointwise_scalar_multiplication(xr, zr, xq, zq, prime_power, C, number);
 selection=euclides_algorithm(zr, number);
 if(selection>1)
 return;
+
 selection=euclides_algorithm(xr, number);
 if(selection>1)
 return;
