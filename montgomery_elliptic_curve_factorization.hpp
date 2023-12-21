@@ -28,7 +28,7 @@ https://en.wikipedia.org/wiki/Lenstra_elliptic-curve_factorization
 #include<iostream>
 
 //CONSTANTES GLOBAIS
-#define MAX_CURVES 15000
+#define MAX_CURVES 35000
 
 //Parâmetros otimos para fatores de até 50 dígitos decimais
 uint64_t B1_table[8]={2000, 11000, 50000, 250000, 1000000, 3000000, 11000000, 43000000};
@@ -87,7 +87,6 @@ goto step4;
 
 //Etapa 3: executando o estágio 2 do algoritmo
 step3:
-auto_setup=1;
 second_stage();
 if(selection>1 && selection!=number)
 goto step4;
@@ -106,10 +105,8 @@ return;
 step5:
 set_new_curve();
 curve_number++;
-if(curve_number<=MAX_CURVES){
-auto_setup=0;
+if(curve_number<=MAX_CURVES)
 goto step2;
-                            }
 else{
 std::cout<<"O algoritmo não encontrou fatores primos do número em questão\n";
 return;
@@ -138,7 +135,7 @@ B2=B1*100;
 
 //Parâmetros que definem o ponto da inicial curva
 while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
-sigma_parameter=generate_random_number(10000000);
+sigma_parameter=generate_random_number(1000000000);
 
 up=((sigma_parameter*sigma_parameter)-5);
 vp=4*sigma_parameter;
@@ -176,9 +173,9 @@ curve_number=1;
 //Função que reajusta a equação da curva para novos testes
 void elliptic_curve_method::set_new_curve(){
 //Parâmetros que definem o ponto da inicial curva
-sigma_parameter=generate_random_number(10000000);
+sigma_parameter=generate_random_number(1000000000);
 while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
-sigma_parameter=generate_random_number(10000000);
+sigma_parameter=generate_random_number(1000000000);
 
 up=((sigma_parameter*sigma_parameter)-5);
 vp=4*sigma_parameter;
@@ -210,7 +207,7 @@ std::cout<<"\nRelatório de execução do algoritmo:\n";
 std::cout<<"Curva usada para encontrar o fator: gy²=x³+("<<C<<")x²+x (mod "<<number<<")\n";
 std::cout<<"Número de curvas testadas: "<<curve_number<<'\n';
 std::cout<<"B1: "<<B1<<'\n';
-if(auto_setup>1)
+if(auto_setup==1)
 std::cout<<"B2: "<<B2<<'\n';
 std::cout<<"Número a ser fatorado: "<<number<<'\n';
 std::cout<<"Fator encontrado: "<<factor1<<'\n';
@@ -222,6 +219,7 @@ std::cout<<"Restante: "<<factor2<<'\n';
 void elliptic_curve_method::first_stage(){
 //Ajuste de variáveis
 curve_number++;
+auto_setup=0;
 
 //Loop principal
 for(auto x: prime_buffer_B1){
@@ -247,6 +245,7 @@ void elliptic_curve_method::second_stage(){
 //Ajuste de variáveis
 xq=xp;
 zq=zp;
+auto_setup=1;
 
 //Loop principal
 for(auto x: prime_buffer_B2){
