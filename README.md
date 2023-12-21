@@ -29,3 +29,5 @@ A Course In Computational Algebraic Number Theory by Henri Cohen
 Advanced Topics In Computational Number Theory by Henry Cohen
 
 Prime Numbers And Computer Methods For Factorization, by Hans Riesel
+
+Prime Numbers A computational Perspective, by Richard Crandall and Carl Pomerance
