@@ -33,7 +33,7 @@ PARA MAIORES INFORMAÇÕES: https://medium.com/@gaelfoppolo/elliptic-curve-crypt
 using namespace boost::multiprecision;
 
 //CONSTANTES GLOBAIS
-#define MAX_TRIALS 30000 //Variável para se restringir o número de tentativas
+#define MAX_TRIALS 10000 //Variável para se restringir o número de tentativas
 
 //***************************************************************************************************************************
 //FUNÇÕES AUXILIARES
