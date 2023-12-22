@@ -33,7 +33,8 @@ PARA MAIORES INFORMAÇÕES: https://medium.com/@gaelfoppolo/elliptic-curve-crypt
 using namespace boost::multiprecision;
 
 //CONSTANTES GLOBAIS
-#define MAX_TRIALS 10000 //Variável para se restringir o número de tentativas
+#define MAX_TRIALS 400
+#define UPPER_TRIALS 10000000
 
 //***************************************************************************************************************************
 //FUNÇÕES AUXILIARES
@@ -129,11 +130,17 @@ setup();
 
 //Loop principal
 mainloop:
-//Limitando o número de testes
-if(number_trial>(MAX_TRIALS+1)){
-std::cout<<"Teste não encontrou fatores primos do número em questão!\n";
+//Limitando o número de testes 
+if(number_trial>UPPER_TRIALS){
+std::cout<<"O algoritmo falhou na busca de fatores primos do número em questão\n";
 return;
-                               };
+                             };
+
+//Reajuste do parâmetro B
+if((number_trial%MAX_TRIALS)==0){
+B+=5;
+                                };
+
 
 //Teste do discriminante da curva
 curve_selection:
@@ -172,9 +179,9 @@ factor1=selection;
 factor2=number/factor1;
 std::cout<<"\nRelatório de execução do algoritmo:\n";
 std::cout<<"Curva usada para encontrar o fator: y²=x³+("<<a<<")x+("<<b<<")  (mod "<<number<<")\n";
-std::cout<<"Fatores encontrados: \n";
-std::cout<<factor1<<'\n';
-std::cout<<factor2<<'\n';
+std::cout<<"B: "<<B<<'\n';
+std::cout<<"Fator encontrado: "<<factor1<<'\n';
+std::cout<<"Restante: "<<factor2<<'\n';
 std::cout<<"Número de curvas usadas no cálculo: "<< number_trial<<"\n";
                                    };
 
