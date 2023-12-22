@@ -33,7 +33,7 @@ PARA MAIORES INFORMAÇÕES: https://medium.com/@gaelfoppolo/elliptic-curve-crypt
 using namespace boost::multiprecision;
 
 //CONSTANTES GLOBAIS
-#define MAX_TRIALS 60000 //Variável para se restringir o número de tentativas
+#define MAX_TRIALS 30000 //Variável para se restringir o número de tentativas
 
 //***************************************************************************************************************************
 //FUNÇÕES AUXILIARES
@@ -76,13 +76,14 @@ return x1;
 //Função usada para se gerar um número inteiro aleatório da ordem 64 bits 
 int512_t  generate_random_number(int512_t  number){
 //Variáveis locais
-__int128_t  limit=1e7;
+uint64_t min=1000;
+uint64_t max=1000000000000;
 int512_t result;
 //Procedimentos
 //Ajuste da distribuição de números aleatórios
 std::random_device generator_x;
 std::mt19937 gen(generator_x());
-std::uniform_int_distribution<__int128_t> elliptic_distribution(1, limit);
+std::uniform_int_distribution<uint64_t> elliptic_distribution(min, max);
 
 //Resultado
 result=elliptic_distribution(generator_x);
