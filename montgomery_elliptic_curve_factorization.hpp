@@ -15,6 +15,7 @@ https://eprint.iacr.org/2017/212.pdf
 https://members.loria.fr/PZimmermann/papers/40760525.pdf
 https://members.loria.fr/PZimmermann/records/ecm/params.html
 https://en.wikipedia.org/wiki/Lenstra_elliptic-curve_factorization
+https://www.rieselprime.de/ziki/Elliptic_curve_method#Step_2
 
 */
 
@@ -28,7 +29,7 @@ https://en.wikipedia.org/wiki/Lenstra_elliptic-curve_factorization
 #include<iostream>
 
 //CONSTANTES GLOBAIS
-#define MAX_CURVES 15000
+#define MAX_CURVES 5000
 
 //Parâmetros otimos para fatores de até 50 dígitos decimais
 uint64_t B1_table[8]={2000, 11000, 50000, 250000, 1000000, 3000000, 11000000, 43000000};
@@ -42,19 +43,20 @@ public:
 //Membros da classe
 int512_t number;//Número a ser fatorado
 std::string number_string;//Número a ser fatorado
-uint64_t B1, B2;//Variável usada na escolha de profundidade de busca por um número primo
+uint64_t B1, B2, B;//Variável usada na escolha de profundidade de busca por um número primo
 int512_t factor1, factor2, selection;//Fatores primos encontrados
 int64_t sigma_parameter;//Variável de seleção do ponto inicial usado nas curvas
 int512_t C;//Parâmetro que define a curva usada no algoritmo
 uint64_t curve_number;//Função que determina o número de curva testadas no algoritmo
 
-std::vector<uint64_t> prime_buffer_B1, prime_buffer_B2;//Buffer de números primos usados no algoritmo
+std::vector<uint64_t> prime_buffer_B1;//Buffer de números primos usados no algoritmo
 
 int auto_setup;//Função usada para iniciar o estágio 2 do algoritmo
 int512_t up, vp, x0, z0, xp, zp;//Coordenadas das curvas usadas no cálculo no estágio 1 do algoritmo
 int512_t prime_power;//Variável usada para definir o fator multiplicativo no cálculo de pontos sobre a curva elíptica
 
-int512_t xq, zq, xr, zr;//Coordenadas das curvas usadas no cálculo no estágio 2 do algoritmo
+int512_t xq, zq, xc, zc, x6, z6;//Coordenadas das curvas usadas no cálculo no estágio 2 do algoritmo
+int512_t g, gt, multiplier;//Variáveis usadas no cálculo no estágio 2 do algoritmo
 
 
 //Construtores e destruidores
@@ -88,10 +90,6 @@ goto step4;
 //Etapa 3: executando o estágio 2 do algoritmo
 step3:
 second_stage();
-if(selection>1 && selection!=number)
-goto step4;
-else
-goto step5;
 
 //Etapa 4: calculando fatores primos
 step4:
@@ -131,7 +129,10 @@ std::cin>>sigma_parameter;
 
 //Cálculos de outros parâmetros
 //Fator de profundidade usado na busca no estágio 2 do algoritmo
-B2=B1*100;
+B2=B1*200;
+B=B2;
+while((B%6)!=0)
+B--;
 
 //Parâmetros que definem o ponto da inicial curva
 while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
@@ -148,7 +149,6 @@ C= ((( (vp-up)*(vp-up)*(vp-up)*((3*up)+vp) ) /(4*up*up*up*vp))-2) ;
 
 //Preenchendo o buffer de primos usados no estágio 1 do algoritmo
 fill_prime_buffer(prime_buffer_B1, B1);
-fill_prime_buffer(prime_buffer_B2, B1, B2);
 
 //Outros ajustes de parâmetros
 factor1=0;
@@ -157,6 +157,9 @@ selection=0;
 prime_power=0;
 auto_setup=0;
 curve_number=1;
+g=1;
+gt=1;
+multiplier=1;
 
 //TESTES USE UM // APÓS O TESTE
 //std::cout<<number<<'\n';
@@ -246,35 +249,30 @@ void elliptic_curve_method::second_stage(){
 xq=xp;
 zq=zp;
 auto_setup=1;
+g=1;
+gt=1;
+multiplier=B;
 
-//Loop principal
-for(auto x: prime_buffer_B2){
-prime_power=x;
-
-while(prime_power<B2){
-pointwise_scalar_multiplication(xr, zr, xq, zq, prime_power, C, number);
-selection=euclides_algorithm(zr, number);
+//Calculando o valor do ponto [B]P
+pointwise_scalar_multiplication(xc, zc, x0, z0, B, C, number);
+selection=euclides_algorithm(zc, number);
 if(selection>1)
 return;
 
-selection=euclides_algorithm(xr, number);
-if(selection>1)
-return; 
+//Loop principal sobre o intervalo {B, B+6, ..., B+6k<B2}
+while(multiplier<B2){
+multiplier+=6;
+pointwise_scalar_multiplication(x6, z6, xq, zq, multiplier, C, number);
+gt=((gt%number)*((x6-xq)%number))%number;
 
-pointwise_scalar_multiplication(xr, zr, x0, z0, prime_power, C, number);
-selection=euclides_algorithm(zr, number);
-if(selection>1)
-return;
+if(gt!=0)
+g=gt;
+else
+gt=g;
+                    };
 
-selection=euclides_algorithm(xr, number);
-if(selection>1)
-return; 
-
-//Ajuste de variável para a próxima iteração
-prime_power=prime_power*x;
-                     };
-
-                            };
+//Testando se um fator primo foi encontrado no segundo estágio do algoritmo 
+selection=euclides_algorithm(g, number);
 
                                           };
 
