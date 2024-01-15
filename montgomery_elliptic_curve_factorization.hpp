@@ -55,7 +55,7 @@ int auto_setup;//Função usada para iniciar o estágio 2 do algoritmo
 int512_t up, vp, x0, z0, xp, zp;//Coordenadas das curvas usadas no cálculo no estágio 1 do algoritmo
 int512_t prime_power;//Variável usada para definir o fator multiplicativo no cálculo de pontos sobre a curva elíptica
 
-int512_t xq, zq, xc, zc, x6, z6;//Coordenadas das curvas usadas no cálculo no estágio 2 do algoritmo
+int512_t xq, zq, xc, zc, x7, z7, x11, z11, x13, z13, x30, z30;//Coordenadas das curvas usadas no cálculo no estágio 2 do algoritmo
 int512_t g, gt, multiplier;//Variáveis usadas no cálculo no estágio 2 do algoritmo
 
 
@@ -129,9 +129,9 @@ std::cin>>sigma_parameter;
 
 //Cálculos de outros parâmetros
 //Fator de profundidade usado na busca no estágio 2 do algoritmo
-B2=B1*200;
+B2=B1*1000;
 B=B2;
-while((B%6)!=0)
+while((B%30)!=0)
 B--;
 
 //Parâmetros que definem o ponto da inicial curva
@@ -210,7 +210,6 @@ std::cout<<"\nRelatório de execução do algoritmo:\n";
 std::cout<<"Curva usada para encontrar o fator: gy²=x³+("<<C<<")x²+x (mod "<<number<<")\n";
 std::cout<<"Número de curvas testadas: "<<curve_number<<'\n';
 std::cout<<"B1: "<<B1<<'\n';
-if(auto_setup==1)
 std::cout<<"B2: "<<B2<<'\n';
 std::cout<<"Número a ser fatorado: "<<number<<'\n';
 std::cout<<"Fator encontrado: "<<factor1<<'\n';
@@ -253,17 +252,61 @@ g=1;
 gt=1;
 multiplier=B;
 
-//Calculando o valor do ponto [B]P
+//Calculando o valor das coordenadas dos pontos [B]P, [7]Q, [11]Q, [13]Q 
 pointwise_scalar_multiplication(xc, zc, x0, z0, B, C, number);
 selection=euclides_algorithm(zc, number);
 if(selection>1)
 return;
 
-//Loop principal sobre o intervalo {B, B+6, ..., B+6k<B2}
+pointwise_scalar_multiplication(x7, z7, xq, zq, 7, C, number);
+selection=euclides_algorithm(z7, number);
+if(selection>1)
+return;
+
+pointwise_scalar_multiplication(x11, z11, xq, zq, 11, C, number);
+selection=euclides_algorithm(z11, number);
+if(selection>1)
+return;
+
+pointwise_scalar_multiplication(x13, z13, xq, zq, 13, C, number);
+selection=euclides_algorithm(z13, number);
+if(selection>1)
+return;
+
+
+//Loop principal sobre o intervalo {B, B+30, ..., B+30k<B2}
 while(multiplier<B2){
-multiplier+=6;
-pointwise_scalar_multiplication(x6, z6, xq, zq, multiplier, C, number);
-gt=((gt%number)*((x6-xq)%number))%number;
+multiplier+=30;
+pointwise_scalar_multiplication(x30, z30, xq, zq, multiplier, C, number);
+
+if((multiplier%600)==0){
+selection=euclides_algorithm(z30, number);
+if(selection>1){
+std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
+return;
+               };
+                        };
+
+gt=((gt%number)*((x30-xq)%number))%number;
+if(gt!=0)
+g=gt;
+else
+gt=g;
+
+gt=((gt%number)*((x30-x7)%number))%number;
+if(gt!=0)
+g=gt;
+else
+gt=g;
+
+gt=((gt%number)*((x30-x11)%number))%number;
+
+if(gt!=0)
+g=gt;
+else
+gt=g;
+
+gt=((gt%number)*((x30-x13)%number))%number;
 
 if(gt!=0)
 g=gt;
@@ -273,6 +316,10 @@ gt=g;
 
 //Testando se um fator primo foi encontrado no segundo estágio do algoritmo 
 selection=euclides_algorithm(g, number);
+if(selection>1){
+std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
+return;
+               };
 
                                           };
 
