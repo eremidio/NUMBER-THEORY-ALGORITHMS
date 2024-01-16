@@ -29,7 +29,7 @@ https://www.rieselprime.de/ziki/Elliptic_curve_method#Step_2
 #include<iostream>
 
 //CONSTANTES GLOBAIS
-#define MAX_CURVES 5000
+#define MAX_CURVES 10000
 
 //Parâmetros otimos para fatores de até 50 dígitos decimais
 uint64_t B1_table[8]={2000, 11000, 50000, 250000, 1000000, 3000000, 11000000, 43000000};
@@ -136,7 +136,7 @@ B--;
 
 //Parâmetros que definem o ponto da inicial curva
 while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
-sigma_parameter=generate_random_number(1000000000);
+sigma_parameter=generate_random_number();
 
 up=((sigma_parameter*sigma_parameter)-5);
 vp=4*sigma_parameter;
@@ -176,9 +176,9 @@ multiplier=1;
 //Função que reajusta a equação da curva para novos testes
 void elliptic_curve_method::set_new_curve(){
 //Parâmetros que definem o ponto da inicial curva
-sigma_parameter=generate_random_number(100000000000);
+sigma_parameter=generate_random_number();
 while(std::abs(sigma_parameter)==1 || sigma_parameter==0 || sigma_parameter==5)
-sigma_parameter=generate_random_number(100000000000);
+sigma_parameter=generate_random_number();
 
 up=((sigma_parameter*sigma_parameter)-5);
 vp=4*sigma_parameter;
@@ -208,6 +208,7 @@ factor2=number/factor1;
 void elliptic_curve_method::print_result(){
 std::cout<<"\nRelatório de execução do algoritmo:\n";
 std::cout<<"Curva usada para encontrar o fator: gy²=x³+("<<C<<")x²+x (mod "<<number<<")\n";
+std::cout<<"σ: "<<sigma_parameter<<'\n';
 std::cout<<"Número de curvas testadas: "<<curve_number<<'\n';
 std::cout<<"B1: "<<B1<<'\n';
 std::cout<<"B2: "<<B2<<'\n';
