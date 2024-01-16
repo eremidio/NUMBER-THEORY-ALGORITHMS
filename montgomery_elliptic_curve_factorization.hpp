@@ -255,23 +255,55 @@ multiplier=B;
 //Calculando o valor das coordenadas dos pontos [B]P, [7]Q, [11]Q, [13]Q 
 pointwise_scalar_multiplication(xc, zc, x0, z0, B, C, number);
 selection=euclides_algorithm(zc, number);
-if(selection>1)
+if(selection>1){
+std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
 return;
-
+               };
 pointwise_scalar_multiplication(x7, z7, xq, zq, 7, C, number);
 selection=euclides_algorithm(z7, number);
-if(selection>1)
+if(selection>1){
+std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
 return;
-
+               };
 pointwise_scalar_multiplication(x11, z11, xq, zq, 11, C, number);
 selection=euclides_algorithm(z11, number);
-if(selection>1)
+if(selection>1){
+std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
 return;
+               };
 
 pointwise_scalar_multiplication(x13, z13, xq, zq, 13, C, number);
 selection=euclides_algorithm(z13, number);
-if(selection>1)
+if(selection>1){
+std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
 return;
+               };
+
+gt=((gt%number)*((xc-xq)%number))%number;
+if(gt!=0)
+g=gt;
+else
+gt=g;
+
+gt=((gt%number)*((xc-x7)%number))%number;
+if(gt!=0)
+g=gt;
+else
+gt=g;
+
+gt=((gt%number)*((xc-x11)%number))%number;
+
+if(gt!=0)
+g=gt;
+else
+gt=g;
+
+gt=((gt%number)*((xc-x13)%number))%number;
+
+if(gt!=0)
+g=gt;
+else
+gt=g;
 
 
 //Loop principal sobre o intervalo {B, B+30, ..., B+30k<B2}
