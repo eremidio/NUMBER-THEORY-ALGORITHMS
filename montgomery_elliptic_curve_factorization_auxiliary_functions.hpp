@@ -25,7 +25,7 @@ void fill_prime_buffer(std::vector<uint64_t>&, uint64_t);
 void fill_prime_buffer(std::vector<uint64_t>&, uint64_t, uint64_t);
 int512_t euclides_algorithm(int512_t, int512_t);
 uint64_t euclides_algorithm(uint64_t, uint64_t);
-int64_t generate_random_number(int64_t);
+int64_t generate_random_number();
 void extract_bits(std::vector<int8_t>&, int512_t);
 
 //Funções que definem a aritmética de em curvas elípticas na parametrização de Montgomery usando coordenadas projetivas
@@ -122,18 +122,12 @@ return euclides_algorithm(b, a%b);
                                                   };
 
 //Função usada para se gerar um número inteiro aleatório da ordem 64 bits 
-int64_t generate_random_number(int64_t number){
+int64_t generate_random_number(){
 //Variáveis locais
-uint64_t result;
-uint64_t limit;
+int64_t result;
+const int64_t limit=1000000000000;
 
 //Procedimentos
-//Ajuste devariáveis
-if(number<1e10)
-limit=(number*number);
-else
-limit=number;
-
 //Ajuste da distribuição de números aleatórios
 std::random_device generator_x;
 std::mt19937 gen(generator_x());
@@ -142,7 +136,7 @@ std::uniform_int_distribution<int64_t> elliptic_distribution(1, limit);
 //Resultado
 result=elliptic_distribution(generator_x);
 return result;
-                                            };
+                                };
 
 //Função extrai os bits de um inteiro de 512 bits e o aloca em um vetor
 void extract_bits(std::vector<short>& bit_vector, int512_t n){
