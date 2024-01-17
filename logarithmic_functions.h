@@ -30,22 +30,42 @@ double pi_weight_function(uint64_t);
 //FUNÇÕES
 //Função que testa a primalidade de um númeiro inteiro
 bool is_integer_prime(uint64_t n){
-//Casos triviais
-if(n<2)
-return false;
-if(n==2 || n==3)
+//Casos triviais primos menos que 30
+if(n==2 || n==3 || n==5 || n==7 || n==11 || n==13 || n==17 || n==23 || n==29)
 return true;
-if((n%2)==0 || (n%3)==0)
-return false;
 
 //Variáveis locais
-uint64_t i, limit=sqrt(n);
+uint64_t i;
+uint64_t limit = sqrt(n);
+uint64_t divisors[8]={1, 7, 11, 13, 17, 19, 23, 29};//Números coprimos com 30 no intervalo 1,...,30
 
-//Loop principal 
-for(i=5; i<limit; i+=6){
-if((n%i)==0 || (n%(i+2))==0)
+//Procedimentos
+//Teste de divisão por 2, 3, 5
+if((n%5)==0 || (n%3)==0 || (n%2)==0)
 return false;
+
+//Loop principal
+//1º iteração
+for(i=1; i<8; ++i){
+if((n%divisors[i])==0)
+return false;
+                  };
+
+//Demais interações
+while(divisors[7]<limit){
+//Atualizando variáveis
+for(i=0; i<8; ++i)
+divisors[i]=divisors[i]+30;
+
+//Testando possíveis divisores
+for(i=0; i<8; ++i){
+if((n%divisors[i])==0)
+return false;
+                  };
+
                        };
+
+//Caso o número passe nos testes acima
 return true;
                                 };
 
