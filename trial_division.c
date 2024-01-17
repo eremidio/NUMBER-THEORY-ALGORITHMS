@@ -12,11 +12,14 @@
 //DECLARAÇÃO DE FUNÇÕES
 bool trial_division(uint64_t);
 
-
 //****************************************************************************************************************************
 //FUNÇÕES
 //Função que testa a primalidade de um número usaremos uma otimização 30k+1
 bool trial_division(uint64_t n){
+//Casos triviais primos menos que 30
+if(n==2 || n==3 || n==5 || n==7 || n==11 || n==13 || n==17 || n==23 || n==29)
+return true;
+
 //Variáveis locais
 uint64_t i;
 uint64_t limit = sqrt(n);
@@ -46,9 +49,7 @@ if((n%divisors[i])==0)
 return false;
                   };
 
-
-
-                        };
+                       };
 
 //Caso o número passe nos testes acima
 return true;
