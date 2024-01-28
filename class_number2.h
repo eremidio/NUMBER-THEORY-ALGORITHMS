@@ -34,48 +34,45 @@ if(is_fundamental_discriminant(d)==false)
 return (-1);
 
 //Variáveis locais
-int64_t q, a, b, c, B, h, positive_d;
+int64_t abs_d=(-1)*d;
+int64_t B=floor(sqrt(abs_d/3.0));
+int64_t a, b, c;
+int64_t h=0;
 
 //Procedimentos
-//Ajuste de variáveis
-B=floor( sqrt(((-1)*d)/3) );
-h=1;
+//Ajuste de variáveis 
+b=(abs_d%2);
 
-positive_d=d;
-while(positive_d<0)
-positive_d+=4;
-if((positive_d%2)==0)
-b=0;
-else
-b=1;
+//TESTE USE UM // APÓS O MESMO
+//printf("b=%li\n", b);
+//printf("|D|=%li\n", abs_d);
 
-//Loop principal
-while(b<=B){
-q=(((b*b)-d)/4);
+//Loop principal:contagem de formas reduzidas
+for(; b<=B; b+=2){
+//Inicializando variáveis
 a=b;
-
 if(a<=1)
 a=1;
-++a;
 
-if((a*a)<q){
-if((q%a)==0){
-if(a==b || (a*a)==q || b==0)
+//Loop secundário sobre possiveis valores de a
+for(; a<=B; a++){
+c=round(((b*b)+abs_d)/4.0);
+
+if((a*a)<c){
+if((c%a)==0){
+if(a==b || (a*a)==c ||b==0)
 h++;
 else
 h+=2;
             };
            };
+                };
+                 };
 
 
 
-//Atualizando a variável b para a próxima iteração
-b+=2;
-           };
-
-//Resultado
+//Resultado 
 return h;
-
                                                       };
 
 //Função que calcula algoritmo de Euclides para dois ou mais argumentos
@@ -96,7 +93,7 @@ NOTA: Para este cálculo existe uma fórmula relacionando h(d) com h(d0) onde d=
 A fórmula explicita é:
 
 h(d)/w(d) = [h(d0)/w(d0)]f Π{1-(d0|p)/p}, na qual o produtório é tomado sobre todos os primos p que dividem o fator multiplicativo f.
-w(d) é a função substitution_number definida no header class_number.h que calcula o número de substituições que deixam uma forma quadrática invariante.
+w(d) é a função substitution_number definida no noheader class_number.h que calcula o número de substituições que deixam uma forma quadrática invariante.
 Esta fórmula fornce um resultado preciso.
 */
 
@@ -106,48 +103,43 @@ if(is_fundamental_discriminant(d)==true)
 return (-1);
 
 //Variáveis locais
-int64_t q, a, b, c, B, h, positive_d;
+int64_t abs_d=(-1)*d;
+int64_t B=floor(sqrt(abs_d/3.0));
+int64_t a, b, c;
+int64_t h=0;
 
 //Procedimentos
-//Ajuste de variáveis
-B=floor( sqrt(((-1)*d)/3) );
-h=1;
+//Ajuste de variáveis 
+b=(abs_d%2);
 
-positive_d=d;
-while(positive_d<0)
-positive_d+=4;
-if((positive_d%2)==0)
-b=0;
-else
-b=1;
+//TESTE USE UM // APÓS O MESMO
+//printf("b=%li\n", b);
+//printf("|D|=%li\n", abs_d);
 
-//Loop principal
-while(b<=B){
-q=(((b*b)-d)/4);
+//Loop principal:contagem de formas reduzidas
+for(; b<=B; b+=2){
+//Inicializando variáveis
 a=b;
-
 if(a<=1)
 a=1;
-++a;
 
-if((a*a)<q){
-if((q%a)==0 && triple_gcd(a, b, (q/a))==1){
-if(a==b || (a*a)==q || b==0)
+//Loop secundário sobre possiveis valores de a
+for(; a<=B; a++){
+c=round(((b*b)+abs_d)/4.0);
+
+if((a*a)<c){
+if((c%a)==0 && triple_gcd(a, b, (c/a))==1){
+if(a==b || (a*a)==c ||b==0)
 h++;
 else
 h+=2;
-                                          };
+            };
            };
+                };
+                 };
 
-
-
-//Atualizando a variável b para a próxima iteração
-b+=2;
-           };
-
-//Resultado
+//Resultado 
 return h;
-
                                                       };
 
 //*********************************************************************************************************************************************************************
