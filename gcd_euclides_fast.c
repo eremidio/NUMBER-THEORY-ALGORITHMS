@@ -11,19 +11,18 @@
 //Função principal
 int main(){
 //Variáveis locais
-int64_t a, b;
+uint64_t a, b;
 
 //Procedimentos
 //Recebendo input do usuário
 printf("Digite um inteiro: ");
-scanf("%li", &a);
+scanf("%lu", &a);
 printf("Digite um inteiro: ");
-scanf("%li", &b);
+scanf("%lu", &b);
 
 //Calculando o mdc de a e b
-printf("mdc(%li, %li)=%li\n", a, b, binary_gcd(a, b));
+printf("mdc(%lu, %lu)=%lu\n", a, b, fast_euclides_algorithm(a, b));
 
 //Finalizando a aplicação
 return 0;
           }
-
