@@ -4,7 +4,7 @@
 O ALGORITMO DE EUCLIDES PODE SER OTIMIZADO BASEANDO-SE NAS SEGUINTES PROPOSIÇÕES FACILMENTE DEMONSTRÁVEIS:
 1. SE a E b SÃO AMBOS PARES mdc(a, b) = 2.mdc(a/2, b/2)
 2. SE a FOR ÍMPAR E b FOR PAR mdc(a, b) = mdc(a, b/2)
-3. SE a E b SÃO AMBOS ÍMPARES mdc(a, b) = 2.mdc((a-b)/2, b)
+3. SE a E b SÃO AMBOS ÍMPARES mdc(a, b) = mdc((a-b)/2, b)
 
 PARA MAIORES INFORMAÇÕES: https://bjpcjp.github.io/pdfs/math/number-theory-ITA.pdf
 
