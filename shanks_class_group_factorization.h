@@ -138,7 +138,7 @@ int64_t B=sqrt((llabs(discriminant)/3));
 rerun:
 //Definindo os parâmetros a, b
 a=2+rand()%B;
-b=1+rand()%a;
+b=2+rand()%a;
 
 //Definindo o parâmetro c
 c=(b*b-discriminant)/(4.0*a);
@@ -178,10 +178,13 @@ while((B%(2*a1))!=b1)
 B++;
 
 while(true){
-if((B%(2*a2))==b2 && ((B*B)%(4*a1*a2))==discriminant)
+if((B%(2*a2))==b2 && ((B*B)%(4*a1*a2))==discriminant && B>((-1)*a1*a2) && B<=(a1*a2))
 break;
 else
 B+=(2*a1);
+
+if(B>(a1*a2))
+return false;
            };
 
 //Cálculo do resultado
