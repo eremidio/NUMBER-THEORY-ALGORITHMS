@@ -1,15 +1,15 @@
-//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA NO ALGORITMO DE SHANKS PARA FATORAR  NÚMEROS INTEIROS USANDO IDEAIS DE GRUPOS DECLASSE EM CORPOS ALGÉBRICOS NÚMERICOS
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE SHANKS PARA FATORAR NÚMEROS INTEIROS USANDO IDEAIS DE GRUPOS DE CLASSE EM CORPOS ALGÉBRICOS NÚMERICOS
 
 /*
 USANDO IDEAIS DE GRUPOS DE CLASSES EM CORPOS ALGÉBRICOS NÚMERICOS, É POSSÍVEL FATORAR NÚMEROS INTEIROS. DE FATO SENDO f(x,y)=ax²+bxy+cy², UMA FORMA QUADRÁTICA
 (REPRESENTADO POR UMA TRIPLA f=(a, b, c)) DE DISCRIMINANTE Δ=b²-4ac, DEFINIMOS e=(1, 0, Δ) COMO A UNIDADE RELATIVA A OPERAÇÃO DE COMPOSIÇÃO DE FORMA QUADRÁTICAS.
-f=(a, b, c) É UMA FORMA AMBÍGUA SE A COMPOSIÇÃO DE f COM g=(a, -b, c) FOR IGUAL A e: f.g=e. 
+f=(a, b, c) É UMA FORMA AMBÍGUA SE f FOR EQUIVALENTE A SUA INVERSA g=(a, -b, c) A MENOS DE UMA TRANSFORMAÇÃO LINEAR. 
 
 PARA FORMAS AMBÍGUAS TRÊS CASOS SÃO POSSÍVEIS: [1] SE b=0, ENTÃO Δ=-4ac; [2] SE a=b, ENTÃO Δ=b(b-4c); [3] SE a=c, ENTÃO Δ=(b-2a)(b+2a). SEJA n UM NÚMERO A SER FATORADO
 ENTÃO DEFINIMOS O DISCRIMINANTE FUNDAMENTAL Δ = (-n) SE n=3 (mod 4) OU Δ = (-4n) NO CASO GERAL. O PROBLEMA DE FATORAR UM NÚMERO INTEIRO É ENTÃO REDUZIDO A COMPUTAR 
 FORMAS AMBÍGUAS. 
 
-A ORDEM DO GRUPO DE FORMAS QUADRÁTICAS É IDENTIFICADO COM O NÚMERO DE CLASSE h(Δ) DE UM CORPO ALGÉBRICO QUADRÁTICO Q(√-Δ). NESTE PROGRAMA USAREMOS A REGRA DE COMPOSIÇÃO DIRICHLET, VÁLIDAS APENAS EM CERTOS CASOS, PORÉM FACILMENTE COMPUTÁVEL.
+A ORDEM DO GRUPO DE FORMAS QUADRÁTICAS É IDENTIFICADO COM O NÚMERO DE CLASSE h(-Δ) DE UM CORPO ALGÉBRICO QUADRÁTICO Q(√-Δ). NESTE PROGRAMA USAREMOS A REGRA DE COMPOSIÇÃO DIRICHLET, VÁLIDAS APENAS EM CERTOS CASOS, PORÉM FACILMENTE COMPUTÁVEL.
 
 PARA MAIORES REFERÊNCIAS: A Course In Computational Algebraic Number Theory by Henri Cohen
                           Primes of the Form x² + ny² : Fermat, Class Field Theory, and Complex Multiplication by D. A. Cox
@@ -30,7 +30,7 @@ PARA MAIORES REFERÊNCIAS: A Course In Computational Algebraic Number Theory by 
 #include<time.h>
 
 //CONSTANTES GLOBAIS
-#define MAX_TRIALS 25
+#define MAX_TRIALS 5000
 
 //******************************************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
@@ -95,7 +95,7 @@ return (-4)*n;
 
 //Função que computa o número de classe associado a um discriminante fundamental mediante a contagem de formas quadráticas reduzidas de discriminante negativo
 /*
-NOTA: Este procedimento é razoável para discriminantes de até 10¹⁰, para discriminantes maiores o algoritmo aqui descrito é computacionalmente dispendioso.
+NOTA: Este procedimento é razoável para discriminantes de até 10^10, para discriminantes maiores o algoritmo aqui descrito é computacionalmente dispendioso.
 Métodos mais eficientes devem ser empregados para computar o número de classe.
 */
 int64_t class_number(int64_t n){
@@ -149,28 +149,34 @@ srand(time(NULL));
 
 //Variáveis locais
 double c;
-int a, b;
+int64_t a, b;
+int64_t B=sqrt((llabs(discriminant)/3));
 
 //Procedimentos
 rerun:
 //Definindo os parâmetros a, b
-a=2+rand()%discriminant;
-b=rand()%discriminant;
+a=2+rand()%B;
+b=1+rand()%a;
 
 //Definindo o parâmetro c
 c=(b*b-discriminant)/(4.0*a);
 
-if(floor(c)<ceil(c))
-goto rerun;
-else{
+while(true){
+if(floor(c)==ceil(c))
+break;
+else
+b--;
+c=(b*b-discriminant)/(4.0*a);
+          };
+
+//Resultado 
 quadratic_form[0]=a;
 quadratic_form[1]=b;
 quadratic_form[2]=round(c);
-    };
                                                                         };
 
 
-//Função queimplementa o algoritmo de Dirichlet de composição de duas formas quadráticas
+//Função que implementa o algoritmo de Dirichlet de composição de duas formas quadráticas
 bool dirichlet_quadratic_form_composition(int64_t result[], int64_t quadratic_form1[], int64_t quadratic_form2[]){
 //Variáveis locais
 int64_t a1=quadratic_form1[0], b1=quadratic_form1[1], c1=quadratic_form1[2];
@@ -179,7 +185,7 @@ int64_t discriminant=((b1*b1)-(4*a1*c1));
 int64_t a3, b3, c3, B=1;
 
 //Restrições
-//As formas quadráticas devem ter o  mesmo discriminante
+//As formas quadráticas devem ter o mesmo discriminante
 if(discriminant!=((b2*b2)-(4*a2*c2)))
 return false;
 if(triple_euclides_algorithm(a1, a2, ((b1+b2)/2))>1)
@@ -204,9 +210,9 @@ result[2]=(((B*B)-discriminant)/(4*result[0]));
 return true;
                                                                                                                  };
 
-//Função que determina se uma fatoração foi obtida por meio de uma forma  quadrática ambígua
+//Função que determina se uma fatoração foi obtida por meio de uma forma quadrática ambígua
 bool factorization_test(int64_t n, int64_t quadratic_form[]){
-//Testes que determinam se uma forma quadrática rendeu uma fatoração do número em questão
+//Testes que determinam se uma forma quadrática retorna uma fatoração não trivial
 if(quadratic_form[1]==0){
 printf("Fatores de %li: %li e %li\n", n, quadratic_form[0], quadratic_form[2]);
 return true;
@@ -238,7 +244,6 @@ return true;
 
 //Resultado em caso de erro
 return false;
-
                                                             };
 
 //Função que eleva uma forma quadrática f=(a, b, c) a um expoente inteiro k
@@ -319,7 +324,7 @@ q=h;
 restart_1:
 generate_random_form(random_quadratic_form, d);
 
-//Testando se g=f^q retorna uma fatoração de uma forma quadrática
+//Testando se g=f^q retorna uma fatoração de não trivial
 test1=quadratic_form_power(q, ambiguous_form, random_quadratic_form);
 if(test1==false)
 goto restart_1;
@@ -341,7 +346,7 @@ goto restart_1;
 
     };
 
-//Etapa 2 do algoritmo: testando se para algum no intervalo 1,... t
+//Etapa 2 do algoritmo: testando se para algum no intervalo 1,... t; g^(2^m) retorna uma fatoração não trivial
 //Restrição
 if(t==0)
 goto restart_1;
