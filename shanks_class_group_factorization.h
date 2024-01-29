@@ -30,11 +30,11 @@ PARA MAIORES REFERÊNCIAS: A Course In Computational Algebraic Number Theory by 
 #include<time.h>
 
 //CONSTANTES GLOBAIS
-#define MAX_TRIALS 5000
+#define MAX_TRIALS 500
 
 //******************************************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
-int64_t fast_euclides_algorithm(int64_t, int64_t);
+int64_t euclides_algorithm(int64_t, int64_t);
 int64_t triple_euclides_algorithm(int64_t, int64_t, int64_t);
 int64_t generate_fundamental_discriminant(int64_t);
 int64_t class_number(int64_t);
@@ -47,41 +47,23 @@ void shanks_class_group_factorization(int64_t);
 //******************************************************************************************************************************************************************
 //FUNÇÕES
 //Função que computa o mmc de dois números inteiros
-int64_t fast_euclides_algorithm(int64_t a, int64_t b){
-//Procedimentos
-//Caso trivial
-if(b==a)
+int64_t euclides_algorithm(int64_t a, int64_t b){
+if(b==0)
 return a;
-
-//Invertendo os argumentos da função se a<b
-if(a<b)
-return fast_euclides_algorithm(b, a);
-
-//Recursão
-//Caso 1: ambos pares
-if(!(a&1) && !(b&1))
-return 2*fast_euclides_algorithm((a>>1), (b>>1));
-//Caso 2: ambos ímpares
-if((a&1) && (b&1))
-return fast_euclides_algorithm(((a-b)>>1), b);
-//Caso 3: a ímpar e b par
-if((a&1) && !(b&1))
-return fast_euclides_algorithm(a, (b>>1));
-//Caso 4: a par e b ímpar
-if(!(a&1) && (b&1))
-return fast_euclides_algorithm((a>>1), b);
-                                                     };
+else
+return euclides_algorithm(b, (a%b));
+                                                };
 
 //Função que computa o mmc de três números inteiros
 int64_t triple_euclides_algorithm(int64_t a, int64_t b, int64_t c){
 //Variáveis locais
-int64_t two_gcd=fast_euclides_algorithm(a, b);
+int64_t two_gcd=euclides_algorithm(a, b);
 
 //Resultado
 if(two_gcd==1)
 return 1;
 else
-fast_euclides_algorithm(two_gcd, c);
+euclides_algorithm(two_gcd, c);
                                                                   };
 
 //Função que determina o discriminante fundamental associado a um inteiro
@@ -323,6 +305,10 @@ q=h;
 //Gerando uma forma quadrática aleatória
 restart_1:
 generate_random_form(random_quadratic_form, d);
+
+test2=factorization_test(n, random_quadratic_form);
+if(test2==true)
+return;
 
 //Testando se g=f^q retorna uma fatoração de não trivial
 test1=quadratic_form_power(q, ambiguous_form, random_quadratic_form);
