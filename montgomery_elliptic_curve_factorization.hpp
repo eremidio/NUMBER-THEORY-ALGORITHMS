@@ -56,7 +56,7 @@ int512_t up, vp, x0, z0, xp, zp;//Coordenadas das curvas usadas no cálculo no e
 int512_t prime_power;//Variável usada para definir o fator multiplicativo no cálculo de pontos sobre a curva elíptica
 
 int512_t xq, zq, xc, zc, x7, z7, x11, z11, x13, z13, x30, z30;//Coordenadas das curvas usadas no cálculo no estágio 2 do algoritmo
-int512_t g, gt, multiplier;//Variáveis usadas no cálculo no estágio 2 do algoritmo
+int512_t g, gt, h, ht, multiplier;//Variáveis usadas no cálculo no estágio 2 do algoritmo
 
 
 //Construtores e destruidores
@@ -159,6 +159,8 @@ auto_setup=0;
 curve_number=1;
 g=1;
 gt=1;
+h=1;
+ht=1;
 multiplier=1;
 
 //TESTES USE UM // APÓS O TESTE
@@ -251,6 +253,8 @@ zq=zp;
 auto_setup=1;
 g=1;
 gt=1;
+h=1;
+ht=1;
 multiplier=B;
 
 //Calculando o valor das coordenadas dos pontos [B]P, [7]Q, [11]Q, [13]Q 
@@ -345,10 +349,24 @@ if(gt!=0)
 g=gt;
 else
 gt=g;
+
+ht=((x30%number)*(z30%number))%number;
+
+if(ht!=0)
+h=ht;
+else
+ht=h;
+
                     };
 
 //Testando se um fator primo foi encontrado no segundo estágio do algoritmo 
 selection=euclides_algorithm(g, number);
+if(selection>1){
+std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
+return;
+               };
+
+selection=euclides_algorithm(h, number);
 if(selection>1){
 std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
 return;
