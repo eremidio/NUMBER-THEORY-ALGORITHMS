@@ -24,6 +24,7 @@ ARTIGO ORIGINAL: https://www.ams.org/journals/mcom/1981-36-153/S0025-5718-1981-0
 #0: IMPORTANDO BIBLIOTECAS
 import numpy as np
 import numba 
+import math
 from random import randint
 
 
@@ -177,7 +178,7 @@ class dixon_factorization:
  def fill_prime_buffer(self):
   '''Função que preenche um buffer de números primos'''
   #Definindo uma base primos usadas no processo de peneira de números suaves
-  self.prime_buffer:list=[x for x in range((self.prime_bound+1)) if fast_prime_checking(x)==True]
+  self.prime_buffer:list=[x for x in range((self.prime_bound+1)) if (fast_prime_checking(x)==True and legendre_symbol(x, self.number))]
   self.prime_size=len(self.prime_buffer)
   
   '''TESTE USE UM # APÓS O MESMO'''
@@ -312,8 +313,8 @@ class dixon_factorization:
     x_squared*=self.smooth_number_list[i]
     y_squared*=self.z_list[i]
 
-  x=int(np.sqrt(x_squared))
-  y=int(np.sqrt(y_squared))
+  x=int(math.sqrt(x_squared))
+  y=int(math.sqrt(y_squared))
 
   #Checando se fatores não triviais foram encontrados
   self.factor=euclides_algorithm((x+y), self.number)
@@ -355,31 +356,3 @@ class dixon_factorization:
   print("Fator encontrado: ", self.factor)
   print("Cofator relativamente primo: ", self.remainder)
   print("Limitante para a base de primos usados no algoritmo: ", self.prime_bound)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
