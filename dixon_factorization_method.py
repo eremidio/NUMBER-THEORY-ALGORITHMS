@@ -76,10 +76,12 @@ def legendre_symbol(a:int, p:int)->int:
 @numba.jit(nopython=True)
 def fast_prime_checking(n:int)->bool:
  '''Função que determina se um número é primo por meio de tentativa por divisão com otimização 30k+1'''
- #Caso trivial primos menores que 30
+ #Caso trivial primos menores que 60
  if(n<2):
   return False
  if(n==2 or n==3 or n==5 or n==7 or n==11 or n==13 or n==17 or n==19 or n==23 or n==29):
+  return True
+ if(n==31 or n==37 or n==41 or n==43 or n==47 or n==53 or n==59):
   return True
  
  #Teste para números divisíveis por 2, 3, 5
@@ -171,7 +173,7 @@ class dixon_factorization:
   '''Função que recebe input do usuário'''
   self.number = int(input("Digite um número que será fatorado: "))
   self.prime_bound = int(input("Digite um limitante superior para a base de números primos usados no algoritmo: "))
-  self.number_root=int(np.sqrt(self.number))
+  self.number_root=int(math.sqrt(self.number))
 
 
  #3
