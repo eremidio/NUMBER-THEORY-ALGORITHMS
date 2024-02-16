@@ -1,7 +1,9 @@
-//Vamos escrever um simples programa em C capaz de resolver equações diofantinas lineares do tipo ax+by=c
+//VAMOS CRIAR UM PROGRAMA PARA RESOLVER EQUAÇÕES DIOFANTINAS LINEARES DO TIPO ax+by=c
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o diofante diofante.c
 
 /*Cabeçalho*/
 #include<stdio.h>
+#include<stdint.h>
 #include<stdlib.h>
 
 //Funções úteis
@@ -15,19 +17,19 @@ int main(){
 //Cabeçalho do programa
 header();
 //Variáveis
-int a, b, c;
-int* x_values=NULL;
-int* y_values=NULL;
-int counter, limitant, i, bigger, smaller, difference;
+int64_t a, b, c;
+int64_t* x_values=NULL;
+int64_t* y_values=NULL;
+int64_t counter, limitant, i, bigger, smaller, difference;
 
 //Procedimentos
 //Recebendo variáveis
 printf("Digite o valor de a:\n");
-scanf("%d", &a);
+scanf("%li", &a);
 printf("Digite o valor de b:\n");
-scanf("%d", &b);
+scanf("%li", &b);
 printf("Digite o valor de c:\n");
-scanf("%d", &c);
+scanf("%li", &c);
 
 //Determinando o maior dos coeficientes
 if(a>b){
@@ -56,8 +58,8 @@ difference=(c-i*bigger)%smaller;
 if(difference==0){
 counter++;
 //Redefinindo o array de soluções e alocando os resultados encontrados
-x_values=(int*)realloc(x_values, counter*sizeof(int));
-y_values=(int*)realloc(y_values, counter*sizeof(int));
+x_values=(int64_t*)realloc(x_values, counter*sizeof(int64_t));
+y_values=(int64_t*)realloc(y_values, counter*sizeof(int64_t));
 x_values[counter-1]= i;
 y_values[counter-1]=(c-i*bigger)/smaller;
 
@@ -65,9 +67,9 @@ y_values[counter-1]=(c-i*bigger)/smaller;
                           };
 
 //Exibindo os resultados encontrados
-printf("Eis as soluções inteira para a %dx+%dy=%d:\n", bigger, smaller, c);
+printf("Eis as soluções inteira para a %lix+%liy=%li:\n", bigger, smaller, c);
 for(i=0;i<counter; i++)
-printf("x=%d e y=%d\n", x_values[i], y_values[i]);
+printf("x=%li e y=%li\n", x_values[i], y_values[i]);
 printf("Aqui 'x' de nota o valor da variável multiplicada pelo maior coeficiente, enquanto 'y' o valor da variável multiplicada pelo menor dos coeficientes da equação.\n");                    
 //Limpando o cachê de memória e encerrando o programa
 free(x_values);
