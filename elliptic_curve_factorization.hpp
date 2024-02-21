@@ -33,8 +33,8 @@ PARA MAIORES INFORMAÇÕES: https://medium.com/@gaelfoppolo/elliptic-curve-crypt
 using namespace boost::multiprecision;
 
 //CONSTANTES GLOBAIS
-#define MAX_TRIALS 400
-#define UPPER_TRIALS 10000000
+#define MAX_TRIALS 40
+#define UPPER_TRIALS 1000
 
 //***************************************************************************************************************************
 //FUNÇÕES AUXILIARES
@@ -77,7 +77,7 @@ return x1;
 //Função usada para se gerar um número inteiro aleatório da ordem 64 bits 
 int512_t  generate_random_number(int512_t  number){
 //Variáveis locais
-uint64_t min=1000;
+uint64_t min=1000000;
 uint64_t max=1000000000000;
 int512_t result;
 //Procedimentos
@@ -138,7 +138,7 @@ return;
 
 //Reajuste do parâmetro B
 if((number_trial%MAX_TRIALS)==0){
-B+=5;
+B+=10;
                                 };
 
 
