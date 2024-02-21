@@ -35,7 +35,7 @@ PARA MAIORES INFORMAÇÕES: https://t5k.org/prove/prove3_2.html
 //DECLARAÇÃO DE FUNÇÕES
 bool lucas_lehmer_test(uint64_t);
 void set_lucas_sequence_parameters(int64_t*, int64_t*, int64_t);
-void partial_factorization(int64_t, int64_t*, int64_t*);
+int64_t* partial_factorization(int64_t, int64_t*, int64_t*);
 bool n_plus_one_primality_test(int64_t);
 
 //********************************************************************************************************************************************************
@@ -114,10 +114,10 @@ if(tester<d)
                                                                      };
 
 //Função que calcula uma fatoração parcial de (n+1)
-void partial_factorization(int64_t n, int64_t* factor_array, int64_t* array_size){
+int64_t* partial_factorization(int64_t n, int64_t* factor_array, int64_t* array_size){
 //Restrição
 if(factor_array!=NULL)
-return;
+return factor_array;
 
 //Variáveis locais
 int64_t N=(n+1);
@@ -172,6 +172,9 @@ factor_array[counter-1]=N;
 
 //Ajustando o contador de fatores primos encontrados
 (*array_size)=counter;
+
+//Resultado
+return factor_array;
                                                    };
 
 //Função que implementa o teste de primalidade (n+1)
@@ -186,7 +189,7 @@ bool result;
 
 //Procedimentos 
 //Computando uma fatoração parcial de (n+1) e  uma lista de divisores
-partial_factorization(n, factor_array, &factor_array_size);
+factor_array=partial_factorization(n, factor_array, &factor_array_size);
 
 //Computando uma fatoração parcial de uma lista de divisores
 for(int64_t i=0; i<factor_array_size; ++i){
