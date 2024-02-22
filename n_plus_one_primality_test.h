@@ -185,11 +185,16 @@ int64_t* divisor_array=NULL;
 int64_t factor_array_size=0, divisor_counter=0;
 int64_t index=0, current_factor;
 int64_t P, Q, U0, U1, U2;
-bool result;
+bool result=true;
 
 //Procedimentos 
 //Computando uma fatoração parcial de (n+1) e  uma lista de divisores
 factor_array=partial_factorization(n, factor_array, &factor_array_size);
+
+//TESTE USE UM /**/  APÓS O MESMO
+/*for(int64_t t=0; t<factor_array_size; t++)
+printf("Fator: %li\n", factor_array[t]);*/
+
 
 //Computando uma fatoração parcial de uma lista de divisores
 for(int64_t i=0; i<factor_array_size; ++i){
@@ -197,6 +202,10 @@ divisor_counter++;
 divisor_array=(int64_t*)realloc(divisor_array, divisor_counter*sizeof(int64_t));
 divisor_array[divisor_counter-1]=((n+1)/factor_array[i]);
                                           };
+
+//TESTE USE UM /**/  APÓS O MESMO
+/*for(int64_t t=0; t<factor_array_size; t++)
+printf("Fator: %li\n", divisor_array[t]);*/
 
 //Computando os parâmetros P e Q usados no algoritmo
 set_lucas_sequence_parameters(&P, &Q, n);
@@ -208,21 +217,23 @@ U0=0;
 U1=1;
 
 //Computando o (n+1)-ésimo termo da sequência de Lucas a menos de uma relação de congruência
+index= (factor_array_size-1);
+
 for(int64_t k=2; k<=(n+1); k++){
 U2=(((P*U1)%n)-((Q*U0)%n))%n;
 
 //Teste de primalidade
-if(index<factor_array_size){
+if(index>=0){
 
-if(k==divisor_array[index]){
+if((k-1)==divisor_array[index]){
 if(U2==0){
 result=false;
 break;
          };
-index++;
+index--;
                            };
 
-                           };
+            };
 
 //Atualizando variáveis para a próxima iteração
 U0=U1;
