@@ -15,6 +15,8 @@ SEE: https://vtechworks.lib.vt.edu/bitstream/handle/10919/36618/etd.pdf
 http://www-personal.umich.edu/~msgsss/factor/qs_rep.pdf
 http://kmgnfs.cti.gr/kmGNFS/Home.html
 
+FOR SOME LARGE INTEGERS OF SPECIAL FORM, THE SO-CALLED AURIFEUILLAN (ALGEBRAIC) FACTORIZATION USING CYCLOTMIC POLINOMIALS IS USEFUL IN COMPUTING PRIME AND NON-PRIME FACTORS, THE WIKIPEDIA LINK (https://en.wikipedia.org/wiki/Aurifeuillean_factorization) CONTAINS SOME USEFUL REFERENCES FOR THE SUBJECT.
+
 
 FOR THE REASON OF COMPLEXITY WE HAVEN'T IMPLEMENTED YET THE ECPP (ELLIPTIC CURVE) PRIMALITY TEST AND THE APR-CL PRIMALITY TEST (WHICH USE ARITHMETIC ON CYCLOTOMIC FIELDS). THEY ARE THE MOST EFFICIENT PRIMALITY TESTS IN USE AVAILABLE TODAY (THEY HAVE BETTER RUNTIME THAN THE AKS TEST). GOOD IMPLEMENTATIONS ARE AVAILABLE ONLINE. SEE FOR INSTANCE: https://github.com/wacchoz/APR_CL/blob/master/APR_CL.py AND  https://github.com/onechip/ecpp
 
@@ -41,3 +43,5 @@ Advanced Topics In Computational Number Theory by Henry Cohen
 Prime Numbers And Computer Methods For Factorization, by Hans Riesel
 
 Prime Numbers A computational Perspective, by Richard Crandall and Carl Pomerance
+
+The Joy Of Factoring by Samuel Wagstaff Jr
