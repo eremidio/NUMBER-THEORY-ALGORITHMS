@@ -30,6 +30,8 @@ https://www.codeproject.com/Articles/5291827/Integer-Factorization-Another-Appro
 
 https://ar5iv.labs.arxiv.org/html/1408.2608
 
+https://projecteuclid.org/journals/bulletin-of-the-american-mathematical-society/volume-30/issue-9-10/Methods-for-finding-factors-of-large-integers/bams/1183486232.pdf 
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
