@@ -71,6 +71,13 @@ __int128_t factor1, factor2, tester;
 //Loop principal
 for(__int128_t i=(d+2); i>=0; --i){
 
+//Coindição que determina a primalidade do número em questão
+if(i==0){
+printf("O número em questão é primo.\n");
+return;
+        };
+
+//Cálculo de possíveis fatores primos
 tester=generate_divisor(i, d, number);
 
 factor1=gcd128(tester, number);
@@ -85,13 +92,9 @@ break;
 
 
 //Resultado da execução do algoritmo
-if(factor1<2)
-printf("O número em questão é primo.\n");
-else{
 printf("Fatores encontrados:\n");
 printf128(factor1);
 printf128(factor2);
-    };
 
                                                       };
 
