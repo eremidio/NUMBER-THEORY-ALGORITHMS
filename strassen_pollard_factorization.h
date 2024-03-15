@@ -71,7 +71,7 @@ __int128_t factor1, factor2, tester;
 //Loop principal
 for(__int128_t i=(d+2); i>=0; --i){
 
-//Coindição que determina a primalidade do número em questão
+//Condição que determina a primalidade do número em questão
 if(i==0){
 printf("O número em questão é primo.\n");
 return;
