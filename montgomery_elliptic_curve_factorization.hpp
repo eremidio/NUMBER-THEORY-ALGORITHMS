@@ -129,7 +129,7 @@ std::cin>>sigma_parameter;
 
 //Cálculos de outros parâmetros
 //Fator de profundidade usado na busca no estágio 2 do algoritmo
-B2=B1*10000;
+B2=B1*100000;
 B=B2;
 while((B%30)!=0)
 B--;
