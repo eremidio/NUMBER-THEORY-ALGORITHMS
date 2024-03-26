@@ -65,15 +65,16 @@ class pritchard_sieve:
 
   #Computando a lista final de primos do algoritmo
   self.prime_set=self.wheel|self.partial_prime_set
-
-  for p in self.prime_set:
-   if(p<self.limit):
-    self.reduced_prime_set.add(p)
+  self.prime_set.discard(1)
+  self.reduced_prime_set=sorted(self.prime_set)
+  
   
  #2
  def update_length(self):
   '''Função que recalcula o tamanho da roda usada no algoritmo'''
   self.length*=self.next_prime
+  if(self.length>self.limit):
+   self.length=self.limit
 
  #3
  def update_wheel(self):
@@ -127,10 +128,9 @@ class pritchard_sieve:
 #**************************************************************************
 #FUNÇÃO PRINCIPAL
 
-#Instanciandoum objeto da classe do algoritmo
+#Instanciando um objeto da classe do algoritmo
 prime_generator=pritchard_sieve()
 
 #Executando o algoritmo
 prime_generator.run()
 prime_generator.print_result()
-
