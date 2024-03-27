@@ -68,7 +68,7 @@ def counting_primes_interval(prime_set:set,  number_set:set, min_number:int, max
 
     #Descartando não primos no dado intervalo em questão
     for prime in prime_set:
-        if(prime<7):
+        if(prime<11):
             continue
         if(prime>max_root):
              break
@@ -99,7 +99,7 @@ def set_settings(number_set:set, minimum:set, maximum:set)->set:
 
     #Adicionando elementos no conjunto
     for n in range(minimum, (maximum+1), 1):
-        if(n%2!=0 and n%3!=0 and n%5!=0):
+        if(n%2!=0 and n%3!=0 and n%5!=0 and n%7!=0):
             number_set.add(n)
         
     #Resultado
@@ -166,4 +166,3 @@ sieve_size:int = int(input('Valor do intervalo de segmentação: '))
 pi:int=prime_counting_function(number, sieve_size)
 
 print("Número de primos até ", number, ": ", pi)
-
