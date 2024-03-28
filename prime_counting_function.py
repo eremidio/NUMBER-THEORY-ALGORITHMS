@@ -99,7 +99,7 @@ def set_settings(number_set:set, minimum:set, maximum:set)->set:
 
     #Adicionando elementos no conjunto
     for n in range(minimum, (maximum+1), 1):
-        if(n%2!=0 and n%3!=0 and n%5!=0 and n%7!=0):
+        if((n%6==1 or n%6==5) and n%5!=0 and n%7!=0):
             number_set.add(n)
         
     #Resultado
