@@ -25,17 +25,15 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Baillie–PSW_primalit
 //********************************************************************************************************************
 //FUNÇÕES
 //Função que testa se um número é divisível por pequenos números primos, usaremos primos até 100
-bool small_prime_factor_test(uint64_t n){
-//Teste de fatores primos menores que 100
-if(n%2==0 || n%3==0 || n%5==0 || n%7==0 || n%13==0|| n%17==0 || n%19==0 || n%23==0 || n%29==0|| n%31==0 || n%37==0 || n%41==0)
+bool small_prime_factor_test(uint64_t n, uint64_t prime_seed[]){
+//Loop principal
+for(int counter=0; counter<25; counter++){
+if(n%prime_seed[counter]==0)
 return false;
-else if(n%43==0|| n%47==0 || n%53==0 || n%59==0|| n%61==0 || n%67==0 || n%71==0 || n%73==0|| n%79==0 || n%83==0 || n%89==0)
-return false;
-else if(n%97==0)
-return false;
-else 
+                                         };
+
 return true;
-                                        }
+                                                               }
 
 //Função que realiza o teste de Lucas Lehmer para a primalidade dos chamados números de Merssene da forma 2^p-1
 bool lucas_lehmer_test(uint64_t n){
@@ -65,9 +63,9 @@ uint64_t i;//Variáveis de iteração
 uint64_t lucas_lehmer=4;
 //Procedimentos
 for(i=0; i<p-2; ++i)
-lucas_lehmer=(lucas_lehmer*lucas_lehmer)-2;
+lucas_lehmer=((lucas_lehmer*lucas_lehmer)-2)%mersenne;
 
-if(lucas_lehmer%mersenne==0)
+if(lucas_lehmer==0)
 return true;
 else
 return false;
@@ -107,6 +105,8 @@ while (k <= n){
 //Caso trivial
 if (k == n)
 return U1 == 0;
+
+
 //Calculando os termos da sequência de Lucas de primeiro e segundo tipo usando as relações recursivas:
 //x(n)=p.x(n-1)-q.x(n-2),com U(0)=1, U(1)=1 e V(0)=2, V(1)=P
 int64_t U2 = P * U1 - Q * U0, V2 = P * V1 - Q * V0;
@@ -145,22 +145,38 @@ return false;
 
 //Função geral
 bool baillie_psw_test(uint64_t n){
-//Caso trivial
-if(n==2 || n==3 || n==5 || n==7 || n==13|| n==17 || n==19 || n==23 || n==29|| n==31 || n==37 || n==41 || n==43 || n==47)
+//Caso trivial primos inferiores a 100
+if(n<2)
+return false;
+
+uint64_t prime_seed[25]={2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
+
+for(int counter=0; counter<25; counter++){
+if(n==prime_seed[counter])
 return true;
-if(n==53 || n==59 || n==61 || n==67 || n==71|| n==73 || n==79 || n==83 || n==89|| n==97)
-return true;
+                                         };
 
 //Teste1: pequenos fatores primos
-if(small_prime_factor_test(n)==false)
+if(small_prime_factor_test(n, prime_seed)==false)
 return false;
+
+
 //Teste 2: Teste de Lucas-Lehmer para números de Mersenne
 else if(lucas_lehmer_test(n)==true)
 return true;
-//Teste3: Realizando o teste de Baillie para primalidade
-else if (baillie_test(n)==false)
+
+
+//Teste3: Realizando o teste de Baillie
+if(n<1e16 && baillie_test(n)==false)
 return false;
-//Teste 4: Calculando o símbolo de Jacobi 
+
+//Teste 4: Realizando teste de Fermat para primos inferiores a 100
+for(int counter=0; counter<25; counter++){
+if(mod_bin_pow(prime_seed[counter],(n-1), n)!=1)
+return false;
+                                         };
+
+//Teste 5: Calculando o símbolo de Jacobi 
 if((jacobi(2, n)*jacobi(2, n))!=1)
 return true;
 if((jacobi(3, n)*jacobi(3, n))!=1)
@@ -187,7 +203,7 @@ if((jacobi(37, n)*jacobi(37, n))!=1)
 return true;
 
 
-//Teste 5: Teste PSW da sequência de Lucas
+//Teste 6: Teste PSW da sequência de Lucas
 else if(lucas_sequence_test(n, 2, 1)==false || lucas_sequence_test(n, 3, 1)==false || lucas_sequence_test(n, 5, 1)==false)
 return false;
 else if(lucas_sequence_test(n, 7, 1)==false || lucas_sequence_test(n, 11, 1)==false || lucas_sequence_test(n, 13, 1)==false)
@@ -196,6 +212,8 @@ else if(lucas_sequence_test(n, 17, 1)==false || lucas_sequence_test(n, 19, 1)==f
 return false;
 else if(lucas_sequence_test(n, 29, 1)==false || lucas_sequence_test(n, 31, 1)==false || lucas_sequence_test(n, 37, 1)==false)
 return false;
+
+
 //Caso o número passe no testes acima, um primo foi encontrado
 else
 return true;
