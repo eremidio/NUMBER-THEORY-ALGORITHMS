@@ -53,13 +53,14 @@ return true;
 //Função que fatoramum número inteiro usando um trinômio do segundo grau
 void trinomial_integer_factorization(int64_t n){
 //--------------------------------------------------------------------------------------
-//Caso trivial: n é par
+//Caso trivial: n par
 if((n%2)==0){
 printf("Fatores de %li encontrados: 2 e %li\n", n, (n/2));
-
+return;
             }
+
 //--------------------------------------------------------------------------------------
-//Caso geral: n não contém fatores primos inferiores a 30
+//Caso geral: n ímpar
 //Variáveis locais
 int64_t r, s, r_squared, tester, p, q;
 
@@ -69,17 +70,19 @@ for(s=2; s<(n/2); s+=2){
 r_squared=(s*s)+(4*n);
 
 
-if(is_perfect_square(r_squared, &r)==true)
-break;
+if(is_perfect_square(r_squared, &r)==true){
+factorization:
+p=((r+s)/2);
+q=((r-s)/2);
+printf("Fatores de %li encontrados: %li e %li\n", n, p, q);
+return;
+                                          };
                        };
 
 
 //Resultado da execução do algoritmo
-p=((r+s)/2);
-q=((r-s)/2);
-printf("Fatores de %li encontrados: %li e %li\n", n, p, q);
-
-
+primality:
+printf("%li é primo\n", n);
                                               };
 
 
