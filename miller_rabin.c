@@ -10,6 +10,9 @@ O ALGORITMO FUNCIONA DA SEGUINTE FORMA:
 2. NÚMEROS ÍMPARES PODEM SER ESCRITOS NA FORMA: n-1=2^(s)d, COM s>0 E d ÍMPAR.
 3. ESCOLHE-SE ALEATORIAMENTE UM NÚMERO INTEIRO a TAL QUE a É COPRIMO COM n. a É UMA TESTEMUNHA DA PRIMALIADE DE n.
 4. n É UM POSSÍVEL PRIMO SE a^(d)= 1 mod(n) OU a^(2^(r)d)= -1 mod(n), PARA ALGUM r NO INTERVALO 0, 1, 2,..., s-1
+
+PARA MAIORES INFORMAÇÕES: https://cp-algorithms.com/algebra/primality_tests.html
+
 */
 
 
@@ -50,32 +53,41 @@ uint64_t s, r, d, a, x, n_even;
 //Escolhendo uma base coprimo com n
 pick:
 a=2+rand()%(n-4);
+
 if(gdc_euclides(n, a)!=1)
-goto pick;
+ goto pick;
 
 //Definindo valores de s, d
 s=0;//Ajuste de variáveis
 n_even=n-1;//Ajuste devariáveis
 
 while(n_even%2==0){
-n_even/=2;
-s++;
+ n_even/=2;
+ s++;
                   };
+
 d=n_even;
 
 //Teste 1: a^(d)=1 mod(n)
-if(mod_bin_pow(a, d, n)==1)
-return true;
+if(mod_bin_pow(a, d, n)==1 || mod_bin_pow(a, d, n)==(n-1))
+ goto step2;
+else
+ return true;
 
 //Teste 2: a^(2^(r)d)=1 mod(n) para r no intervalo 1, 2,..., s-1
-for(r=0; r<s; ++r){
-x= mod_bin_pow(a, bin_pow(2, r)*d, n);
-if((x*x)%n==1)
-return true;
+step2:
+
+for(r=1; r<s; ++r){
+ x= mod_bin_pow(a, bin_pow(2, r)*d, n);
+ if((x*x)%n==1)
+  return true;
                   };
+
 //Caso haja falhas no teste acima
 return false;
                     };
+
+
 
 //Teste de Miller-Rabin
 bool miller_rabin_test(uint64_t n, int k){
@@ -102,9 +114,12 @@ return true;
 //FUNÇÃO PRINCIPAL
 
 int main(){
+
 //Váriaveis
 uint64_t number;
 int k;
+
+
 //Procedimentos
 //Recebendo input do usuário
 printf("Digite um número que será testado:\n");
@@ -112,11 +127,13 @@ scanf("%lu", &number);
 printf("Digite um número que define a precisão do teste a ser realizado:\n");
 scanf("%d", &k);
 
+
 //Executando o teste
 if(miller_rabin_test(number, k)==true)
-printf("Provável primo encontrado!\n");
+ printf("Provável primo encontrado!\n");
 else
-printf("Número composto.\n");
+ printf("Número composto.\n");
+
 
 //Finalizando a aplicação
 return 0;
