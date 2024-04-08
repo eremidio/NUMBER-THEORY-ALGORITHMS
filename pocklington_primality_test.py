@@ -16,26 +16,9 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Pocklington_primality_
 
 '''
 #IMPORTANDO BIBLIOTECAS
-import math
-
+from math import sqrt, gcd
 
 #FUNÇÕES AUXILIARES
-
-#Função que implementa o algoritmo de Euclides
-def euclides_algorithm(a:int, b:int)->int:
- '''Algoritmo de Euclides'''
- remainder:int=1
- while(remainder>0):
-  remainder=(a%b)
-  a=b
-  b=remainder
-
- #Resultado
- return a
-
-
-'''TESTE USE UM # APÓS O MESMO'''
-#print(euclides_algorithm(1446545613132100, 2654651132132133125))
 
 #Função que implementa a exponenciação binária
 def bin_pow(a:int, b:int)->int:
@@ -69,75 +52,45 @@ def mod_bin_pow(a:int, b:int, m:int)->int:
 #print(bin_pow(11, 3500))
 #print(mod_bin_pow(11, 3500, 3))
 
-
 #Função que fatora um número inteiro e aloca fatores não respetidos em um array usaremos tentativa por divisão com otimização 6k+1
 def extract_prime_factors(n:int)->list:
  '''Função que fatora um número inteiro e aloca seus fatores primos em um array'''
  #Variáveis locais
- divisors:list=[1, 7, 11, 13, 17, 19, 23, 29]
- factors:list=[]#Lista de fatores primos
+ primes210:list=[2,3,5,7]
+ prime_seed:list=[1,11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 121, 127, 131, 137, 139, 143, 149, 151, 157, 163, 167, 169, 173, 179, 181, 187, 191, 193, 197, 199, 209]
+ root:int=int(sqrt(n))
+ prime_factors:list=[]
+ divisor:int=0
 
- #Cálculos de fatores 2, 3, 5
- if((n%2)==0):
-  factors.append(2)
-  while((n%2)==0):
-   n//=2
+ #Procedimentos
+ 
+ #Teste por fatores 2,3,5,7
+ for  small_primes in primes210:
+  if((n%small_primes)==0):
+   prime_factors.append(small_primes)
+   while((n%small_primes)==0):
+    n//=small_primes
 
- if((n%3)==0):
-  factors.append(3)
-  while((n%3)==0):
-   n//=3
+ #Loop principal com otimização 210k+r
+ for x in range(n):
 
- if((n%5)==0):
-  factors.append(5)
-  while((n%5)==0):
-   n//=5
+  if(divisor>root or n==1):
+   break
 
- #Fim do algoritmo
- if(n==1):
-  factors = factors
-  return factors
+  for prime in prime_seed:
+   divisor=210*x+prime
 
- #Loop principal
- #1ª iteração
- for i in range(1,8,1):
-  if((n%divisors[i])==0):
-   factors.append(divisors[i])
-   n//=divisors[i]
-   while((n%divisors[i])==0):
-    n//=divisors[i]
-
- #Fim do algoritmo
- if(n==1):
-  factors = factors
-  return factors
-
- #Demais iterações
- root:int=int(math.sqrt(n))
-
- while(divisors[0]<root):
-  #Atualizando a lista de possíveis divisores
-  new_divisors:list=[x+30 for x in divisors]
-  divisors=new_divisors
-
-  #Teste de divisibilidade pelos elementos da lista
-  for i in range(8):
-   if((n%divisors[i])==0):
-    factors.append(divisors[i])
-    n//=divisors[i]
-   while((n%divisors[i])==0):
-    n//=divisors[i]
-
-  #Fim do algoritmo
-  if(n==1):
-   factors = factors
-   return factors
-
- #Fatores superiores a raiz quadrada do número a ser fatorado
+   if((n%divisor)==0 and divisor>1):
+    prime_factors.append(divisor)
+    while((n%divisor)==0):
+     n//=divisor
+                    
+ #Fatores superiores a n^(1/2)
  if(n>1):
-  factors.append(n)
-  factors = factors
- return factors
+  prime_factors.append(n)
+        
+ #Resultado           
+ return prime_factors
 
 '''TESTE USE UM # APÓS O MESMO'''
 #print(extract_prime_factors(654654132132132))
@@ -153,13 +106,13 @@ def reduce_number(n:int):
  if(n>1e7):
   for count in range(101):
    for x in common_factor_list:
-    common_reducer:int=euclides_algorithm(x, n)
+    common_reducer:int=gcd(x, n)
     if(common_reducer>1):
      n//=common_reducer
 
  #Variáveis locais
- limit:int=int(math.sqrt(n))
- limit2:int=int(math.sqrt(limit))
+ limit:int=int(sqrt(n))
+ limit2:int=int(sqrt(limit))
  current_value:int=int(n)
 
  #Loop principal com otimização 6k+1
@@ -196,7 +149,7 @@ def find_certificate(n:int, prime_factor:int)->int:
 
  #Busca por candidatos primos inferiores a 10000
  for i in tester_list:
-  if(mod_bin_pow(i, exponent, n)==1 and euclides_algorithm((bin_pow(i, exponent2)-1), n)==1):
+  if(mod_bin_pow(i, exponent, n)==1 and gcd((bin_pow(i, exponent2)-1), n)==1):
    return i
 
  #Caso de Falha
