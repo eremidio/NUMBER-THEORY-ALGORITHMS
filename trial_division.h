@@ -28,7 +28,7 @@ bool trial_division(uint64_t n, enum show_factorization print_result){
  uint64_t*prime_factors=NULL;
  int factors_size=0;
  uint64_t root=sqrt(n);
- uint64_t divisor=0, x=0, y=0, i, j;
+ uint64_t divisor, x=0, y=0, i, j;
  uint64_t prime_seed[25]={2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
  uint64_t remainder_seed[8]={1,7,11,13,17,19,23,29};
  bool result=true;
@@ -63,13 +63,16 @@ bool trial_division(uint64_t n, enum show_factorization print_result){
                    };
 
  //Loop principal
- for(x=0; (divisor<=root || n==1); x++){
+ for(x=3;; x++){
 
   for(y=0; y<8; y++){
 
    divisor=(30*x)+remainder_seed[y];
+   
+   if(divisor>root || n<2)
+    break;
 
-   if((n%prime_seed[i])==0){
+   if((n%divisor)==0){
     result=false;
     factors_size++;
 
@@ -78,11 +81,14 @@ bool trial_division(uint64_t n, enum show_factorization print_result){
 
     while((n%divisor)==0)
      n/=divisor;
-                           };
+                     };
+
 
                     };
 
-                                       };
+   if(divisor>root)
+    break;
+               };
 
 
  //Fatores primos superiores a n^(1/2)
@@ -114,6 +120,5 @@ bool trial_division(uint64_t n, enum show_factorization print_result){
 //****************************************************************************************************************************
 //FIM DO HEADER
 #endif
-
 
 
