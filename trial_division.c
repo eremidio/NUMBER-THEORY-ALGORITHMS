@@ -13,7 +13,7 @@ uint64_t number;
 
 //Procedimentos
 //Recebendo input do usuário
-printf("Digite um número que será testado:\n");
+printf("Digite um número que será testado: ");
 if(scanf("%lu", &number)!=1)
 return 0;
 
