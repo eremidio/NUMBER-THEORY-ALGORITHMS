@@ -86,7 +86,7 @@ bool trial_division(uint64_t n, enum show_factorization print_result){
 
                     };
 
-   if(divisor>root)
+   if(divisor>root || n<2)
     break;
                };
 
