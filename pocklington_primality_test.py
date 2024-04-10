@@ -1,6 +1,5 @@
 #VAMOS CRIAR UM ARQUIVO, QUE CONTÉM O ALGORITMO DE POCKLINGTON PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
 
-#EXPLICAÇÃO DO ALGORITMO
 '''
 O TESTE DE PRIMALIDADE DE POCKLINGTON É UM DOS TESTES DE PRIMALIDADE MAIS EFICIENTES QUE EXISTEM SE COMBINADO COM UM EFICIENTE MÉTODO DE FATORAÇÃO DE NÚMEROS
 INTEIROS.
@@ -15,6 +14,7 @@ DADO UM INTEIRO n E DOIS INTEIROS a, s,  TAL QUE a^s=1 (mod n) E PARA CADA DIVIS
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Pocklington_primality_test
 
 '''
+
 #IMPORTANDO BIBLIOTECAS
 from math import sqrt, gcd
 
@@ -52,6 +52,55 @@ def mod_bin_pow(a:int, b:int, m:int)->int:
 #print(bin_pow(11, 3500))
 #print(mod_bin_pow(11, 3500, 3))
 
+
+def miller_rabin128(n:int)->bool:
+ '''Função que implementa o teste de Miller-Rabin para inteiros até 10^25, será usado como subrtotina no algoritmo principal'''
+ #Variáveis locais
+ prime_seed:int = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
+ n_even:int = (n-1)
+ s:int = 0
+ d:int=0
+ is_prime = False
+
+ #Procedimentos
+
+ #Testes com primos inferiores a 100
+ for prime in prime_seed:
+  if(n == prime):
+   return True
+  if((n%prime)==0):
+   return False
+
+
+
+ #Cálculo dos parâmetros s e d usados no algoritmo  
+ while((n_even%2) == 0):
+  n_even //= 2
+  s += 1
+ d = n_even
+
+
+ #Loop principal usando a base de primos 
+ for a in prime_seed:
+  if(a>=n):
+   break
+
+  x:int = mod_bin_pow(a, d, n)
+  if(x == 1 or x == n - 1):
+   continue 
+
+  for i in range(s - 1):
+
+   x = mod_bin_pow(x, 2, n)
+   if(x == n-1):
+    is_prime = True
+    break
+
+  if(is_prime==False):
+   return False
+
+ return True
+
 #Função que fatora um número inteiro e aloca fatores não respetidos em um array usaremos tentativa por divisão com otimização 6k+1
 def extract_prime_factors(n:int)->list:
  '''Função que fatora um número inteiro e aloca seus fatores primos em um array'''
@@ -63,6 +112,10 @@ def extract_prime_factors(n:int)->list:
  divisor:int=0
 
  #Procedimentos
+ #Testando se o número em questão é primo usando um teste de Miller-Rabin com base de primos até 100
+ if(miller_rabin128(n)==True):
+  prime_factors.append(n)
+  return prime_factors
  
  #Teste por fatores 2,3,5,7
  for  small_primes in primes210:
@@ -112,7 +165,7 @@ def reduce_number(n:int):
 
  #Variáveis locais
  limit:int=int(sqrt(n))
- limit2:int=int(sqrt(limit))
+ limit2:int=int(sqrt(sqrt(n))*sqrt(sqrt(sqrt(n)))) #n^(1/4)*n^(1/8)=n^(3/8)~O(n^(1/3))
  current_value:int=int(n)
 
  #Loop principal com otimização 6k+1
