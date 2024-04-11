@@ -57,3 +57,5 @@ Prime Numbers And Computer Methods For Factorization, by Hans Riesel
 Prime Numbers A computational Perspective, by Richard Crandall and Carl Pomerance
 
 The Joy Of Factoring by Samuel Wagstaff Jr
+
+Number Theoretical Algorithms in Criptography by O. N. Vasilenko
