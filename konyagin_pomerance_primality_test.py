@@ -1,4 +1,4 @@
-#VAMOS CRIAR UM PROGRAMA EM PYTHON QUE IMPLEMENTA O ALGORTITMO DE KONTYAGIN-POMERANCE PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
+#VAMOS CRIAR UM PROGRAMA EM PYTHON QUE IMPLEMENTA O ALGORTITMO DE KONYAGIN-POMERANCE PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
 
 #NOTA: Durante o algoritmo usaremos uma subrotina da biblioteca sympy para fatorar números inteiros. Esta rotina é altamente otimizada e funciona razoalmente bem para
 #inteiros de até 50-60 digitos. A decomposição de um número em fatores primos é uma terefa computacionalmente dispendiosa.
@@ -124,6 +124,9 @@ def multiplicative_order(a:int, n:int, prime_list:list, exponent_list:list)->int
     temp:int=bin_pow(A, prime_list[j])
     A=temp
 
+  #Atualizando variáveis para a próxima iteração
+  j+=1
+
  #Resultado
  return (n-1)
 
@@ -239,5 +242,4 @@ def konyagin_pomerance_primality_test(n:int)->bool:
  
  #Resultado: primalidade não detectada na parte principal do algoritmo
  return False
-
 
