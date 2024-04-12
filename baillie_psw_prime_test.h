@@ -18,7 +18,7 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Baillie–PSW_primalit
 #include<stdint.h>
 #include<math.h>
 #include<time.h>
-#include"mod_bin_exponentiation.h"
+#include"mod_bin_exponentiation128.h"
 #include"jacobi_symbol.h"
 
 
