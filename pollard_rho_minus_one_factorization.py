@@ -1,4 +1,5 @@
 #VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO POLLARD ρ-1 PARA FATORAR NÚMEROS INTEIROS
+
 '''
 O ALGORITMO DE POLLARD-RHO (p-1) FAZ USO DO CHAMADO PEQUENO TEOREMA DE FERMAT QUE AFIRMA QUE:
 "QUE PARA QUAISQUER NÚMEROS COPRIMOS a E p, ISTO É, TAL QUE mdc(a, p) = 1, TEMOS QUE a^(p-1)≡1 (mod p)".
@@ -18,24 +19,14 @@ PARA MAIORES INFORMAÇÕES:
 https://en.wikipedia.org/wiki/Pollard%27s_p_−_1_algorithm
 
 '''
-
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #IMPORTANDO BIBLIOTECAS USADAS
-import math
+from math import gcd, sqrt, log
 
 
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #FUNÇÕES USADAS NO ALGORITMO
-def euclides_algorithm(a:int, b:int)->int:
- '''Algoritmo de Euclides para o cálculo do mmc de dois inteiros'''
- remainder:int=1
- while(remainder>0):
-  remainder=(a%b)
-  a=b
-  b=remainder
-
- #Resultado
- return a
-
-
 def bin_pow(a:int, b:int)->int:
  '''Função que implementa a exponenciação binária''' 
  result:int=1
@@ -56,9 +47,9 @@ def mod_bin_pow(a:int, b:int, m:int)->int:
 
  while(b>0):#Loop principal
   if((b&1)):
-   result=((result%m)*(a%m))%m
+   result=(result*a)%m
   
-  a=((a%m)*(a%m))%m #Atualizando variável
+  a=(a*a)%m #Atualizando variável
   b>>=1 #Atualizando variável
   
  return result
@@ -74,7 +65,7 @@ def is_prime(n:int)->bool:
   return False
  
  #Loop principal
- limit:int=int(math.sqrt(n))
+ limit:int=int(sqrt(n))
 
  for i in range(5, (limit+10), 6):
   if((n%i)==0 or (n%(i+2))==0):
@@ -82,46 +73,53 @@ def is_prime(n:int)->bool:
 
  return True
 
-def fill_prime_buffer(B:int)->list:
+def fill_prime_buffer(B1:int)->list:
  '''Função que preenche um buffer de números primos usados no algoritmo'''
  prime_list:list=[]#Lista de números primos
 
- for i in range(B+1):
+ for i in range(B1+1):
   if(is_prime(i)==True):
    prime_list.append(i)
 
  return prime_list
- 
 
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#ALGORITMO DE POLLARD (ρ-1)
 def pollard_rho_minusone_factorization(n:int, smoothness:int)->int:
  '''Função que calcula um fator primo dado uma base de primos'''
+
  #Caso trivial:
  if((n%2)==0):
   return 2, (n//2)
 
+
  #Etapa 1: prenchendo um buffer de fatores primos e ajustando variáveis no algoritmo
  prime_list:list=fill_prime_buffer((smoothness+1))
- 
- #Etapa2: Calculando o expoente M usado no algoritmo
  M:int=1
+ factor:int=1
+
+ #Etapa2: Calculando o expoente M usado no algoritmo
  for p in prime_list:
-  s:int =int(math.log(n)/math.log(p))
+  s:int =int(log(n)/log(p))
   M*=bin_pow(p, s)
 
-  #Etapa 3: Cálculo do fatore primos
+  #Etapa 3: Cálculo do fatores primos
   power:int= mod_bin_pow(2, M, n)-1
-  factor:int= euclides_algorithm(power, n)
+  factor= gcd(power, n)
+
   if(factor>1):
    return factor
 
  return factor
 
 
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #FUNÇÃO PRINCIPAL
 #RECEBENDO INPUT DO USUÁRIO
 n:int = int(input('Digite um inteiro a ser fatorado:'))
-B:int = int(input('Digite um limite para a base de primos usados no algoritmo:'))
+B1:int = int(input('Digite um limite para a base de primos usados no algoritmo:'))
 
 #EXECUTANDO O ALGORITMO
-prime_factor:int=pollard_rho_minusone_factorization(n, B)
+prime_factor:int=pollard_rho_minusone_factorization(n, B1)
 print("Fatores de {} encotrados:  {} e {}".format(n, prime_factor, (n//prime_factor)))
