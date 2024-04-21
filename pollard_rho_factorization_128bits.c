@@ -1,5 +1,5 @@
 //VAMOS IMPLEMENTAR O ALGORITMO DE POLLARD PARA FATORAR NÚMEROS INTEIROSEM DOIS FATORES DISTINTOS
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o pollard_rho_factorization_128bits pollard_rho_factorization_128bits.c -O2
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o pollard_rho_factorization_128bits pollard_rho_factorization_128bits.c -O3
 
 /*
 O ALGORITMO DE POLLARD É UMA ALGORITMO BEM EFICIENTE PARA DECOMPOR UM NÚMERO INTEIRO EM DOIS FATORES PRIMOS.
@@ -27,77 +27,97 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Pollard%27s_rho_algori
 //*********************************************************************************************************************
 //FUNÇÕES
 //Algoritmo de Euclides para calcular o mdc de dois inteiros
-__int128_t euclides_check(__int128_t a, __int128_t b){
-//Procedimentos
-if(b==0)
-return a;
-else
-return euclides_check(b, a%b);
-                                                    };
+__int128_t gcd128(__int128_t a, __int128_t b){
+
+ if(b==0)
+  return a;
+ else
+  return gcd128(b, a%b);
+                                             };
+
 
 //Função que implementa o algoritmo de Pollard
 void pollard_rho(__int128_t x, __int128_t y, __int128_t n){
-//Variáveis locais
-__int128_t factor1, factor2;
-__int128_t remainder=1;
-uint64_t counter=0;
-uint64_t a=1;
 
-//Procedimentos
-//Testando inicialmente com x=2, y=2
-restart:
-while(remainder==1){
-x=((x*x+a)%n);
-y=((y*y+a)%n);
-y=((y*y+a)%n);
+ //Variáveis locais
+ __int128_t factor1, factor2;
+ __int128_t remainder=1;
+ uint64_t counter=0;
+ uint64_t a=1;
 
-if(x>y)
-remainder=euclides_check((x-y), n);
-if(x<y)
-remainder=euclides_check((y-x), n);
 
-if(remainder>1 && remainder<n){
-factor1=remainder;
-factor2=n/factor1;
-printf("Fatores não triviais encontrados:\n");
-printf128(factor1);
-printf128(factor2);
-return;
-                              };
+ //Procedimentos
+  //Testando inicialmente com x=2, y=2
+  restart:
+  while(remainder==1){
+   x=((x*x+a)%n);
+   y=((y*y+a)%n);
+   y=((y*y+a)%n);
 
-//Atualizando variáveis
-counter++;
-if(counter>1e10){
-counter=0;
-a++;
-                };
 
-if(remainder==n){
-printf("Teste falhou!\n");
-return;
-                };
+   if(x>y)
+    remainder=gcd128((x-y), n);
+   if(x<y)
+    remainder=gcd128((y-x), n);
+
+
+   if(remainder>1 && remainder<n){
+    factor1=remainder;
+    factor2=n/factor1;
+    printf("Fatores não triviais encontrados:\n");
+    printf128(factor1);
+    printf128(factor2);
+    return;
+                                 };
+
+
+   //Atualizando variáveis
+   counter++;
+   if(counter>1e10){
+    counter=0;
+    a++;
                    };
 
-printf("Teste falhou!\n");
+   if(remainder==n){
+    printf("Teste falhou!\n");
+    return;
+                   };
+
+                     };
+
+   printf("Teste falhou!\n");
 
                                                   };
 
 //*********************************************************************************************************************
 //FUNÇÃO PRINCIPAL
 int main(){
-//Variáveis locais
-__int128_t number;
-char number_string[41];
 
-//Recebendo o input
-printf("Digite o número a ser fatorado.\n->");
-if(scanf("%s", number_string)!=1)
-return 0;
-number=scanf128(number_string);
+ //Variáveis locais
+ __int128_t number, seed1, seed2;
+ char number_string[41], number_string1[41], number_string2[41];
 
-//Aplicando o algoritmo de Pollard rho (p-1)
-pollard_rho(2, 2, number);
+ //Recebendo o input do 
+ printf("Digite o número a ser fatorado: ");
+ if(scanf("%s", number_string)!=1)
+  return 0;
+ number=scanf128(number_string);
 
-//Finalizando a aplicação
-return 0;
+
+ printf("Semente para geração de números pseudoaleatórios: ");
+ if(scanf("%s", number_string1)!=1)
+  return 0;
+ seed1=scanf128(number_string1);
+
+ printf("Semente para geração de números pseudoaleatórios: ");
+ if(scanf("%s", number_string2)!=1)
+  return 0;
+ seed2=scanf128(number_string2);
+
+ //Aplicando o algoritmo de Pollard rho (p-1)
+ pollard_rho(seed1, seed2, number);
+
+ //Finalizando a aplicação
+ return 0;
+
           }
