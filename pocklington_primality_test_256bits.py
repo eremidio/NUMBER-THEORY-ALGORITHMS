@@ -18,46 +18,6 @@ from sympy import  factorint
 #FUNÇÕES
 
 #1
-def bin_pow(a:int, b:int)->int:
-    '''Exponenciação binária''' 
-
-    #Variáveis locais
-    result:int=1
-
-    #Procedimentos
-
-    #Loop principal sobre os bits do expoentes
-    while(b>0):
-        if((b&1)):
-            result*=a
-  
-        a*=a
-        b>>=1
-
-    #Resultado    
-    return result
-
-#2
-def mod_bin_pow(a:int, b:int, m:int)->int:
-    '''Exponenciação binária modular'''
- 
-    #Variáveis locais
-    result:int=1
-
-    #Procedimentos
-
-    #Loop principal sobre os bits do expoentes
-    while(b>0):
-        if((b&1)):
-            result=(result*a)%m
-  
-        a=(a*a)%m
-        b>>=1
-
-    #Resultado    
-    return result
-
-#3
 def extract_prime_factors(n:int)->list:
     '''Função que coleta fatores primos cujo produro seja superior a sua raíz quadrada do número a ser testado'''
 
@@ -91,7 +51,7 @@ def extract_prime_factors(n:int)->list:
 #print(prime_list)
 
 
-#4
+#2
 def find_certificate(number:int, factor:int)->int:
     '''Função que determina um certificado de primalidade para o teste de primalidade de Pocklington'''
 
@@ -103,7 +63,7 @@ def find_certificate(number:int, factor:int)->int:
     
     #Cálculo do certificado de primalidade
     for base in tester_list:
-        if(mod_bin_pow(base, exponent, number)==1 and gcd ((bin_pow(base, exponent2)-1), number)==1):
+        if(pow(base, exponent, number)==1 and gcd (int(pow(base, exponent2)-1), number)==1):
             return base
 
     #Caso de falha na busca usando primos até 10000
@@ -112,7 +72,7 @@ def find_certificate(number:int, factor:int)->int:
 
 
 
-#5
+#3
 def pocklington_primality_test_256bits(number:int)->bool:
     '''Função que implmenta o teste de primalidade de Pocklington para inteiros de 256 bits'''
 
@@ -137,4 +97,3 @@ def pocklington_primality_test_256bits(number:int)->bool:
     print('Certificado de primalidade:')
     print(set(certificate))
     return True
-
