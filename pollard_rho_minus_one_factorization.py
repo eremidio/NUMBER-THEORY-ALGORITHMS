@@ -1,6 +1,11 @@
 #VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO POLLARD ρ-1 PARA FATORAR NÚMEROS INTEIROS
 
 '''
+NOTA: usaremos a biblioteca gmpy2 para rapida exponenciação modular, e para aritmética envolvendo números inteiros grandes.
+Para instalar a biblioteca gmpy2 siga as instruções do link: https://gmpy2.readthedocs.io/en/latest/install.html
+'''
+
+'''
 O ALGORITMO DE POLLARD-RHO (p-1) FAZ USO DO CHAMADO PEQUENO TEOREMA DE FERMAT QUE AFIRMA QUE:
 "QUE PARA QUAISQUER NÚMEROS COPRIMOS a E p, ISTO É, TAL QUE mdc(a, p) = 1, TEMOS QUE a^(p-1)≡1 (mod p)".
 COMO EXEMPLO SEJAM a=2, p=3, a^(p-1)=2^(3-1)=4≡1 (mod 3).
@@ -21,64 +26,16 @@ https://en.wikipedia.org/wiki/Pollard%27s_p_−_1_algorithm
 '''
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #IMPORTANDO BIBLIOTECAS USADAS
-from math import gcd, sqrt, log
-
-
+import gmpy2
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #FUNÇÕES USADAS NO ALGORITMO
-def bin_pow(a:int, b:int)->int:
- '''Função que implementa a exponenciação binária''' 
- result:int=1
-
- while(b>0):#Loop principal
-  if((b&1)):
-   result*=a
-  
-  a*=a #Atualizando variável
-  b>>=1 #Atualizando variável
-  
- return result
-
-
-def mod_bin_pow(a:int, b:int, m:int)->int:
- '''Função que implementa a exponenciação binária modular''' 
- result:int=1
-
- while(b>0):#Loop principal
-  if((b&1)):
-   result=(result*a)%m
-  
-  a=(a*a)%m #Atualizando variável
-  b>>=1 #Atualizando variável
-  
- return result
-
-def is_prime(n:int)->bool:
- '''Função que determina se um inteiro é primo'''
- #Casos triviais
- if(n<2):
-  return False
- if(n==2 or n==3):
-  return True
- if((n%2)==0 or (n%3)==0):
-  return False
- 
- #Loop principal
- limit:int=int(sqrt(n))
-
- for i in range(5, (limit+10), 6):
-  if((n%i)==0 or (n%(i+2))==0):
-   return False
-
- return True
-
 def fill_prime_buffer(B1:int)->list:
  '''Função que preenche um buffer de números primos usados no algoritmo'''
  prime_list:list=[]#Lista de números primos
 
  for i in range(B1+1):
-  if(is_prime(i)==True):
+  if(gmpy2.is_prime(i)==True):
    prime_list.append(i)
 
  return prime_list
@@ -101,12 +58,12 @@ def pollard_rho_minusone_factorization(n:int, smoothness:int)->int:
 
  #Etapa2: Calculando o expoente M usado no algoritmo
  for p in prime_list:
-  s:int =int(log(n)/log(p))
-  M*=bin_pow(p, s)
+  s = int(gmpy2.log(n)/gmpy2.log(p))
+  M*=int(pow(p, s))
 
   #Etapa 3: Cálculo do fatores primos
-  power:int= mod_bin_pow(2, M, n)-1
-  factor= gcd(power, n)
+  power = gmpy2.powmod(2, M, n) - 1
+  factor= gmpy2.gcd(power, n)
 
   if(factor>1):
    return factor
@@ -123,3 +80,5 @@ B1:int = int(input('Digite um limite para a base de primos usados no algoritmo:'
 #EXECUTANDO O ALGORITMO
 prime_factor:int=pollard_rho_minusone_factorization(n, B1)
 print("Fatores de {} encotrados:  {} e {}".format(n, prime_factor, (n//prime_factor)))
+
+ 
