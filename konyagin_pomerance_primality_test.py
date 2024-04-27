@@ -1,8 +1,5 @@
 #VAMOS CRIAR UM PROGRAMA EM PYTHON QUE IMPLEMENTA O ALGORTITMO DE KONYAGIN-POMERANCE PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
 
-#NOTA: Durante o algoritmo usaremos uma subrotina da biblioteca sympy para fatorar números inteiros. Esta rotina é altamente otimizada e funciona razoalmente bem para
-#inteiros de até 50-60 digitos. A decomposição de um número em fatores primos é uma terefa computacionalmente dispendiosa.
-#Para detalhes como instalar a biblioteca sympy: https://docs.sympy.org/latest/install.html https://bobbyhadz.com/blog/python-install-sympy
 
 '''
 O TESTE DE PRIMALIDADE DE KONYAGIN-PORMERANCE É UM ALGORITMO COM TEMPO DE EXECUÇÃO POLINOMIAL QUE PERMITE DETECTAR A PRIMALIDADE DE UM INTEIRO n PROVIDO QUE UMA
@@ -17,45 +14,15 @@ PARA MAIORES INFORMAÇÕES: Number Theoretical Algorithms in Criptography by O. 
 ''' 
 
 #IMPORTANDO BIBLIOTECAS USADAS NOP ALGORITMO
-from math import gcd, sqrt, log
+from math import sqrt
 from sympy import factorint
-
+import gmpy2
 
 
 #FUNÇÕES
-
-#1
-def bin_pow(a:int, b:int)->int:
- '''Exponenciação binária''' 
- result:int=1
-
- while(b>0):#Loop principal
-  if((b&1)):
-   result*=a
-  
-  a*=a #Atualizando variável
-  b>>=1 #Atualizando variável
-  
- return result
-
-#2
-def mod_bin_pow(a:int, b:int, m:int)->int:
- '''Exponenciação binária modular''' 
- result:int=1
-
- while(b>0):#Loop principal
-  if((b&1)):
-   result=((result%m)*(a%m))%m
-  
-  a=((a%m)*(a%m))%m #Atualizando variável
-  b>>=1 #Atualizando variável
-  
- return result
-
-
 def lcm(a:int, b:int)->int:
  '''Função que calcula o mmc de dois inteiros'''
- return ((a*b)//gcd(a,b))
+ return ((a*b)//gmpy2.gcd(a,b))
 
 #4
 def integer_factorization(n:int)->(list, list):
@@ -111,8 +78,8 @@ def multiplicative_order(a:int, n:int, prime_list:list, exponent_list:list)->int
  while(j<(N-1)):
 
   #Ajuste de variáveis
-  M//=bin_pow(prime_list[j], exponent_list[j])
-  A=bin_pow(a, M)
+  M//=pow(prime_list[j], exponent_list[j])
+  A=pow(a, M)
 
   #Loop sobre potências do j-ésimo fator primo
   for k in range((exponent_list[j]+1)):
@@ -121,7 +88,7 @@ def multiplicative_order(a:int, n:int, prime_list:list, exponent_list:list)->int
     return M
    else:
     M*=prime_list[j]
-    temp:int=bin_pow(A, prime_list[j])
+    temp:int=pow(A, prime_list[j])
     A=temp
 
   #Atualizando variáveis para a próxima iteração
@@ -137,41 +104,17 @@ def multiplicative_order(a:int, n:int, prime_list:list, exponent_list:list)->int
 #print(multiplicative_order(3, 127, p2_list, e_list))
 
 
-
 #6
-def small_prime_check(n:int)->bool:
- '''Função que determina a primalidade de pequenos números inteiros'''
- #Variáveis locais
- small_primes:list=[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
- root:int=int(sqrt(n))
-
- #Procedimentos
- #Primos inferiores a 100
- for prime in small_primes:
-  if(n==prime):
-   return True
-  if((n%prime)==0):
-   return False
-
- #Loop principal
- for j in range(101, (root+6), 6):
-  if((n%j)==0 or (n%(j+2))==0):
-   return False
-
- #Resultado
- return True
-
-#7
 def generate_prime_list(n:int)->list:
  '''Função que gera uma pequena lista de números primos até log²(n)+1, onde n é o valor a ser testado'''
 
  #Variáveis locais
- limit:int=int((log(n)*log(n))+1)
+ limit:int=int((gmpy2.log(n)*gmpy2.log(n))+1)
  small_prime_list:list=[]
 
  #Procedimentos
  for i in range(2, (limit+1)):
-  if(small_prime_check(i)):
+  if(gmpy2.is_prime(i)):
    small_prime_list.append(i)
 
 
@@ -179,7 +122,7 @@ def generate_prime_list(n:int)->list:
  return small_prime_list
 
 
-#8
+#7
 def konyagin_pomerance_primality_test(n:int)->bool:
  '''Função que implementa o teste de primalidade de Konyagin-Pomerance para testar a primalidade de um inteiro'''
 
@@ -213,11 +156,11 @@ def konyagin_pomerance_primality_test(n:int)->bool:
  for a in small_prime_list:
 
   #Calculando o valor da função F(a)
-  if(small_prime_check(a)==False or (small_prime_check(a)==True and mod_bin_pow(a, Fa_1, n)==1)):
+  if(gmpy2.is_prime(a)==False or (gmpy2.is_prime(a)==True and gmpy2.powmod(a, Fa_1, n)==1)):
    Fa=Fa_1
   else:
    #Teste de composição de Fermat
-   if(mod_bin_pow(a, (n-1), n)!=1):
+   if(gmpy2.powmod(a, (n-1), n)!=1):
     return False
 
   #Calculando a ordem multiplicativa para um primo da lista de primos pré-computados no estágio 1 do algoritmo
@@ -228,9 +171,9 @@ def konyagin_pomerance_primality_test(n:int)->bool:
  tester1:int=1
 
  for p in multiplicative_order_prime_factors:
-  tester1=tester1*(bin_pow(a, (prime_order//p)))
+  tester1=tester1*(pow(a, (prime_order//p)))
 
- if(gcd(tester1, n)>1):
+ if(gmpy2.gcd(tester1, n)>1):
   return False
 
 
