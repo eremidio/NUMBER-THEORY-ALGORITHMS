@@ -9,14 +9,14 @@ PARA MAIORES REFERÊNCIAS: https://github.com/eremidio/NUMBER-THEORY-ALGORITHMS/
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
 #IMPORTANDO BIBLIOTECAS USADAS NO ALGORITMO
-from math import gcd, factorial
+import gmpy2
 
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
 #FUNÇÕES
 
 def williams_factorization_method(n:int)->int:
-    '''Função que implementa o algoritmo de Williams para inteiros de 128 bits (até 10^30)'''
+    '''Função que implementa o algoritmo de Williams para inteiros de 128 bits (até 10^25)'''
     
     #Variáveis locais
     A:int=2
@@ -30,7 +30,7 @@ def williams_factorization_method(n:int)->int:
     while(A<1000001):
 
         #Cálculo do fatorial de A (fator que determina a suavidade do fator primo a ser buscado)
-        M=factorial(A)
+        M=gmpy2.fac(A)
         x=A    
         y=((A*A)-2)%n
 
@@ -49,7 +49,7 @@ def williams_factorization_method(n:int)->int:
             M>>=1
 
         #Cálculo de um possível fator
-        factor=gcd((x-2), n)
+        factor=gmpy2.gcd((x-2), n)
         if(factor>1 and factor<n):
             return factor
 
@@ -72,5 +72,4 @@ n:int = int(input('Digite um inteiro a ser fatorado:'))
 #EXECUTANDO O ALGORITMO
 prime_factor:int=williams_factorization_method(n)
 print("\nFatores de {} encontrados:  {} e {}".format(n, prime_factor, (n//prime_factor)))
-
 
