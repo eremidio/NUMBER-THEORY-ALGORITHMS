@@ -9,9 +9,9 @@ Para detalhes como instalar a biblioteca sympy: https://docs.sympy.org/latest/in
 '''
 
 #IMPORTANDO BIBLIOTECAS USADAS NO ALGORITMO
-from math import sqrt, gcd
+from math import sqrt
 from sympy import  factorint
-
+import gmpy2
 
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ def find_certificate(number:int, factor:int)->int:
     
     #Cálculo do certificado de primalidade
     for base in tester_list:
-        if(pow(base, exponent, number)==1 and gcd (int(pow(base, exponent2)-1), number)==1):
+        if(gmpy2.powmod(base, exponent, number)==1 and gmpy2.gcd(int(pow(base, exponent2)-1), number)==1):
             return base
 
     #Caso de falha na busca usando primos até 10000
