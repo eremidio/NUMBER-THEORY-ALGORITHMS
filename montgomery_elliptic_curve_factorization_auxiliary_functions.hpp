@@ -125,13 +125,13 @@ return euclides_algorithm(b, a%b);
 int64_t generate_random_number(){
 //Variáveis locais
 int64_t result;
-const int64_t limit=100000000000000000;
+const int64_t limit=10000000000000000;
 
 //Procedimentos
 //Ajuste da distribuição de números aleatórios
 std::random_device generator_x;
 std::mt19937 gen(generator_x());
-std::uniform_int_distribution<int64_t> elliptic_distribution(1, limit);
+std::uniform_int_distribution<int64_t> elliptic_distribution(10000, limit);
 
 //Resultado
 result=elliptic_distribution(generator_x);
