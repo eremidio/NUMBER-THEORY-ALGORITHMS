@@ -129,7 +129,7 @@ std::cin>>sigma_parameter;
 
 //Cálculos de outros parâmetros
 //Fator de profundidade usado na busca no estágio 2 do algoritmo
-B2=B1*100000;
+B2=B1*100000000;
 B=B2;
 while((B%30)!=0)
 B--;
@@ -317,6 +317,7 @@ multiplier+=30;
 pointwise_scalar_multiplication(x30, z30, xq, zq, multiplier, C, number);
 
 if((multiplier%1500)==0){
+
 selection=euclides_algorithm(z30, number);
 if(selection>1){
 std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
@@ -371,6 +372,7 @@ if(selection>1){
 std::cout<<"Fator encontrado no estágio 2 do algoritmo.\n";
 return;
                };
+
 
                                           };
 
