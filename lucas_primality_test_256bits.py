@@ -76,6 +76,9 @@ def lucas_primality_test(n:int)->bool:
 
     #Realizando o teste com os expoentes calculados: a condição do teste de Fermat foi checada na etapa anterior
     for a in prime_seed:
+        if(gmpy2.powmod(a, (n-1), n)!=1): #Teste de Fermat (detectando compostos)
+            return False
+
         false_checks=0 #Ajuste de variáveis
         
         for exponent in exponent_list:
@@ -90,4 +93,3 @@ def lucas_primality_test(n:int)->bool:
     #Caso o número em questão falhe nos testes acima ele é declarado composto:
     return False
     
-
