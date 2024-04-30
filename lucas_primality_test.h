@@ -208,7 +208,7 @@ bool lucas_primality_test(uint64_t n, enum show_lucas_pratt_certificate x){
    if(mod_bin_pow(prime_seed[k], (n-1), n)!=1){
 
     if(x==Verbose)
-     printf("%lu comprova a composição de %lu\n", prime_seed[k], n);
+     printf("\n%lu comprova a composição de %lu\n", prime_seed[k], n);
     goto end;
 
                                               };
@@ -218,7 +218,7 @@ bool lucas_primality_test(uint64_t n, enum show_lucas_pratt_certificate x){
 
     result=true;
     if(x==Verbose){
-     printf("Relatório de execução do algoritmo.\n");
+     printf("\nRelatório de execução do algoritmo.\n");
      printf("%lu comprova a primalidade de %lu\n", prime_seed[k], n);
      printf("Maior fator primo de n-1=%lu: %lu\n",(n-1), largest_prime_factor);
                   };
@@ -235,6 +235,15 @@ bool lucas_primality_test(uint64_t n, enum show_lucas_pratt_certificate x){
   //Teste 3: teste de Lucas envolvendo a ordem multiplicativa do grupo de inteiro a menos de uma congruência se (n-1) é fatorado em pequenos fatores primos
   for(int l=0; l<25; l++){
 
+   //Teste de Fermat para detecção de compostos
+   if(mod_bin_pow(prime_seed[l], (n-1), n)!=1){
+
+    if(x==Verbose)
+     printf("\n%lu comprova a composição de %lu\n", prime_seed[l], n);
+    goto end;
+
+                                              };
+
    false_checks=0;//Ajuste variáveis   
     
    for(int m=0; m<factor_counter; ++m){
@@ -249,7 +258,7 @@ bool lucas_primality_test(uint64_t n, enum show_lucas_pratt_certificate x){
     result=true;
 
     if(x==Verbose){
-     printf("Relatório de execução do algoritmo.\n");
+     printf("\nRelatório de execução do algoritmo.\n");
      printf("%lu comprova a primalidade de %lu\n", prime_seed[l], n);
      printf("Lista de fatores primos de n-1=%lu: ", (n-1));
     
