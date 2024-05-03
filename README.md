@@ -46,6 +46,12 @@ https://zienjournals.com/index.php/tjet/article/download/3636/3020
 
 https://www.cse.iitk.ac.in/users/nitin/papers/integerFact.pdf
 
+https://arxiv.org/pdf/2001.09076
+
+https://arxiv.org/pdf/1608.08766
+
+https://cr.yp.to/factorization/eecm-20090120.pdf
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
