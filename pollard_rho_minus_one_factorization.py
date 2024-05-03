@@ -1,11 +1,6 @@
 #VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO POLLARD ρ-1 PARA FATORAR NÚMEROS INTEIROS
 
 '''
-NOTA: usaremos a biblioteca gmpy2 para rapida exponenciação modular, e para aritmética envolvendo números inteiros grandes.
-Para instalar a biblioteca gmpy2 siga as instruções do link: https://gmpy2.readthedocs.io/en/latest/install.html
-'''
-
-'''
 O ALGORITMO DE POLLARD-RHO (p-1) FAZ USO DO CHAMADO PEQUENO TEOREMA DE FERMAT QUE AFIRMA QUE:
 "QUE PARA QUAISQUER NÚMEROS COPRIMOS a E p, ISTO É, TAL QUE mdc(a, p) = 1, TEMOS QUE a^(p-1)≡1 (mod p)".
 COMO EXEMPLO SEJAM a=2, p=3, a^(p-1)=2^(3-1)=4≡1 (mod 3).
@@ -41,6 +36,33 @@ def fill_prime_buffer(B1:int)->list:
  return prime_list
 
 
+def fill_power_prime_buffer(B1:int, largest_prime:int, power:int, n:int)->list:
+ '''Função que aloca potências da diferença de primos entre dois intervalos B1 e B2 para o estágio 2 do algoritmo de Pollard ρ-1'''
+
+ #Variáveis locais
+ current_prime:int=largest_prime
+ next_prime:int=0
+ prime_differenece:int=0
+ prime_power_list:list=[]
+
+ #Procedimentos: Loop principal sobre primos em um intervalo (B1, B2] com B2=100*B1
+ for x in range((largest_prime+1), ((100*B1)+1), 1):
+  if(gmpy2.is_prime(x)==True):
+
+   next_prime=x
+   prime_difference=(next_prime-current_prime)  
+   prime_power_list.append(gmpy2.powmod(2, prime_difference, n))
+
+    
+   #Atualizando variáveis para a próxima iteração   
+   current_prime=next_prime
+
+
+ #Resultado
+ return prime_power_list
+
+
+
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #ALGORITMO DE POLLARD (ρ-1)
 def pollard_rho_minusone_factorization(n:int, smoothness:int)->int:
@@ -55,6 +77,7 @@ def pollard_rho_minusone_factorization(n:int, smoothness:int)->int:
  prime_list:list=fill_prime_buffer((smoothness+1))
  M:int=1
  factor:int=1
+ power:int=0
 
  #Etapa2: Calculando o expoente M usado no algoritmo
  for p in prime_list:
@@ -66,6 +89,23 @@ def pollard_rho_minusone_factorization(n:int, smoothness:int)->int:
   factor= gmpy2.gcd(power, n)
 
   if(factor>1):
+   return factor
+
+
+ #Etapa 4: estágio 2 do algoritmo 
+
+ #Etapa 4.1: Pré-computando uma de lista de potência da maior exponencial computada no estágio 1 do algoritmo caso um fator não tenha sido encontrado no estágio
+ stage2_list:list=fill_power_prime_buffer(B1, prime_list[len(prime_list)-1], (power+1), n)
+ power+=1 #Ajuste de variáveis
+
+ #Etapa 4.2: busca por fatores primos
+ for modular_prime_power in stage2_list:
+
+  power=gmpy2.mul(power, modular_prime_power)%n
+
+  factor= gmpy2.gcd((power-1), n)
+  if(factor>1):
+   print("Fator encontrado no estágio 2 do algoritmo")
    return factor
 
  return factor
