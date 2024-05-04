@@ -45,6 +45,7 @@ polynomial<T> operator+(polynomial<T>&);
 polynomial<T> operator-(polynomial<T>&);
 polynomial<T> operator*(polynomial<T>&);
 polynomial<T> operator/(polynomial<T>&);
+polynomial<T> operator=(const polynomial<T>&);
 
                 };
 
@@ -157,8 +158,12 @@ continue;
 return polynomial_string;
                                       };
 
+
+
 //**********************
 //Operações aritméticas básicas em aneis de polinômios
+
+//**********************
 //Adição
 template<typename T>
 polynomial<T> polynomial<T>::operator+(polynomial<T>& p2){
@@ -230,6 +235,8 @@ return result;
 
                                                          };
 
+
+//**********************
 //Subtração
 template<typename T>
 polynomial<T> polynomial<T>::operator-(polynomial<T>& p2){
@@ -300,6 +307,9 @@ result.polynomial_powers.push_back(y);
 return result;
 
                                                          };
+
+
+//**********************
 //Multiplicação
 template<typename T>
 polynomial<T> polynomial<T>::operator*(polynomial<T>& p2){
@@ -345,6 +355,8 @@ result.polynomial_coefficients.push_back(polynomial_coefficients[(polynomial_coe
 return result;
                                                          };
 
+
+//**********************
 //Divisão
 template<typename T>
 polynomial<T> polynomial<T>::operator/(polynomial<T>& p2){
@@ -393,6 +405,33 @@ operand_vector[i]=operand_vector[i]-(ratio*p2.polynomial_coefficients[i-k]);
 return result;
                                                          };
 
+
+
+
+//**********************
+//Cópia
+template<typename T>
+polynomial<T> polynomial<T>::operator=(const polynomial<T>& p2){
+
+//Condição que checa a não igualdade dos polinômios
+if(this!=&p2){
+
+//Ajuste do grau do polinômio
+this->degree=p2.degree;
+
+//Ajuste do array de coeficientes
+this->polynomial_coefficients = p2.polynomial_coefficients;
+
+//Ajuste do array de potências
+this->polynomial_powers = p2.polynomial_powers;
+             };
+
+
+//Resultado
+return *this;
+                                                         };
+
+//**********************
 //Resto da divisão
 template<typename T>
 polynomial<T> remainder(polynomial<T>& p1, polynomial<T>& p2){
