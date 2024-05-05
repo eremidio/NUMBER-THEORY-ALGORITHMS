@@ -25,6 +25,7 @@ https://en.wikipedia.org/wiki/Class_number_formula
 https://numberworld.blogspot.com/2018/05/methods-to-compute-class-number.html
 https://people.reed.edu/~jerry/361/lectures/iqclassno.pdf
 https://mathworld.wolfram.com/ClassNumber.html
+Elementary Number Theory by Edmund Landau
 
 */
 
@@ -33,7 +34,7 @@ https://mathworld.wolfram.com/ClassNumber.html
 //CABEÇALHO
 #ifndef CLASS_NUMBER_QUADRATIC_FIELD_H
 #define CLASS_NUMBER_QUADRATIC_FIELD_H
-#include"kronecker_symbol.h"//Inclui os headers <stdint.h>, <stdbool.h>, <math.h> e <stdint.h>
+#include"kronecker_symbol.h"
 #include<assert.h>
 
 //*********************************************************************************************************************************************************************
@@ -48,59 +49,60 @@ int64_t class_number_negative_discriminant(int64_t);
 //FUNÇÕES 
 //Função que determina se um inteiro contém fatores quadráticos
 bool is_square_factor_free(int64_t n){
-//Variáveis locais
-int64_t i, limit=sqrt(n);
 
-//Procedimentos 
-//Casos triviais
-if(n<4)
-return true;
+ //Variáveis locais
+ int64_t i, limit=sqrt(n);
 
-//Fatores 2 e 3
-if((n%2)==0){
-n/=2;
-if((n%2)==0)
-return false;
-            };
+ //Procedimentos 
+  //Casos triviais
+  if(n<4)
+   return true;
 
-if((n%3)==0){
-n/=3;
-if((n%3)==0)
-return false;
-            };
 
-//Loop principal com otimização 6k+1
-for(i=5; i<(limit+2); i+=6){
+  //Fatores 2 e 3
+  if((n%4)==0)
+   return false;
+           
 
-if((n%(i*i))==0)
-return false;
-if((n%((i+2)*(i+2)))==0)
-return false;
+  if((n%9)==0)
+   return false;
+
+
+  //Loop principal com otimização 6k+1
+  for(i=5; i<(limit+2); i+=6){
+
+   if((n%(i*i))==0)
+    return false;
+   if((n%((i+2)*(i+2)))==0)
+    return false;
                            };
 
 //Caso passe nos testes acima
 return true;
                                      };
 
+
 //Função que calcula de um número é primo ou não
 bool is_integer_prime(int64_t n){
-//Variáveis locais
-int64_t limit=sqrt(n);
-int64_t i;
 
-//Procedimentos
-//Casos triviais
-if(n<2)
-return false;
-if(n==2 || n==3)
-return true;
-if((n%2)==0 || (n%3)==0)
-return false;
+ //Variáveis locais
+ int64_t limit=sqrt(n);
+ int64_t i;
 
-//Loop principal
-for(i=5; i<(limit+2); ++i){
-if((n%i)==0 || (n%(i+2))==0)
-return false;
+ //Procedimentos
+  //Casos triviais
+  if(n<2)
+   return false;
+  if(n<4)
+   return true;
+
+  if((n%2)==0 || (n%3)==0)
+   return false;
+
+  //Loop principal
+  for(i=5; i<(limit+2); ++i){
+   if((n%i)==0 || (n%(i+2))==0)
+    return false;
 
                           };
 
@@ -110,69 +112,79 @@ return true;
 
 //Função que determina se um inteiro corresponde a um discrimante fundamental
 bool is_fundamental_discriminant(int64_t n){
-//Caso base
-if(n==1)
-return false;
 
-//Números negativos
-if(n<0){
-//Variáveis locais
-int64_t minus_n=(-1)*n;
+ //Caso base
+ if(n==1)
+  return false;
 
-//Testes
-if((minus_n%16)==4 || (minus_n%16)==8)
-return true;
+ //Números negativos
+ if(n<0){
 
-while(n<0)
-n+=4;
+  //Variáveis locais
+  int64_t minus_n=(-1)*n;
 
-if((n%4)==1)
-return true;
+  //Testes
+  if((minus_n%16)==4 || (minus_n%16)==8)
+   return true;
+
+  while(n<0)
+   n+=4;
+
+  if((n%4)==1)
+   return true;
        };
 
-//Números positivos
-if(is_square_factor_free(n)==true && (n%4)==1 && n!=1)
-return true;
 
-if((n%4)==0){
-//Variável local
-int64_t m=n/4;
+ //Números positivos
+ if(is_square_factor_free(n)==true && (n%4)==1 && n!=1)
+  return true;
 
-//Teste
-if(is_square_factor_free(m)==true && (n%4)>1)
-return true;
+ if((n%4)==0){
+  //Variável local
+  int64_t m=n/4;
+
+  //Teste
+  if(is_square_factor_free(m)==true && (n%4)>1)
+   return true;
             };
 
-//Caso o número não passe nos testes acima 
-return false;
+ //Caso o número não passe nos testes acima 
+ return false;
                                            };
 
 //Função que calcula o número de substituições que deixam uma forma quadrática invariante
 int64_t substitution_number(int64_t n){
-if((n*(-1))==3)
-return 6;
-else if((n*(-1))==4)
-return 4;
-else
-return 2;
+
+ if((n*(-1))==3)
+  return 6;
+ else if((n*(-1))==4)
+  return 4;
+ else
+  return 2;
 
                                       };
 
 //Função que calcula o número de classe para um discriminante fundamental negativo (d<0) usando a fórmula de Dirichlet
 int64_t class_number_negative_discriminant(int64_t d){
-//Variáveis locais
-int64_t w=substitution_number(d);
-int64_t minus_d=(-1)*d;
-int64_t sum=0;
-int64_t i;
 
-//Procedimentos
-//Loop principal
-for(i=1; i<minus_d; ++i)
-sum+=(kronecker(d, i)*i);
+ //Variáveis locais
+ int64_t w=substitution_number(d);
+ int64_t minus_d=(-1)*d;
+ int64_t sum=0;
+ int64_t i;
 
-//Resultado
-return (w*sum)/(2*d);
+
+ //Procedimentos
+  //Loop principal
+  for(i=1; i<minus_d; ++i){
+
+   if(kronecker(d, i)*(-1)==1)
+    sum+=i;
+   if(kronecker(d, i)==1)
+    sum-=i;
+                          }
+ //Resultado 
+ return (w*sum)/(2*d);
                                                      };
 
 //*********************************************************************************************************************************************************************
