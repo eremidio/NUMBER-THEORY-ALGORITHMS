@@ -448,7 +448,7 @@ polynomial<T> remainder(polynomial<T>& p1, polynomial<T>& p2){
 
 
  //Procedimentos
-  //Conputando o a sequência intermediária
+  //Computando o a sequência intermediária
   quotient=p1/p2;
   temp=quotient*p2;
   temp2=p1-temp;
