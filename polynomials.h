@@ -445,6 +445,7 @@ polynomial<T> remainder(polynomial<T>& p1, polynomial<T>& p2){
  zero_polynomial.degree=0;
  zero_polynomial.polynomial_powers={0};
  zero_polynomial.polynomial_coefficients={0};
+ 
 
 
  //Procedimentos
@@ -461,11 +462,13 @@ polynomial<T> remainder(polynomial<T>& p1, polynomial<T>& p2){
  //Computando o resultado
   //Grau e coeficientes do polinômio
   result.degree=1;
+  
  
   for(auto c:temp2.polynomial_coefficients){
-
-   if(c!=0)
-    result.polynomial_coefficients.push_back(c);
+   if(c==0 && result.polynomial_coefficients.size()==0)
+    continue;
+    
+   result.polynomial_coefficients.push_back(c);
 
                                            };
 
