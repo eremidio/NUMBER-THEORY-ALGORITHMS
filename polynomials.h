@@ -435,16 +435,47 @@ return *this;
 //Resto da divisão
 template<typename T>
 polynomial<T> remainder(polynomial<T>& p1, polynomial<T>& p2){
-//Variáveis locais
-polynomial<T> quotient, temp, result;
 
-//Procedimentos
-quotient=p1/p2;
-temp=quotient*p2;
-result=p1-temp;
+ //Restrição
+ assert(p1.degree>=p2.degree);
 
-//Resultado
-return result;
+ //Variáveis locais
+ polynomial<T> quotient, temp, temp2, result;
+ polynomial<T> zero_polynomial;
+ zero_polynomial.degree=0;
+ zero_polynomial.polynomial_powers={0};
+ zero_polynomial.polynomial_coefficients={0};
+
+
+ //Procedimentos
+  //Conputando o a sequência intermediária
+  quotient=p1/p2;
+  temp=quotient*p2;
+  temp2=p1-temp;
+
+
+  //Caso base: p2 divide p1
+  if(temp.degree==p1.degree && temp.polynomial_coefficients==p1.polynomial_coefficients)
+   return zero_polynomial;
+
+ //Computando o resultado
+  //Grau e coeficientes do polinômio
+  result.degree=1;
+ 
+  for(auto c:temp2.polynomial_coefficients){
+
+   if(c!=0)
+    result.polynomial_coefficients.push_back(c);
+
+                                           };
+
+  result.degree=(result.polynomial_coefficients.size()-1);
+
+  for(int64_t i=result.degree; i>=0; --i)
+   result.polynomial_powers.push_back(i);
+
+ //Resultado
+ return result;
                                                              };
 
 //*******************************************************************************************************************************************************************
