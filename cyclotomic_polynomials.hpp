@@ -5,8 +5,8 @@ DADO UM INTEIRO POSITIVO n, UMA RÁIZ DA UNIDADE DE ORDEM n É UMA SOLUÇÃO DA 
 POSITIVO. CONSIDERANDO VALORES k NO INTERVALO k=1,2,..., n-1; DEFINIMOS O n-ÉSIMO POLINÔMIO CICLOTÔMICO COMO Φ(n)=Π(x-ζ(k)) COM A RESTRIÇÃO A k: mdc(k,n)=1.
 
 POLINÔMIOS CICLOTÔMICOS SÃO IRREDUTÍVEIS NO ANEL DE INTEIROS RACIONAIS. A SEGUINTE RELAÇÃO É VÁLIDA PARA DIVISORES PRÓPRIOS d DE UM INTEIRO n: (x^n)-1=ΠΦ(d) E
-Φ(n)=[(x^n)-1]/ΠΦ(d). TAIS EXPRESSÕES PERMITEM O CÁLCULO SIMPLES DO n-ÉSIMO POLINÔMIO CICLOTOMICO PROVIDO A DECOMPOSIÇÃO DE n EM FATORES PRIMOS E OPERAÇÃO DE DIVISÃO
-DE POLINÔMIOS. O GRAU DO n-ÉSIMO POLINÔMIO CICLOTOMICO É IGUAL A φ(n) ONDE φ É A FUNÇÃO TOTIENTE DE EULER.
+Φ(n)=[(x^n)-1]/ΠΦ(d). TAIS EXPRESSÕES PERMITEM O CÁLCULO SIMPLES DO n-ÉSIMO POLINÔMIO CICLOTÔMICO PROVIDO A DECOMPOSIÇÃO DE n EM FATORES PRIMOS E OPERAÇÃO DE DIVISÃO
+DE POLINÔMIOS. O GRAU DO n-ÉSIMO POLINÔMIO CICLOTÔMICO É IGUAL A φ(n) ONDE φ É A FUNÇÃO TOTIENTE DE EULER.
 
 POLINÔMIOS CICLOTÔMICOS SÃO DIRETAMENTE RELACIONADO AO CORPO DOS INTEIROS EM CORPOS NÚMERICOS CICLOTÔMICOS Q(ζ(n)). ALGORITMOS MODERNOS DE TESTAGEM DE PRIMALIDADE E
 FATORAÇÃO (QUE GENERALIZAM OS CHAMADOS MÉTODOS n-1, n+1, ETC) EXISTEM QUE USAM POLINÔMIOS CICLOTÔMICOS. TAIS POLINÔMIOS SÃO DE GRANDE INTERSSE PARA TEORIA DOS NÚMEROS.
@@ -23,7 +23,7 @@ PARA MAIORES REFERÊNCIAS: https://en.wikipedia.org/wiki/Cyclotomic_polynomial#F
 //CABEÇALHO
 #ifndef CYCLOTOMIC_POLYNOMIALS_H
 #define CYCLOTOMIC_POLYNOMIALS_H
-#include"polynomials.h"
+#include"polynomial_cast.h"
 #include"gauss_euler_primality_test.h"
 #include<numeric>
 
@@ -317,12 +317,13 @@ bool cyclotomic_polynomial_prime_test(int32_t n){
 
  //Variáveis locais
  polynomial<int32_t> cyclotomic_polynomial=generate_cyclotomic_polynomial((n-1));
+ polynomial<__int128_t>cyclotomic_polynomial128=polynomial_cast<int32_t, __int128_t>(cyclotomic_polynomial);
  int32_t i;
 
  //Procedimentos
   //Teste: um número é primo se e somente para algum inteiro a tal que 1<a<n Φ((n-1))=0 (mod n)
   for(i=2; i<n; ++i){
-    if( ((cyclotomic_polynomial.evaluate_polynomial(i))%n)==0)
+    if( ((cyclotomic_polynomial128.evaluate_polynomial(i))%n)==0)
      return true;
                     };
 
