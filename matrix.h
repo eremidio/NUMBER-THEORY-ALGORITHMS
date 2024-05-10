@@ -67,6 +67,7 @@ void print_matrix();//Função que printa uma matriz na tela
 Matrix<T> operator+(Matrix<T>&);//Adição de matrizes
 Matrix<T> operator-(Matrix<T>&);//Subtração de matrizes
 Matrix<T> operator*(Matrix<T>&);//Multiplicação de matrizes
+Matrix<T> operator=(const Matrix<T>&);//Cópia de Matrizes
 Matrix<T> scalar_multiplication(int64_t);//Multiplicação de matrizes por escalares
 Matrix<T> scalar_multiplication(int a){return scalar_multiplication(static_cast<int64_t>(a)); };//Multiplicação de matrizes por escalares
 Matrix<T> scalar_multiplication(long long int a){return scalar_multiplication(static_cast<int64_t>(a)); };//Multiplicação de matrizes por escalares
@@ -173,6 +174,21 @@ for(j=0;j<columns; ++j)
 matrix[i][j]=m2.matrix[i][j];
                      };
                                };
+
+
+//Cópia de matrizes 
+template<typename T>
+Matrix<T> Matrix<T>::operator=(const Matrix<T>& m2){
+
+//Condição que checa se duas matrizes não são iguais
+if(this!=&m2){
+ this->rows=m2.rows;
+ this->rows=m2.columns;
+ this->matrix=m2.matrix;
+             };
+
+return *this;
+                                                  };
 
 //************************************
 //Redimensionamento de matrizes
