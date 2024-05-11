@@ -168,6 +168,9 @@ int64_t i, j;
 rows=m2.rows;
 columns=m2.columns;
 
+//Ajustando o  tamanho da matriz
+reshape(m2.rows, m2.columns);
+
 //Copiando os elementos da matriz
 for(i=0; i<rows; ++i){
 for(j=0;j<columns; ++j)
@@ -184,6 +187,7 @@ Matrix<T> Matrix<T>::operator=(const Matrix<T>& m2){
 if(this!=&m2){
  this->rows=m2.rows;
  this->rows=m2.columns;
+ this->reshape(m2.rows, m2.columns);
  this->matrix=m2.matrix;
              };
 
