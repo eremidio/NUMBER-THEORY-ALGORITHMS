@@ -6,10 +6,12 @@ O TESTE DE SELFRIDGE É BASEADO EM UMA CONJECTURA QUE AFIRMA QUE UM NÚMERO p = 
 1. f(p+1) = 0 mod(p). ONDE f(p+1) É O (p+1)-ÉSIMO NÚMERO NA SEQUÊNCIA DE FIBONACCI.
 2. 2^(p-1)= 1 mod(p).
 
-ESTE É UM REASULTADO AINDA NÃO COMPROVADO, EMBORA FUNCIONE RAZOALMENTE BEM EM CÁLCULOS PRÁTICOS, SENDO
-RAZOÁVEL PARA GERAÇÃO DE NÚMEROS PRIMOS ELEVADOS DA ORDEM 10^100.
+ESTE É UM RESULTADO AINDA NÃO COMPROVADO, EMBORA FUNCIONE RAZOALMENTE BEM EM CÁLCULOS PRÁTICOS, SENDO RAZOÁVEL
+PARA GERAÇÃO DE NÚMEROS PRIMOS ELEVADOS DA ORDEM 10^100. GENERALIZAÇÕES DESTES ALGORITMO EXISTE ENVOLVENDO CLASSES
+RESIDUAIS DOS CHAMADOS POLINÔMIOS DE FIBONACCI F(x) AVALIADOS PARA O ARGUMENTO x=1.
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Primality_test#Heuristic_tests
+                          https://en.wikipedia.org/wiki/Fibonacci_polynomials
 
 */
 
@@ -80,8 +82,8 @@ bool selfridge_prime_test(uint64_t n){
  uint64_t mod_fibn, mod_fibn1;
 
  //Procedimentos
-  //Teste 1: teste de Fermat na base 2
-  if(mod_bin_pow(2, (n-1), n)!=1)
+  //Teste 1: teste de Fermat na base 2, teste da divisão por 2,3,5
+  if(mod_bin_pow(2, (n-1), n)!=1 || (n%2)==0 ||  (n%3)==0 || (n%5)==0)
    return false;
 
   //Teste 2: teste da sequência de Fibonacci
@@ -93,10 +95,6 @@ bool selfridge_prime_test(uint64_t n){
  return true;
  
                                      };
-
-
-
-
 
 
 
