@@ -106,8 +106,9 @@ def set_settings(number_set:set, minimum:set, maximum:set)->set:
 
     #Adicionando elementos no conjunto
     for n in range(minimum, (maximum+1), 1):
-        if(n%2!=0 and n%3!=0 and n%5!=0 and n%7!=0):
-            number_set.add(n)
+        if((n%6)==1 or (n%6)==5):
+            if(n%5!=0 and n%7!=0):
+                number_set.add(n)
         
     #Resultado
     return number_set
@@ -172,4 +173,3 @@ num_threads:int=int(input('Números de processos paralelos: '))
 pi:int=prime_counting_function(number, sieve_size, num_threads)
 
 print("Número de primos até ", number, ": ", pi)
-
