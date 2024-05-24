@@ -21,7 +21,7 @@ PARA MAIORES INFORMAÇÕES: https://arxiv.org/pdf/2311.07048.pdf
 //CABEÇALHO
 #ifndef GAUSS_EULER_PRIMALITY_TEST_H
 #define GAUSS_EULER_PRIMALITY_TEST_H
-#include"mod_bin_exponentiation.h"
+#include"mod_bin_exponentiation128.h"
 #include"legendre_symbol.h"
 #include<stdbool.h>
 #include<math.h>
