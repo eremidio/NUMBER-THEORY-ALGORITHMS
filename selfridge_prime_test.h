@@ -76,7 +76,7 @@ void modular_fibonacci_number(uint64_t n, uint64_t m, uint64_t* fn,
 
 // Função que executao teste de primalidade de Selfridge
 /*
-NOTA: IMPONDO A CONDIÇÃO n=2,3 (mod 5) grante que o resultado tenha maior confiabilidade. Sem contra exemplos no momento.
+NOTA: Impondo-se a condição n=2,3 (mod 5) garante que o resultado tenha maior confiabilidade. Sem contra-exemplos no momento.
 */
 
 bool selfridge_prime_test(uint64_t n) {
