@@ -94,7 +94,6 @@ bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x
   srand(time(NULL));
 
   //Variáveis locais
-  int64_t root=sqrt(n);
   int64_t tester;
   int64_t a, b, b_inv, d;
   int64_t m, w;
@@ -107,8 +106,8 @@ bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x
   //Procedimentos
     start:
     //Definindo parâmetros a,b no intervalo [1,2,...,(n-2)]
-    a=1+rand()%root;
-    b=1+rand()%root;
+    a=1+rand()%(n-1);
+    b=1+rand()%(n-1);
     
 
     if((b%2)==0 || a<0) goto start;
