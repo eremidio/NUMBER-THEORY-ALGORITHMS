@@ -92,7 +92,7 @@ int kronecker(int64_t a, int64_t n){
         k=residue_table[a&7];
 
     
-      if(b<0) b=(-1)*k;
+      if(b<0) b=(-1)*b;
       if(a<0) k=(-1)*k;
 
 
