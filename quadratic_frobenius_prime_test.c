@@ -7,19 +7,23 @@
 
 //Função principal
 int main(){
-//Váriaveis
-int64_t number;
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um número que será testado:\n");
-scanf("%li", &number);
 
-//Executando o teste
-if(quadratic_frobenius_primality_test(number)==true)
-printf("Provável primo encontrado!\n");
-else
-printf("Número composto.\n");
+  //Váriaveis
+  int64_t number;
 
-//Finalizando a aplicação
-return 0;
+
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um número que será testado:\n");
+    scanf("%li", &number);
+
+    //Executando o teste
+    if(quadratic_frobenius_primality_test(number, Verbose)==true)
+      printf("Provável candidato a primo encontrado!\n");
+    else
+      printf("Número composto.\n");
+
+  //Finalizando a aplicação
+  return 0;
+
           }
