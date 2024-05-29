@@ -18,7 +18,6 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Kronecker_symbol
 #include<stdint.h>
 #include<inttypes.h>
 #include<stdio.h>
-#include<assert.h>
 
 //*****************************************************************************************************************************************************************
 // DECLARAÇÃO DE FUNÇÕES
@@ -30,9 +29,6 @@ int kronecker(int64_t, int64_t);
 
 // Função que calcula o símbolo de Kronecker (a|n)
 int kronecker(int64_t a, int64_t n){
-
-  //Restrição
-  assert(n*(-1)==1 || n>=0);
 
   //Variável global:resultado
   int k=1;
@@ -81,14 +77,6 @@ int kronecker(int64_t a, int64_t n){
 
 
     //Procedimentos
-
-     //TESTE USE /**/ APÓS O MESMO
-     /*printf("a:%lu b:%lu\n", a, b);
-     for(int x=0; x<8; x++)
-      printf("table_entry:%i ", residue_table[x]);
-     printf("\n");*/
-
-
       step2:
       //Removendo fatores 2 do segundo argumento
       v=0;
@@ -104,11 +92,8 @@ int kronecker(int64_t a, int64_t n){
         k=residue_table[a&7];
 
     
+      if(b<0) b=(-1)*k;
       if(a<0) k=(-1)*k;
-
-
-     //TESTE USE /**/ APÓS O MESMO
-     /*printf("a:%lu b:%lu v:%lu k:%d\n", a, b, v, k);*/
 
 
        step3:
@@ -149,11 +134,6 @@ int kronecker(int64_t a, int64_t n){
                };
      
        if(r<0) a=(-1)*r;
-
-
-
-     //TESTE USE /**/ APÓS O MESMO
-     /*printf("a:%lu b:%lu v:%lu r:%lu\n", a, b, v, r);*/
 
      goto step4;
 
