@@ -1,99 +1,202 @@
-//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O TESTE DE FRÖBENIUS PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
+// VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O TESTE DE FRÖBENIUS PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
 
 /*
-O TESTE DE PRIMALIDADE DE FRÖBENIUS É UM TESTE PROBABILÍSTICO QUE USA POLINÔMIOS DO SEGUNDO GRAU E OS CHAMADOS ENDOMORFISMOS DE FRÖBENIUS PARA TESTAR A PRIMALIDADE DE
-UM INTEIRO. NÚMEROS COMPOSTOS QUE PASSAM ESSE TESTES SÃO DENOMINADOS PSEUDOPRIMOS DE FRÖBENIUS.
-VAMOS IMPLEMENTAR UMA VERSÃO DO TESTE USANDO SEQUÊNCIAS DE LUCAS.
+O TESTE DE PRIMALIDADE DE FRÖBENIUS É UM TESTE PROBABILÍSTICO QUE USA POLINÔMIOS DO SEGUNDO GRAU E OS CHAMADOS ENDOMORFISMOS DE FRÖBENIUS
+PARA TESTAR A PRIMALIDADE DE UM INTEIRO. NÚMEROS COMPOSTOS QUE PASSAM ESSE TESTES SÃO DENOMINADOS PSEUDOPRIMOS DE FRÖBENIUS. O TESTE EM
+QUESTÃO PODE TAMBÉM SER EXPRESSO EM TERMOS DE SEQUÊNCIAS DE LUCAS 
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Quadratic_Frobenius_test#Concept
                           https://trizenx.blogspot.com/2020/01/primality-testing-algorithms.html
 
-ARTIGO ORIGINAL DISPONÍVEL EM: https://www.sciencedirect.com/science/article/pii/S0022314X98922478?via%3Dihub
+ARTIGO ORIGINAL DISPONÍVEL EM:
+https://www.sciencedirect.com/science/article/pii/S0022314X98922478?via%3Dihub
 
-*/ 
-
+*/
 
 //********************************************************************************************************************************************************************
-//CABEÇALHO
-#ifndef QUADRATIC_FROBENIUS_PRIME_TEST_H
-#define QUADRATIC_FROBENIUS_PRIME_TEST_H
+// CABEÇALHO
+#ifndef QUADRATIC_FROBENIUS_PRIMALITY_TEST_H
+#define QUADRATIC_FROBENIUS_PRIMALITY_TEST_H
+#include"mod_bin_exponentiation.h"
 #include"jacobi_symbol.h"
 #include<stdbool.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<math.h>
+
+
+enum show_frobenius_witness{Verbose, Succint};
 
 //********************************************************************************************************************************************************************
-//DECLARAÇÃO DE FUNÇÕES
-void parameter_selection(int64_t*, int64_t*, int64_t);
-void modular_lucas_sequence(int64_t*, int64_t*, int64_t, int64_t, int64_t);
-bool quadratic_frobenius_primality_test(int64_t);
+// DECLARAÇÃO DE FUNÇÕES
+int64_t gcd_frobenius(int64_t, int64_t);
+int64_t modular_inverse(int64_t, int64_t);
+bool quadratic_frobenius_primality_test(int64_t, enum show_frobenius_witness);
 
 //********************************************************************************************************************************************************************
 //FUNÇÕES
-//Função que determinaparâmetros P e Q usados no teste de primalidade de Fröbenius
-void parameter_selection(int64_t* P, int64_t* Q, int64_t n){
-//Variáveis locais
-int64_t p, q=2, d;
+//Função que implementa o algoritmo de Euclides
+int64_t gcd_frobenius(int64_t a, int64_t b){
 
-//Procedimentos
-//Loop principal: seleção do parâmetro P
-for(p=5; ;p+=2){
-d=((p*p)-(4*q));
-if(euclides_check(n, (2*q*d))==1 && (jacobi(d, n)*(-1))==1)
-break;
-               };
+  if(b==0)
+    return a;
+  else
+    return gcd_frobenius(b, (a%b));
+                                           };
 
-//Ajuste de variáveis
-(*P)=p;
-(*Q)=q;
-                                                           };
 
-//Função que implementa o cálculo das sequências de Lucas a menos de uma relação de congruência para o teste de primalidade de Fröbenius
-void modular_lucas_sequence(int64_t* U, int64_t* V, int64_t P, int64_t Q, int64_t n){
-//Variáveis locais
-__int128_t V0=2, V1=P, V2;
-__int128_t U0=0, U1=1, U2;
-int64_t i, upper=(n+1);
+//Função que calcula inversos multiplicativo modular usando o algoritmo de Euclides extendido
+int64_t modular_inverse(int64_t a, int64_t n){
 
-//Procedimentos 
-//Loop principal
-for(i=2; i<=upper; ++i){
-U2=((P*U1)-(Q*U2));
-V2=((P*V1)-(Q*V2));
+  // Variáveis locais
+  int64_t r0, r1, x0, x1, r2, x2;
 
-if(U2>n)
-U2%=n;
-if(V2>n)
-V2%=n;
+  // Procedimentos
+    // Ajuste de variáveis
+    r0 = a;
+    r1 = n;
+    r2 = 1;
+    x0 = 1;
+    x1 = 0;
 
-//Atualizando variáveis para a próxima iteração
-U0=U1; U1=U2;
-V0=V1; V1=V2;
-                       };
+    // Calculando os valores finais dos coeficientes recursivamente
+    while (r2 > 0) {
+      int64_t quotient = r0 / r1;
+      r2 = r0 - quotient * r1;
+      x2 = x0 - quotient * x1;
 
-//Ajuste de variáveis
-(*U)=(U2%n);
-(*V)=(V2%n);
-                                                                                    };
+      // Atualizando variáveis para a próxima iteração
+      if (r2 > 0) {
+        r0 = r1;
+        r1 = r2;
+        x0 = x1;
+        x1 = x2;
+        };
+      };
+
+  // Resultado
+  if (x1 < 0)
+    return (x1 + n);
+  else
+    return x1;
+                                             };
+
 
 //Função que implementa o teste de primalidade de Fröbenius
-bool quadratic_frobenius_primality_test(int64_t n){
-//Variáveis locais
-int64_t P, Q;
-int64_t U, V;
+bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x){
 
-//Procedimentos
-//Seleção de parâmetros P e Q para ocálculo das sequências de Lucas
-parameter_selection(&P, &Q, n);
+  //Caso base: n é par
+  if(!(n&1))
+    return false;
 
-//Cálculo das sequências de Lucas
-modular_lucas_sequence(&U, &V, P, Q, n);
+  //Semente para geraçção de números aleatórios
+  srand(time(NULL));
 
-//Resultado da execução do algoritmo
-if(U==0 && V==(2*Q))
-return true;
-else
-return false;
-                                                  };
+  //Variáveis locais
+  int64_t root=sqrt(n);
+  int64_t tester;
+  int64_t a, b, b_inv, d;
+  int64_t m, w;
+  __int128_t temp, u, v;
+  int* bit_string=NULL;
+  int bit_size=0;
+
+
+
+  //Procedimentos
+    start:
+    //Definindo parâmetros a,b no intervalo [1,2,...,(n-2)]
+    a=1+rand()%root;
+    b=1+rand()%root;
+    
+
+    if((b%2)==0 || a<0) goto start;
+
+    b_inv=modular_inverse(b, n);
+    d=(a*a)-(4*b);
+
+    //Teste que checa se um fator primo de n foi encontrado
+    tester=gcd_frobenius(n, (2*a*b*d));
+
+    if(tester>1 && tester<n){
+      if(x==Verbose)
+        printf("Testemunha da composição de %li: %li e %li\n", n, a, b);
+      return false;
+                            };
+
+    if(tester==n)
+      goto start;
+
+
+    //Cálculo dos parâmetros w, m usados no algoritmo
+    m=(n-jacobi(d, n))/2;
+    temp=((((a*a)%n)*b_inv)-2)%n;
+    w=temp;
+
+
+    //Calculando a string binária associada ao parâmetro m
+    while(m>0){
+      bit_size++;
+      bit_string=(int*)realloc(bit_string, bit_size*sizeof(int));
+ 
+      if((b&1)) bit_string[bit_size-1]=1;
+      else bit_string[bit_size-1]=0;
+
+      m>>=1;   
+              };
+
+    //Ajuste dos parâmetros da sequência de Lucas
+    u=2;
+    v=w;
+
+    //Computando os termos da sequência de Lucas
+    for(int i=(bit_size-1); i>=0; --i){
+
+      if(bit_string[i]==1){
+        u=((u*v)-w)%n;
+        v=((v*v)-2)%n;
+                          };
+
+      if(bit_string[i]==0){
+        v=((u*v)-w)%n;
+        u=((u*u)-2)%n;
+                          };
+
+
+                                      };
+
+
+    //Análise da execução do algoritmo
+      //Teste de Lucas
+      if((w*u)!=((v<<1)%n)){
+        if(x==Verbose)
+          printf("Testemunha da composição de %li: %li e %li\n", n, a, b);
+        return false;
+                           };
+
+
+      //Teste de Fröbenius
+      int64_t t= mod_bin_pow(b, ((n-1)/2), n);
+
+      if(((t*u)%n)==2){
+        printf("Testemunha da primalidade de %li: %li e %li\n", n, a, b);
+        return true;
+                      }
+      else{
+      if(x==Verbose)
+        printf("Testemunha da composição de %li: %li e %li\n", n, a, b);
+      return false;
+           };
+
+      return true;
+
+                                                                                 };
+
+
+
+
 
 //********************************************************************************************************************************************************************
-//FIM DO HEADER
+// FIM DO HEADER
 #endif
