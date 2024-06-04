@@ -52,6 +52,8 @@ https://arxiv.org/pdf/1608.08766
 
 https://cr.yp.to/factorization/eecm-20090120.pdf
 
+https://arxiv.org/pdf/2006.16729
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
