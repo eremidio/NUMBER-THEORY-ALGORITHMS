@@ -62,11 +62,11 @@ void factorization_map(uint64_t n, uint64_t factor_array[], int multiplicity_arr
   //Loop principal: teste até fatores n^(1/2)
   for(int j=1;;j++){
 
-    for(int k=1; k<8; ++k){
+    for(int k=0; k<8; ++k){
       divisor=(30*j)+residue_class[k];
 
       //Abortagem 1: limite superior a n^(1/2)
-      if(divisor>(sqrt_n+1) || n==1)
+      if(divisor>(sqrt_n+1) || n==1 || n==divisor)
         goto end;
 
 
