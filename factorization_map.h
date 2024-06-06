@@ -5,7 +5,7 @@ NOTA: ESSA ROTINA SERÁ USADA COMO SUBROTINA EM ALGORITMOS COMO O ALGORITMO DE P
 MULTIPLICATIVAS, ENTRE OUTROS QUE REQUER UMA LISTA DE FATORES PRIMOS E SUAS RESPECTIVAS MULTIPLICIDADES.
 
 USAREMOS TENTATIVA POR DIVISÃO E ERRO COM ALGUMAS OTIMIZAÇÕES COMO FATORAÇÃO DE RODA E ABORTAGEM PREMATURA QUANDO UMA
-FATORAÇÃO COMPLETA FOR ATIGINDA.
+FATORAÇÃO COMPLETA FOR ATIGINDA. USAREMOS O TESTE DE GAUSS-EULER DE PRIMALIDADE COMO SUBROTINA.
 
 */ 
 
@@ -15,6 +15,7 @@ FATORAÇÃO COMPLETA FOR ATIGINDA.
 //CABEÇALHO
 #ifndef FACTORIZATION_MAP_H
 #define FACTORIZATION_MAP_H
+#include"gauss_euler_primality_test.h"
 #include<stdint.h>
 #include<inttypes.h>
 #include<stdlib.h>
@@ -65,8 +66,8 @@ void factorization_map(uint64_t n, uint64_t factor_array[], int multiplicity_arr
     for(int k=0; k<8; ++k){
       divisor=(30*j)+residue_class[k];
 
-      //Abortagem 1: limite superior a n^(1/2)
-      if(divisor>(sqrt_n+1) || n==1 || n==divisor)
+      //Abortagem 1: limite superior a n^(1/2) ou n é primo
+      if(divisor>(sqrt_n+1) || n==1 || gauss_euler_primality_test(n)==true)
         goto end;
 
 
