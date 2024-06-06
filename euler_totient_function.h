@@ -59,9 +59,9 @@ uint64_t pollard_rho(uint64_t n){
     //Testando inicialmente com x=2, y=2
     restart:
     while(remainder==1){
-      x=((x*x+1)%n);
-      y=((y*y+1)%n);
-      y=((y*y+1)%n);
+      x=((x*x+a)%n);
+      y=((y*y+a)%n);
+      y=((y*y+a)%n);
 
       if(x>y)
         remainder=gcd_euclides((x-y), n);
