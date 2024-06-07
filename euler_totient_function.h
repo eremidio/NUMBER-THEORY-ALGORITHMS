@@ -90,21 +90,24 @@ bool power_prime_detection(uint64_t n, uint64_t* prime,  uint64_t* power){
 
 
  //Variáveis locais
- uint64_t tester=2;
  uint64_t sqrt_n=sqrt(n); 
 
   //Procedimentos 
     //Caso particular números da forma 2^k e 3^k
-    while(tester<n){
-      (*power)=1;
+    if(n%2==0){
 
-      if(tester==n){
+      (*power)=0;
+      while(n%2==0){
+        n/=2;
+        (*power)++;
+                   }
+
+      if(n==1){
         (*prime)=2;
         return true;
-                }
-
-     tester<<=1;
-     (*power)++;
+              }
+      else
+        return false;
 
     };
 
