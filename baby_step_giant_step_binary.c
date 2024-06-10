@@ -1,10 +1,10 @@
 //VAMOS CRIAR UM PROGRAMA QUE TESTA AS ROTINAS CRIADAS NO ARQUIVO baby_step_giant_step_binary.h 
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o baby_step_giant_step_linear baby_step_giant_step_linear.c -O2 -lm
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o baby_step_giant_step_binary baby_step_giant_step_binary.c -O2 -lm
 
 
 
 //Cabeçalho
-#include"baby_step_giant_step_linear.h"
+#include"baby_step_giant_step_binary.h"
 
 //Função principal
 int main(){
@@ -24,7 +24,7 @@ int main(){
 
 
     //Cálculo do logaritmo discreto
-    log =baby_step_giant_step_linear(a, c, m);
+    log =baby_step_giant_step_binary(a, c, m);
     printf("Logaritmo de %li na base %li mod %li é %li.\n", c, a, m, log);
 
 
