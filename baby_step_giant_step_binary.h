@@ -29,7 +29,7 @@ struct log_map{
 void swap(int64_t, int64_t, struct log_map[]);
 void quicksort_ascending(struct log_map[],int64_t, int64_t);
 int64_t binary_search(struct log_map[], int64_t, int64_t, int64_t);
-
+int64_t baby_step_giant_step_binary(int64_t, int64_t, int64_t);
 
 //********************************************************************************************************************************
 //FUNÇÕES
