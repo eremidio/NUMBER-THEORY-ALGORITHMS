@@ -24,30 +24,42 @@ uint64_t fast_euclides_algorithm(uint64_t , uint64_t);
 //*************************************************************************************************************************
 //FUNÇÕES
 //Algoritmo de euclides usando operações binárias
-//Algoritmo de Euclides otimizado
 uint64_t fast_euclides_algorithm(uint64_t a, uint64_t b){
-//Procedimentos
-//Caso trivial
-if(b==a)
-return a;
 
-//Invertendo os argumentos da função se a<b
-if(a<b)
-return fast_euclides_algorithm(b, a);
+  //Procedimentos
+    //Caso trivial
+    if(b==a || b==0)
+      return a;
+    if(a==0)
+      return b;
 
-//Recursão
-//Caso 1: ambos pares
-if(!(a&1) && !(b&1))
-return 2*fast_euclides_algorithm((a>>1), (b>>1));
-//Caso 2: ambos ímpares
-if((a&1) && (b&1))
-return fast_euclides_algorithm(((a-b)>>1), b);
-//Caso 3: a ímpar e b par
-if((a&1) && !(b&1))
-return fast_euclides_algorithm(a, (b>>1));
-//Caso 4: a par e b ímpar
-if(!(a&1) && (b&1))
-return fast_euclides_algorithm((a>>1), b);
+
+    //Invertendo os argumentos da função se a<b
+    if(a<b)
+      return fast_euclides_algorithm(b, a);
+
+
+    //Recursão
+      //Caso 1: ambos pares
+      if(!(a&1) && !(b&1))
+        return 2*fast_euclides_algorithm((a>>1), (b>>1));
+
+      //Caso 2: ambos ímpares
+      else if((a&1) && (b&1))
+        return fast_euclides_algorithm(((a-b)>>1), b);
+
+
+      //Caso 3: a ímpar e b par
+      else if((a&1) && !(b&1))
+        return fast_euclides_algorithm(a, (b>>1));
+  
+      //Caso 4: a par e b ímpar
+      else if(!(a&1) && (b&1))
+        return fast_euclides_algorithm((a>>1), b);
+
+
+  //Caso de erro 
+  return (-1);
 
                                                         };
 
