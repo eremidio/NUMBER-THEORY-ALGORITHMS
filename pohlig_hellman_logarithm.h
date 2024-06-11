@@ -134,7 +134,7 @@ int64_t pohlig_hellman_logarithm_generalized(int64_t g, int64_t h, int64_t m){
       prime_power_array[index-1]=bin_pow(prime_factors[k], prime_powers[k]);
       int64_t exponent=ord/prime_power_array[index-1];
       gi=mod_bin_pow(g, exponent, ord);
-      hi=mod_bin_pow(g, exponent, ord);
+      hi=mod_bin_pow(h, exponent, ord);
       logs_array[index-1]=pohlig_hellman_logarithm_power_prime_order(gi, hi, prime_factors[k], prime_powers[k]);
       
     }
