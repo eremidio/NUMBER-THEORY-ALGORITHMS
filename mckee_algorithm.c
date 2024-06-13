@@ -7,17 +7,19 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-int64_t number;
 
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um número inteiro a ser fatorado: ");
-scanf("%li", & number);
+  //Variáveis locais
+  int64_t number;
 
-//Fatorando o número em questão
-mckee_algorithm(number);
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um número inteiro a ser fatorado: ");
+    scanf("%li", & number);
 
-//Finalizando a aplicação
-return 0;
+  //Fatorando o número em questão
+  mckee_algorithm(number);
+
+  //Finalizando a aplicação
+  return 0;
+
           }
