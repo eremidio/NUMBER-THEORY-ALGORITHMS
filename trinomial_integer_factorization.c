@@ -1,5 +1,5 @@
 //VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO trinomial_integer_factorization.h
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o trinomial_integer_factorization trinomial_integer_factorization.c -O2
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o trinomial_integer_factorization trinomial_integer_factorization.c -lm -O2
 
 
 //Cabeçalho
