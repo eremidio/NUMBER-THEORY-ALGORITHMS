@@ -28,7 +28,7 @@ void trinomial_integer_factorization(int64_t);
 
 //*******************************************************************************************************************************************************************
 // FUNÇÕES
-// Função que fatoramum número inteiro usando um trinômio do segundo grau
+// Função que fatoram um número inteiro usando um trinômio do segundo grau
 void trinomial_integer_factorization(int64_t n) {
   //--------------------------------------------------------------------------------------
   // Caso trivial: n par
