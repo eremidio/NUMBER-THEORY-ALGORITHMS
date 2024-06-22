@@ -14,9 +14,10 @@ PARA MAIORES INFORMAÇÕES: https://londmathsoc.onlinelibrary.wiley.com/doi/abs/
 */
 
 /*
-OBSERVAÇÃO: O algoritmo requer computar soluções de equações do tipo x²=a (mod n), com n composto o que é um problema equivalente a fatoração em si. Por esta
-razão tal cálculo foi feito por força bruta usando o algoritmo de Newton-Raphson para checar se um dado inteiro é quadrado perfeito. Uma alternativa seria usar o 
-algoritmo de Tonelli-Shanks ou Cipolla para computar x para cada fator primo de n e combinar os resultados via teorema do resíduo chinês.
+OBSERVAÇÃO: O algoritmo requer computar soluções de equações do tipo x²=a (mod n), com n composto o que é um problema equivalente
+a fatoração em si. Por esta razão tal cálculo foi feito por força bruta usando o algoritmo de Newton-Raphson para checar se um
+dado inteiro é quadrado perfeito. Uma alternativa seria usar o algoritmo de Tonelli-Shanks ou Cipolla para computar x para cada
+fator primo de n e combinar os resultados via teorema do resíduo chinês.
 
 */
 
@@ -25,18 +26,16 @@ algoritmo de Tonelli-Shanks ou Cipolla para computar x para cada fator primo de 
 //CABEÇALHO
 #ifndef MCKEE_ALGORITHM_H
 #define MCKEE_ALGORITHM_H
+#include"prime_power_detection.h"
 #include<stdio.h>
 #include<stdlib.h>
-#include<stdbool.h>
-#include<stdint.h>
-#include<math.h>
+
 
 
 //****************************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
 void small_factors_removing(int64_t*);
 int64_t euclides_algorithm(int64_t, int64_t);
-int64_t floor_square_root(int64_t);
 void mckee_algorithm(int64_t);
 
 //****************************************************************************************************************************************************
@@ -101,26 +100,6 @@ int64_t euclides_algorithm(int64_t a, int64_t b){
     return euclides_algorithm(b, (a%b));
 };
 
-//Função que usa o algoritmo de Newton-Raphson para calcular limitante inferior de raízes quadradas
-int64_t floor_square_root(int64_t n){
-
-  //Variáveis locais
-  int bit_size=log2(n);
-  int64_t x= pow(2, ceil(bit_size));
-  int64_t y;
-
-  //Procedimento
-    //Loop principal
-    while(x>0){
-      y=floor((x+floor(n/(1.0*x)))/2.0);
-      if(y>=x)
-        return x;
-      else
-        x=y;
-    };
-
-  return 0;
-};
 
 //Função que implementa o algoritmo de Mckee para fatorar números inteiros usando representações via formas quadráticas de discriminante negativo
 void mckee_algorithm(int64_t n){
@@ -157,7 +136,7 @@ void mckee_algorithm(int64_t n){
 
   
     //Teste 2: checando se n é um quadrado perfeito
-    int64_t temp=floor_square_root(n);
+    int64_t temp=floor(sqrt(n));
     if((temp*temp)==n){
       cofactor=temp;
       factor=temp;
@@ -191,9 +170,9 @@ void mckee_algorithm(int64_t n){
         ui=roots[j];
         u=(ui%(d<<2));
         int64_t tester=((4*a*n)-(u*u))/(d<<2);
-        v=floor_square_root(tester);
         
-        if((v*v)==tester){
+        
+        if(fast_square_detection(tester, &v)==true){
     
           int64_t tester2=(2*x0*v)-u;
           factor=euclides_algorithm(tester2, n);
