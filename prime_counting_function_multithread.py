@@ -100,14 +100,17 @@ def set_settings(number_set:set, minimum:set, maximum:set)->set:
     '''Função que define os elementos de um conjunto'''
 
     #Procedimentos
-    #Checando os números de elementos
-    if(len(number_set)>0):
-        number_set.clear()
+    #Removendo elementos no intervalo de segmentação
+    number_set.clear()
+
+    #Ajuste de variáveis
+    if((minimum&1)==0):
+        minimum+=1
 
     #Adicionando elementos no conjunto
-    for n in range(minimum, (maximum+1), 1):
-        if((n%6)==1 or (n%6)==5):
-            if(n%5!=0 and n%7!=0):
+    for n in range(minimum, (maximum+1), 2):
+        if((n%30) in {1,7,11,13,17,19,23,29}):
+            if(n%7!=0):
                 number_set.add(n)
         
     #Resultado
