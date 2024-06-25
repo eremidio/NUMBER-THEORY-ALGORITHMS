@@ -5,14 +5,13 @@ UM INTEIRO n É DITO SER UMA CLASSE QUADRÁTICA RESIDUAL MÓDULO p SE EXISTIR UM
 r² = n (mod p).
 
 UM NÚMERO INTEIRO L(p) É DENOMINADO UMA CLASSE RESIDUAL PSEUDOQUADRÁTICA MÓDULO UM PRIMO p, SE
-ELES ATISFAZ AS SEGUINTES CONDIÇÕES:
+ELE SATISFAZ AS SEGUINTES CONDIÇÕES:
 1. L(p) = 1 (mod 8)
-2. PARA TODOS OS PRIMOS p(i)<p O SÍMBOLO DE LEGENDRE (L(p)|p)=1.
+2. PARA TODOS OS PRIMOS p(i)≲p O SÍMBOLO DE LEGENDRE (L(p)|p)=1.
 
 CLASSE RESIDUAIS PSEUDOQUADRÁTICAS ESTÃO RELACIONADAS COM A QUESTÃO DA TESTAGEM DE PRIMALIDADE
 DE NÚMEROS INTEIROS. ALGORITMOS DE PENEIRA PARA SELEÇÃO DE NÚMEROS PRIMOS USAM ESTAS CLASSES
-(VER REFERÊNCIAS) TAIS ALGORITMOS EM GERAL SÃO MENOS EFICIENTES QUE TÉCNICAS MAIS TRADICIONAIS
-COMO A PENEIRA DE ERASTOTÉNES, PORÉM GERAM ECONOMIA DE ESPAÇO.
+(VER REFERÊNCIAS).
 
 PARA MAIORES INFORMAÇÕES: https://digitalcommons.butler.edu/cgi/viewcontent.cgi?article=1095&context=facsch_papers
                           https://cr.yp.to/bib/1996/lukes.pdf
@@ -67,7 +66,7 @@ int legendre(uint64_t n, uint64_t p){
 };
 
 
-//Função que calcula o menor L(p) que satisfaz as condições que definem classes residuais pseudoquadráticos módulo um primo
+//Função que calcula o menor L(p) que satisfaz as condições que definem classes residuais pseudoquadráticos módulo um primo ímpar
 uint64_t find_least_pseudosquare(int prime){
 
   //Variáveis locais
@@ -108,7 +107,7 @@ uint64_t find_least_pseudosquare(int prime){
 };
 
 
-//Função que executa o teste de primalidade usando classes resisduais pseudoquadráticas módulo p
+//Função que executa o teste de primalidade usando classes residuais pseudoquadráticas módulo um primo ímpar
 /*
 NOTA: POTÊNCIAS DE NÚMEROS PRIMOS PODEM PASSAR NESTE TESTE, UM TESTE DE DETECÇÃO DE POTÊNCIAS DE
 NÚMEROS PRIMOS OPCIONALMENTE DEVE SER PERFORMADO, PARA GARANTIR QUE O RESULTADO ESTEJA 100% CORRETO.
