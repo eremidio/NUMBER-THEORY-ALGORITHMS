@@ -1,10 +1,10 @@
 //VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA UMA PENEIRA DE ERATÓSTENES COM OTIMIZAÇÃO ESPACIAL
 
 /*
-ESTOCANDO-SE INTEIROS DE UM TAMANHO EM BITS BMÚLTPILO DE 2 SUPORTADO POR UMA DETERMINADA ARQUITETURA
+ESTOCANDO-SE INTEIROS DE UM TAMANHO EM BITS MÚLTPILO DE 2 SUPORTADO POR UMA DETERMINADA ARQUITETURA
 É POSSÍVEL REDUZIR O ESPAÇO REQUERIDO PARA ALOCAR NÚMEROS PRIMOS AO SE USAR A PENEIRA DE ERATÓSTENES.
 
-NO PRESENTEALGORITMO USAREMOS INTEIROS DE 8 BITS PARA ALOCAR NÚMEROS INTEIROS USANDO O ALGORITMO
+NO PRESENTE ALGORITMO USAREMOS INTEIROS DE 8 BITS PARA ALOCAR NÚMEROS INTEIROS USANDO O ALGORITMO
 TRRADICIONAL DA PENEIRA DE ERATÓSTENES.
 
 PARA MAIORES INFORMAÇÕES: https://www.geeksforgeeks.org/bitwise-sieve/
@@ -23,8 +23,8 @@ PARA MAIORES INFORMAÇÕES: https://www.geeksforgeeks.org/bitwise-sieve/
 #include<math.h>
 
 //CONSTANTES GLOBAIS
-const int first_entry=252;
-const int table_entry=255;
+const int first_entry=252; //Binário 11111100
+const int table_entry=255; //Binário 11111111
 
 
 //*************************************************************************************************
@@ -36,7 +36,7 @@ void bitwise_sieve(uint64_t);
 
 //*************************************************************************************************
 //FUNÇÕES
-//Função que inicializa o array de inteiros  de 8 bits
+//Função que inicializa o array de inteiros de 8 bits
 void start_sieving_array(uint8_t bit8_array[], uint64_t array_size){
 
   //Procedimentos
@@ -74,7 +74,7 @@ void mark_non_prime(uint8_t bit8_array[], uint64_t n){
   uint8_t mask=~(1<<bit_slot);
 
   //Procedimentos
-    //Modificando o n-ésimo bit para zero
+    //Modificando o n-ésimo bit para zero: contagem da direita para a esquerda
     bit8_array[slot]&=mask;
 
 
@@ -107,7 +107,7 @@ void bitwise_sieve(uint64_t limit){
     }
 
 
-  //Printandonúmeros primos na tela
+  //Printando números primos na tela
   printf("2, ");
   for(uint64_t j=3; j<=limit; j+=2){
     if(prime_checking(bit8_array, j))
