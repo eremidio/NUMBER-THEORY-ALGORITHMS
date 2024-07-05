@@ -58,6 +58,12 @@ https://www.ams.org/journals/mcom/2011-80-276/S0025-5718-2011-02489-0/S0025-5718
 
 https://math.dartmouth.edu/~carlp/aks111216.pdf
 
+https://www.math.leidenuniv.nl/~lenstrahw/PUBLICATIONS/1982e/art.pdf
+
+https://cr.yp.to/bib/2003/damgard.pdf
+
+https://ieeexplore.ieee.org/document/5662138/authors#authors
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
