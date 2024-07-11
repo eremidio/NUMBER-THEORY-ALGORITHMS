@@ -3,11 +3,11 @@
 {-
 A FUNÇÃO LOGARÍTMICA INTEGAL li(x) É DEFINIDA PELA SEGUINTE FÓRMULA SEJA: f(x)=[ln(x)]-¹,
 li(x) É O VALOR DA INTEGRAL DE f(x) DE 0 ATÉ x. A CHAMADA FUNÇÃO INTEGRAL DE EULER Li(x)
-É POR DEFINIÇÃO DADA PELA INTEGRALDEFINIDA DE f(x) DE 2 ATÉ x, TEMOS QUE li(x)=li(2)+Li(x).
+É POR DEFINIÇÃO DADA PELA INTEGRAL DEFINIDA DE f(x) DE 2 ATÉ x, TEMOS QUE li(x)=li(2)+Li(x).
 
-A FUNÇÃO li(x) É DEGRANDE IMPORTÂNCIA EM TEORIA DOS NÚMEROS. O CHAMADO TEOREMA DO NÚMEROS
+A FUNÇÃO li(x) É DE GRANDE IMPORTÂNCIA EM TEORIA DOS NÚMEROS. O CHAMADO TEOREMA DO NÚMEROS
 PRIMOS AFIRMA QUE PARA GRANDES VALORES DE x: π(x)≃li(x), ONDE π(x) É A FUNÇÃO DE CONTAGEM
-DE NÚMEROS PRIMOS ABAIXO DE x. ESTIMATIVAS RAZOÁVEIS BASEADAS NAHIPÓTESE DE RIEMANN
+DE NÚMEROS PRIMOS ABAIXO DE x. ESTIMATIVAS RAZOÁVEIS BASEADAS NA HIPÓTESE DE RIEMANN
 AFIRMAM QUE |π(x)-li(x)| ~ O((√x)ln(x)).
 
 USAREMOS UMA REPRESENTAÇÃO EM SÉRIE DEVIDO A RAMANUJAN, QUE CONVERGE RAPIDAMENTE PARA O
@@ -57,10 +57,9 @@ term_function n x = fromIntegral (get_signal n) * 2 * ((log x / 2) ^ n) * odd_in
 sum_term_function::Integer->Double->Double
 sum_term_function n x = sum (map (\i -> term_function i x) [1..n])
 
---Função que calcula a função logaritmíca integral
+--Função que calcula a função logarítmica integral
 --NOTA: O segundo parâmetro na chamada da função sum_term_function pode ser alterado para se 
 --      a precisão do resultado
 logarithmic_integral_function::Integer->Double
 logarithmic_integral_function n = euler_mascheroni + log (log (fromIntegral n)) + sqrt (fromIntegral n) * sum_term_function 50 (fromIntegral n)
-
 
