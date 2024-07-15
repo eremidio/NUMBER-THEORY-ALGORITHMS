@@ -4,12 +4,18 @@
 PARA REFERÊNCIAS: https://github.com/eremidio/NUMBER-THEORY-ALGORITHMS/blob/main/strong_fermat_primality_test.h
                   https://arxiv.org/pdf/math/0604376
 
+Nota usaremos a biblioteca gmpy2 para rápida exponenciação modular. Usando a função pow() da biblioteca padrão
+também funciona, para um número de 300 dígitos decimais (cerca de 1024 bits) a versão usando somente a
+biblioteca padrão demora cerca de 2 horas. A versão com a biblioteca gmpy2 foi testada em inteiros da ordem de
+10^500 usando gerador de números primos online. Números de Carmichael da ordem de 10^18 foram usados para se 
+testar o algoritmo.
 
 '''
 
 #----------------------------------------------------------------------------------------------------------------------
 #IMPORTANDO BIBLIOTECAS
 from math import gcd, log
+import gmpy2
 
 #----------------------------------------------------------------------------------------------------------------------
 #FUNÇÕES
@@ -31,7 +37,7 @@ def strong_fermat_primality_test_1024bit(n:int)->bool:
 
   #Procedimentos
   #Etapa 1: teste de Fermat nas bases 2,3,5 para rápida detecção de compostos
-  if(pow(2, (n-1), n)!=1 or pow(3, (n-1), n)!=1  or pow(5, (n-1), n)!=1 ):
+  if(gmpy2.powmod(2, (n-1), n)!=1 or gmpy2.powmod(3, (n-1), n)!=1  or gmpy2.powmod(5, (n-1), n)!=1 ):
     return False
 
 
@@ -41,10 +47,9 @@ def strong_fermat_primality_test_1024bit(n:int)->bool:
     return False
 
    mod=(b-1)*n
-   if( pow(b, n, mod)!=b):
+   if(gmpy2.powmod(b, n, mod)!=b):
      return False
 
   #Caso passe nos testes acima um primo foi encontrado
   return True
-
 
