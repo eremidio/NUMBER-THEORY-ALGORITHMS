@@ -64,6 +64,8 @@ https://cr.yp.to/bib/2003/damgard.pdf
 
 https://ieeexplore.ieee.org/document/5662138/authors#authors
 
+http://www.mat.uniroma3.it/users/pappa/sintesi/20_Bedodi.pdf
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
