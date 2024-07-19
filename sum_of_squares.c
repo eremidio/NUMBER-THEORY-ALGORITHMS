@@ -9,17 +9,20 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-int64_t n;
 
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um número inteiro: ");
-scanf("%li", &n);
+  //Variáveis locais
+  int64_t n;
 
-//Escrevendo o número em questão como a soma de dois quadrados se posśivel
-write_square_sum(n);
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um número inteiro: ");
+    scanf("%li", &n);
 
-//Finalizando a aplicação
-return 0;
-          }
+  //Escrevendo o número em questão como a soma de dois quadrados se posśivel
+  write_square_sum(n);
+
+
+  //Finalizando a aplicação
+  return 0;
+
+}
