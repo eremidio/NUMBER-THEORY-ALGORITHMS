@@ -1,55 +1,30 @@
-//VAM0S IMPLEMENTAR UM PROGRAMA EM C QUE IMPLEMENTA O TEOREMA DE WILSON PARA DECIDIR SE UM NÚMERO É PRIMO
+//VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO wilson_prime_test.h
 //COMPILAR ESTEPROGRAMA COM O COMANDO: gcc -o wilson_prime_test wilson_prime_test.c
 
-/*
-O CHAMADO TEOREMA DE WILSON AFIRMA QUE UM NÚMERO p É PRIMO SE E SOMENTE SE (p-1)!=(p-1) mod(p).
-ESTE TEOREMA FORNECEUM TESTE EXTREMAMENTE BÁSICO PARA TESTAR A PRIMALIDADE DEUM NÚMERO.
 
-*/
-
-//**************************************************************************************************************************
-//CABEÇALHO
-#include"mod_bin_exponentiation.h"
+//Cabeçalho
+#include"wilson_prime_test.h"
 #include<stdio.h>
-#include<stdlib.h>
-#include<stdint.h>
-#include<stdbool.h>
 
-
-//**************************************************************************************************************************
-//FUNÇÕES
-bool wilson_test(uint64_t n){
-//Variáveis locais
-uint64_t result=1;
-//Procedimentos
-for(uint64_t i=2; i<n; ++i)
-result=mul_mod(result, i, n);
-
-if(result==(n-1))
-return true;
-else
-return false;
-                            };
-
-
-//**************************************************************************************************************************
-//FUNÇÃO PRINCIPAL
+//Função principal
 int main(){
-//Variáveis locais
-uint64_t number, i;
 
-//Procedimentos
-//Recebendo um input do usuário
-printf("Digite um limitante para sua sequência de números primos: ");
-scanf("%lu", &number);
+  //Variáveis locais
+  uint64_t number, i;
 
-//Printando uma sequência de números primos
-for(i=2; i<=number; ++i){
-if(wilson_test(i)==true)
-printf("%lu, ",i);
-                        };
-printf("\n");
+  //Procedimentos
+    //Recebendo um input do usuário
+    printf("Digite um limitante para sua sequência de números primos: ");
+    scanf("%lu", &number);
 
-//Finalizando a aplicação
-return 0;
-          }
+    //Printando uma sequência de números primos
+    for(i=2; i<=number; ++i){
+      if(wilson_prime_test(i)==true) printf("%lu, ",i);
+    };
+
+    printf("...\n");
+
+  //Finalizando a aplicação
+  return 0;
+
+}
