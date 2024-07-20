@@ -22,12 +22,13 @@ https://en.wikipedia.org/wiki/Cycle_detection#Brent.27s_algorithm
 #ifndef BRENT_POLLARD_RHO_FACTORIZATION_H
 #define BRENT_POLLARD_RHO_FACTORIZATION_H
 #include <stdbool.h>
+
 #include "int128.h"
 
 //********************************************************************************************************************************************************************
 // DECLARAÇÃO DE FUNÇÕES
 bool power2_checker(__int128_t);
-__int128_t gcd128(__int128_t, __int128_t);
+__int128_t euclides_algorithm128(__int128_t, __int128_t);
 void brent_pollard_rho_factorization(__int128_t);
 
 //********************************************************************************************************************************************************************
@@ -49,48 +50,11 @@ bool power2_checker(__int128_t x) {
 };
 
 // Função que implementa o algoritmo de Euclides
-__int128_t gcd128(__int128_t a, __int128_t b){
-
-  
-  //Variáveis locais
-  int bit_shift=0;
-
-  //Procedimentos
-    //Caso trivial
-    if(b==a || b==0)
-      return a;
-    if(a==0)
-      return b;
-
-
-    //Invertendo os argumentos da função se a<b
-    if(a<b)
-      return gcd128(b, a);
-
-
-    //Removendo fatores 2 em comum
-    while(!(a&1) && !(b&1)){
-      a>>=1; b>>=1;
-      bit_shift++;
-    }
-
-    //Loop principal
-    while(a>b || a<b){
-
-      if(a>b){
-        a-=b;
-        while(!(a&1)) a>>=1;
-      }
-
-      if(a<b){
-        b-=a;
-        while(!(b&1)) b>>=1;
-      }
-
-    }
-
-  //Em caso de falha
-  return (b<<bit_shift);
+__int128_t euclides_algorithm128(__int128_t a, __int128_t b) {
+  if (b == 0)
+    return a;
+  else
+    return euclides_algorithm128(b, (a % b));
 };
 
 // Função que implmenta a variante de Brent do algoritmo de Pollard
@@ -107,7 +71,7 @@ void brent_pollard_rho_factorization(__int128_t number) {
     xi = ((xi * xi) + 1) % number;
 
     // Cálculo de possíveis fatores primos do número a ser fatorado
-    factor = gcd128((xi - xm), number);
+    factor = euclides_algorithm128((xi - xm), number);
     if (factor > 1) {
       cofactor = number / factor;
       break;
