@@ -34,69 +34,112 @@ void strassen_pollard_factorization(__int128_t);
 //Algoritmo de Euclides para inteiros de 128 bits
 __int128_t gcd128(__int128_t a, __int128_t b){
 
-if(b==0)
-return a;
-else
-return  gcd128(b, (a%b));
+  
+  //Variáveis locais
+  int bit_shift=0;
+
+  //Procedimentos
+    //Caso trivial
+    if(b==a || b==0)
+      return a;
+    if(a==0)
+      return b;
+
+
+    //Invertendo os argumentos da função se a<b
+    if(a<b)
+      return gcd128(b, a);
+
+
+    //Removendo fatores 2 em comum
+    while(!(a&1) && !(b&1)){
+      a>>=1; b>>=1;
+      bit_shift++;
+    }
+
+    //Loop principal
+    while(a>b || a<b){
+
+      if(a>b){
+        a-=b;
+        while(!(a&1)) a>>=1;
+      }
+
+      if(a<b){
+        b-=a;
+        while(!(b&1)) b>>=1;
+      }
+
+    }
+
+  //Em caso de falha
+  return (b<<bit_shift);
                                              };
 
 
 //Função que calcula um número que contém possíveis divisores de um inteiro a ser fatorado
 __int128_t generate_divisor(__int128_t multiplier, __int128_t bound, __int128_t number){
-//Variáveis locais
-__int128_t temp=1, result=1, tester;
-__int128_t lower=binary_multiplication(multiplier, bound);
-__int128_t upper=lower+bound+1;
 
-//Procedimentos
-//Loop principal
-for(__int128_t i=lower; i<upper; ++i){
-temp=result;
-result=binary_multiplication(temp, i)%number;
-                                     };
+  //Variáveis locais
+  __int128_t temp=1, result=1, tester;
+  __int128_t lower=binary_multiplication(multiplier, bound);
+  __int128_t upper=lower+bound+1;
 
 
-//Resultado
-return result;
+  //Procedimentos
+    //Loop principal
+    for(__int128_t i=lower; i<upper; ++i){
+      temp=result;
+      result=binary_multiplication(temp, i)%number;
+    };
+
+
+  //Resultado
+  return result;
                                                                                        };
 
 
+
+
+//Função que implementa o algoritmo de Strassen-Pollard
 void strassen_pollard_factorization(__int128_t number){
-//Variáveis locais
-__int128_t d=sqrt128(sqrt128(number));
-__int128_t factor1, factor2, tester;
 
 
-//Procedimentos
-//Loop principal
-for(__int128_t i=(d+2); i>=0; --i){
-
-//Condição que determina a primalidade do número em questão
-if(i==0){
-printf("O número em questão é primo.\n");
-return;
-        };
-
-//Cálculo de possíveis fatores primos
-tester=generate_divisor(i, d, number);
-
-factor1=gcd128(tester, number);
-
-if(factor1>1){
-factor2=number/factor1;
-break;
-             };
+  //Variáveis locais
+  __int128_t d=sqrt128(sqrt128(number));
+  __int128_t factor1, factor2, tester;
 
 
-                                 };
+  //Procedimentos
+    //Loop principal
+    for(__int128_t i=(d+2); i>=0; --i){
+
+      //Condição que determina a primalidade do número em questão
+      if(i==0){
+        printf("O número em questão é primo.\n");
+        return;
+      };
 
 
-//Resultado da execução do algoritmo
-printf("Fatores encontrados:\n");
-printf128(factor1);
-printf128(factor2);
+      //Cálculo de possíveis fatores primos
+      tester=generate_divisor(i, d, number);
 
-                                                      };
+      factor1=gcd128(tester, number);
+      if(factor1>1){
+        factor2=number/factor1;
+        break;
+      };
+
+
+    };
+
+
+  //Resultado da execução do algoritmo
+  printf("Fatores encontrados:\n");
+  printf128(factor1);
+  printf128(factor2);
+
+};
 
 //*****************************************************************************************************************************************************************
 //FIM DO HEADER
