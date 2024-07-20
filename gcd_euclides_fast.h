@@ -25,6 +25,9 @@ uint64_t fast_euclides_algorithm(uint64_t , uint64_t);
 //FUNÇÕES
 //Algoritmo de euclides usando operações binárias
 uint64_t fast_euclides_algorithm(uint64_t a, uint64_t b){
+  
+  //Variáveis locais
+  int bit_shift=0;
 
   //Procedimentos
     //Caso trivial
@@ -39,29 +42,31 @@ uint64_t fast_euclides_algorithm(uint64_t a, uint64_t b){
       return fast_euclides_algorithm(b, a);
 
 
-    //Recursão
-      //Caso 1: ambos pares
-      if(!(a&1) && !(b&1))
-        return 2*fast_euclides_algorithm((a>>1), (b>>1));
+    //Removendo fatores 2 em comum
+    while(!(a&1) && !(b&1)){
+      a>>=1; b>>=1;
+      bit_shift++;
+    }
 
-      //Caso 2: ambos ímpares
-      else if((a&1) && (b&1))
-        return fast_euclides_algorithm(((a-b)>>1), b);
+    //Loop principal
+    while(a>b || a<b){
 
+      if(a>b){
+        a-=b;
+        while(!(a&1)) a>>=1;
+      }
 
-      //Caso 3: a ímpar e b par
-      else if((a&1) && !(b&1))
-        return fast_euclides_algorithm(a, (b>>1));
-  
-      //Caso 4: a par e b ímpar
-      else if(!(a&1) && (b&1))
-        return fast_euclides_algorithm((a>>1), b);
+      if(a<b){
+        b-=a;
+        while(!(b&1)) b>>=1;
+      }
 
+    }
 
-  //Caso de erro 
-  return (-1);
+  //Em caso de falha
+  return (b<<bit_shift);
 
-                                                        };
+};
 
 
 //*************************************************************************************************************************
