@@ -26,98 +26,133 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Pollard%27s_rho_algori
 
 //*********************************************************************************************************************
 //FUNÇÕES
-//Algoritmo de Euclides para calcular o mdc de dois inteiros
+//Algoritmo de Euclides para inteiros de 128 bits
 __int128_t gcd128(__int128_t a, __int128_t b){
 
- if(b==0)
-  return a;
- else
-  return gcd128(b, a%b);
-                                             };
+  
+  //Variáveis locais
+  int bit_shift=0;
+
+  //Procedimentos
+    //Caso trivial
+    if(b==a || b==0)
+      return a;
+    if(a==0)
+      return b;
+
+
+    //Invertendo os argumentos da função se a<b
+    if(a<b)
+      return gcd128(b, a);
+
+
+    //Removendo fatores 2 em comum
+    while(!(a&1) && !(b&1)){
+      a>>=1; b>>=1;
+      bit_shift++;
+    }
+
+    //Loop principal
+    while(a>b || a<b){
+
+      if(a>b){
+        a-=b;
+        while(!(a&1)) a>>=1;
+      }
+
+      if(a<b){
+        b-=a;
+        while(!(b&1)) b>>=1;
+      }
+
+    }
+
+  //Em caso de falha
+  return (b<<bit_shift);
+};
+
 
 
 //Função que implementa o algoritmo de Pollard
 void pollard_rho(__int128_t x, __int128_t y, __int128_t n){
 
- //Variáveis locais
- __int128_t factor1, factor2;
- __int128_t remainder=1;
- uint64_t counter=0;
- uint64_t a=1;
+  //Variáveis locais
+  __int128_t factor1, factor2;
+  __int128_t remainder=1;
+  uint64_t counter=0;
+  uint64_t a=1;
 
 
- //Procedimentos
-  //Testando inicialmente com x=2, y=2
-  restart:
-  while(remainder==1){
-   x=((x*x+a)%n);
-   y=((y*y+a)%n);
-   y=((y*y+a)%n);
+  //Procedimentos
+    //Testando inicialmente com x=2, y=2
+    restart:
+    while(remainder==1){
+      x=((x*x+a)%n);
+      y=((y*y+a)%n);
+      y=((y*y+a)%n);
 
 
-   if(x>y)
-    remainder=gcd128((x-y), n);
-   if(x<y)
-    remainder=gcd128((y-x), n);
+      if(x>y) remainder=gcd128((x-y), n);
+      if(x<y) remainder=gcd128((y-x), n);
 
 
-   if(remainder>1 && remainder<n){
-    factor1=remainder;
-    factor2=n/factor1;
-    printf("Fatores não triviais encontrados:\n");
-    printf128(factor1);
-    printf128(factor2);
-    return;
-                                 };
+      if(remainder>1 && remainder<n){
+        factor1=remainder;
+        factor2=n/factor1;
+        printf("Fatores não triviais encontrados:\n");
+        printf128(factor1);
+        printf128(factor2);
+        return;
+      };
 
 
-   //Atualizando variáveis
-   counter++;
-   if(counter>1e10){
-    counter=0;
-    a++;
-                   };
+     //Atualizando variáveis
+     counter++;
+     if(counter>1e10){
+      counter=0;
+      a++;
+     };
 
-   if(remainder==n){
-    printf("Teste falhou!\n");
-    return;
-                   };
+    if(remainder==n){
+      printf("Teste falhou!\n");
+      return;
+    };
 
-                     };
+  };
 
-   printf("Teste falhou!\n");
+  printf("Teste falhou!\n");
 
-                                                  };
+
+};
 
 //*********************************************************************************************************************
 //FUNÇÃO PRINCIPAL
 int main(){
 
- //Variáveis locais
- __int128_t number, seed1, seed2;
- char number_string[41], number_string1[41], number_string2[41];
+  //Variáveis locais
+  __int128_t number, seed1, seed2;
+  char number_string[41], number_string1[41], number_string2[41];
 
- //Recebendo o input do 
- printf("Digite o número a ser fatorado: ");
- if(scanf("%s", number_string)!=1)
+
+  //Procedimento
+    //Recebendo o input do 
+    printf("Digite o número a ser fatorado: ");
+    if(scanf("%s", number_string)!=1) return 0;
+    number=scanf128(number_string);
+
+
+    printf("Semente para geração de números pseudoaleatórios: ");
+    if(scanf("%s", number_string1)!=1) return 0;
+    seed1=scanf128(number_string1);
+
+    printf("Semente para geração de números pseudoaleatórios: ");
+    if(scanf("%s", number_string2)!=1) return 0;
+    seed2=scanf128(number_string2);
+
+    //Aplicando o algoritmo de Pollard rho (p-1)
+    pollard_rho(seed1, seed2, number);
+
+  //Finalizando a aplicação
   return 0;
- number=scanf128(number_string);
 
-
- printf("Semente para geração de números pseudoaleatórios: ");
- if(scanf("%s", number_string1)!=1)
-  return 0;
- seed1=scanf128(number_string1);
-
- printf("Semente para geração de números pseudoaleatórios: ");
- if(scanf("%s", number_string2)!=1)
-  return 0;
- seed2=scanf128(number_string2);
-
- //Aplicando o algoritmo de Pollard rho (p-1)
- pollard_rho(seed1, seed2, number);
-
- //Finalizando a aplicação
- return 0;
-
-          }
+}
