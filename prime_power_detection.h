@@ -41,6 +41,7 @@ const int q65[65]={1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0
 //**************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
 bool fast_square_detection(int64_t, int64_t*);
+double nth_root(int64_t, int);
 bool fast_prime_power_detection(int64_t, int64_t*);
 
 //**************************************************************************************************************************************
@@ -76,10 +77,15 @@ bool fast_square_detection(int64_t number, int64_t* root){
 };
 
 
+//Função que calcula a n-ésima raiz de um inteiro
+double nth_root(int64_t n, int order){
+  return exp(log(n)/order);
+};
+
 //Função que detecta potências de números primos por divisão e erro usando uma roda 210k+r
 bool fast_prime_power_detection(int64_t number, int64_t* prime){
 
-  //Caso base: n=2 ou n primo
+  //Casos bases: n=2 ou n primo
   if(!(number&1)){
 
     case2:
@@ -102,57 +108,53 @@ bool fast_prime_power_detection(int64_t number, int64_t* prime){
 
 
   //Variáveis locais
-  int prime105[3] = {3, 5, 7};
-  int remainder_seed[48] = {1,   11,  13,  17,  19,  23,  29,  31,  37,  41, 43,  47,  53,  59,  61,  67,  71,  73,  79,  83,
-                            89,  97,  101, 103, 107, 109, 113, 121, 127, 131,137, 139, 143, 149, 151, 157, 163, 167, 169, 173,
-                            179, 181, 187, 191, 193, 197, 199, 209};
-
-
-  int64_t prime_divisor;
-  int64_t root=sqrt(number);
+  int max_root=log2(number);
+  int64_t upper,lower, upper2, lower2, tester;
+  double root;
 
 
   //Procedimentos
-    //Teste com fatores 3,5,7
-    for(int k=0; k<3; ++k){
+    //Loop sobre possíveis expoentes
+    for(int i=2; i<=max_root; ++i){
+      root=nth_root(number, i);
+      upper=ceil(root);
+      upper2=upper+1;
+      lower=floor(root);
+      lower2 = lower-1;
+
+      tester=1;
+      while(tester<number) tester*=upper;
+      if(tester== number && baillie_psw_test(upper)==true){
+        (*prime)=upper;
+        return true;
+      }
+           
+      tester=1;
+      while(tester<number) tester*=lower;
+      if(tester== number && baillie_psw_test(lower)==true){
+        (*prime)=lower;
+        return true;
+      }
  
-      prime_divisor=prime105[k];
- 
-      if((number%prime_divisor)==0){
-        while((number%prime_divisor)==0) number/=prime_divisor;
-        if(number==1){
-          (*prime)=prime_divisor;
-          return true;
-        }
-        else return false;
-                                   };
+      tester=1;
+      while(tester<number) tester*=upper2;
+      if(tester== number && baillie_psw_test(upper2)==true){
+        (*prime)=upper2;
+        return true;
+      }
+           
+      tester=1;
+      while(tester<number) tester*=lower2;
+      if(tester== number && baillie_psw_test(lower2)==true){
+        (*prime)=lower2;
+        return true;
+      }   
+
     }
+  
+  //Em caso de falha
+  return false;
 
-
-    //Loop principal
-    for(int64_t i=0; ; ++i){
-
-      for(int j=0; j<48; ++j){
-
-          prime_divisor=(210*i)+remainder_seed[j];
-          if(prime_divisor>root) return false;
-
-          if((number%prime_divisor)==0 && prime_divisor>7){
-
-             while((number%prime_divisor)==0) number/=prime_divisor;
-             if(number==1){
-               (*prime)=prime_divisor;
-               return true;
-                          }
-             else return false;
-             
-          }
-
-                             };//Fim do loop sobre classes residuais módulo 210 para números primos
-    }  //Fim do loop principal 
-
-
-    return false;
 };
 
 
