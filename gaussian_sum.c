@@ -7,20 +7,22 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-double _Complex gaussian_sum;
-int64_t p, q;
 
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um inteiro: ");
-scanf("%li", &p);
-printf("Digite um inteiro: ");
-scanf("%li", &q);
+  //Variáveis locais
+  double _Complex gaussian_sum;
+  int64_t p, q;
 
-//Calculando a soma de Gauss
-gaussian_sum=quadratic_gaussian_sum(p, q);
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um inteiro: ");
+    scanf("%li", &p);
+    printf("Digite um inteiro: ");
+    scanf("%li", &q);
 
-//Finalizando a aplicação
-return 0;
-          }
+  //Calculando a soma de Gauss
+  gaussian_sum=quadratic_gaussian_sum(p, q);
+
+  //Finalizando a aplicação
+  return 0;
+
+}
