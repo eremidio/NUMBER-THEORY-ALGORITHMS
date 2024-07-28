@@ -7,22 +7,21 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-__int128_t number;
-char number_string[41];
 
-//Recebendo input do usuário
-printf("Digite o número a ser fatorado: ");
+  //Variáveis locais
+  __int128_t number;
+  char number_string[41];
 
-if(scanf("%s", number_string)!=1)
-return 0;
-number=scanf128(number_string);
+  //Recebendo input do usuário
+  printf("Digite o número a ser fatorado: ");
 
-//Aplicando o algoritmo de Lehmer
-lehmer_factorization_method(number);
+  if(scanf("%s", number_string)!=1) return 0;
+  number=scanf128(number_string);
 
-//Finalizando a aplicação
-return 0;
+  //Aplicando o algoritmo de Lehmer
+  lehmer_factorization_method(number);
 
-          }
+  //Finalizando a aplicação
+  return 0;
 
+}
