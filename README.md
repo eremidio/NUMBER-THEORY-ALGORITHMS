@@ -66,6 +66,10 @@ https://ieeexplore.ieee.org/document/5662138/authors#authors
 
 http://www.mat.uniroma3.it/users/pappa/sintesi/20_Bedodi.pdf
 
+https://arxiv.org/pdf/1003.3261
+
+http://vigir.missouri.edu/~gdesouza/Research/Conference_CDs/IEEE_WCCI_2020/CEC/Papers/E-24289.pdf
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
