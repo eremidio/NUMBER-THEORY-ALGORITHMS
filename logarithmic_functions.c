@@ -10,19 +10,23 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-uint64_t number1;
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um número inteiro: ");
-scanf("%lu", &number1);
 
-//Testando funções logarítmicas
-printf("Λ(%lu)=%lf\n", number1, von_mangoldt_function(number1));
-printf("Θ(%lu)=%lf\n", number1, first_chebyshev_function(number1));
-printf("ψ(%lu)=%lf\n", number1, second_chebyshev_function(number1));
-printf("Π(%lu)=%lf\n", number1, pi_weight_function(number1));
+  //Variáveis locais
+  int64_t number1;
 
-//Finalizando a aplicação
-return 0;
-          }
+
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um número inteiro: ");
+    scanf("%lu", &number1);
+
+    //Testando funções logarítmicas
+    printf("Λ(%lu)=%lf\n", number1, von_mangoldt_function(number1));
+    printf("Θ(%lu)=%lf\n", number1, first_chebyshev_function(number1));
+    printf("ψ(%lu)=%lf\n", number1, second_chebyshev_function(number1));
+    printf("Π(%lu)=%lf\n", number1, pi_weight_function(number1));
+
+  //Finalizando a aplicação
+  return 0;
+
+}
