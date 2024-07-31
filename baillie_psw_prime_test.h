@@ -1,4 +1,4 @@
-// VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE BAILLIE-PSW PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE BAILLIE-PSW PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
 
 /*
 O TESTE DE PRIMALIDADE BAILLIE-PSW É UM DOS TESTE DE PRIMALIDADE MAIS
@@ -29,7 +29,7 @@ https://en.wikipedia.org/wiki/Baillie–PSW_primality_test
 bool small_prime_factor_test(uint64_t , uint64_t[]);
 bool lucas_lehmer_test(uint64_t);
 bool baillie_test(uint64_t);
-bool lucas_sequence_test(int64_t, int64_t, int64_t);
+bool lucas_problable_prime_test(int64_t, int64_t, int64_t, int64_t);
 bool baillie_psw_test(uint64_t);
 
 //********************************************************************************************************************
@@ -103,52 +103,62 @@ bool baillie_test(uint64_t n) {
 };
 
 // Teste de Lucas usando sequências de Lucas
-bool lucas_sequence_test(int64_t n, int64_t P, int64_t Q) {
-  int64_t U0 = 0, U1 = 1, V0 = 2, V1 = P;
-  int64_t k = 1; /*variável que registra o número de iterações (n-2) e
-                    (n-1)determinam o n-ésimo termo*/
-  ;
-  int64_t D = P * P - 4 * Q;  // Discrimante da equação característica x²-Px+Q=0
-  while (k <= n) {
-    // Caso trivial
-    if (k == n) return U1 == 0;
+bool lucas_problable_prime_test(int64_t n, int64_t D, int64_t P, int64_t Q){
 
-    // Calculando os termos da sequência de Lucas de primeiro e segundo tipo
-    // usando as relações recursivas: x(n)=p.x(n-1)-q.x(n-2),com U(0)=1, U(1)=1
-    // e V(0)=2, V(1)=P
-    int64_t U2 = P * U1 - Q * U0, V2 = P * V1 - Q * V0;
+    //Função auxiliar usada para redução binária dos coeficientes da sequência de Lucas
+    int64_t div2mod(int64_t x, int64_t n) {
+        if (x & 1) {
+            return ((x + n) >> 1) % n;
+        } else {
+            return (x >> 1) % n;
+        }
+    }
 
-    // Assegurando que os termos da sequência estão dentro do limite de validade
-    if (U1 % 2 == 0)
-      U2 %= n;
-    else
-      U2 = (U2 + n) % n;
+  
 
-    if (V1 % 2 == 0)
-      V2 %= n;
-    else
-      V2 = (V2 + n) % n;
+    //Variáveis locais
+    int64_t U = 1;
+    int64_t V = P;
+    int64_t k = n + 1;
+    char digits[65];
+    int index = 0;
 
-    // Atualizando os termos na sequência x(n-1)--> x(n)
-    U0 = U1;
-    U1 = U2;
-    V0 = V1;
-    V1 = V2;
-    k *= 2;
-    if (k == n) return U1 == 0;
 
-    // Calculando o discrimante da equação característica x²-Px+Q=0
-    // Condição de primalidade
-    if (D == 1) return true;
+    //Procedimentos
+    //Calculando string binária de (n+1)
+    while (k > 0) {
+        digits[index++] = (k & 1) ? '1' : '0';
+        k >>= 1;
+    }
+    digits[index] = '\0';
 
-    // Atualizando os parâmetros para a proxima iteração
-    D = (D + D) % n;
-    P = (P * P - 2 * Q) % n;
-    Q = (Q * Q) % n;
-    if (Q < 0) Q += n;
-  }
-  return false;
-};
+
+    for (int i = 0; i < index / 2; i++) {
+        char temp = digits[i];
+        digits[i] = digits[index - i - 1];
+        digits[index - i - 1] = temp;
+    }
+
+    //Cálculando o (n+1)-ésimo termo da sequência de Lucas a menos de uma relação de congruência
+    for (int i = 1; i < index; i++) {
+        U = (U * V) % n;
+        V = div2mod((V * V) + (D * U * U), n);
+
+        if (digits[i] == '1') {
+            int64_t newU = div2mod((P * U) + V, n);
+            int64_t newV = div2mod((D * U) + (P * V), n);
+            U = newU;
+            V = newV;
+        }
+    }
+
+    //Resultado
+    if( U == 0) return true; //Condição de primalidade: U(n+1)= 0 (mod n)
+    else return false;
+
+
+}
+
 
 //Função que implementa uma versão menos robusta do teste de primalidade de Baillie-PSW
 bool baillie_psw_test(uint64_t n) {
@@ -191,27 +201,35 @@ bool baillie_psw_test(uint64_t n) {
   if ((jacobi(31, n) * jacobi(31, n)) != 1) return true;
   if ((jacobi(37, n) * jacobi(37, n)) != 1) return true;
 
-  // Teste 6: Teste PSW da sequência de Lucas
-  else if (lucas_sequence_test(n, 2, 1) == false ||
-           lucas_sequence_test(n, 3, 1) == false ||
-           lucas_sequence_test(n, 5, 1) == false)
-    return false;
-  else if (lucas_sequence_test(n, 7, 1) == false ||
-           lucas_sequence_test(n, 11, 1) == false ||
-           lucas_sequence_test(n, 13, 1) == false)
-    return false;
-  else if (lucas_sequence_test(n, 17, 1) == false ||
-           lucas_sequence_test(n, 19, 1) == false ||
-           lucas_sequence_test(n, 23, 1) == false)
-    return false;
-  else if (lucas_sequence_test(n, 29, 1) == false ||
-           lucas_sequence_test(n, 31, 1) == false ||
-           lucas_sequence_test(n, 37, 1) == false)
+  //Etapa 6.1:seleção de parâmetros para o teste da sequência de Lucas
+    //Variáveis locais
+    int64_t D=5;
+    int64_t minus_D=(-7);
+    int64_t P=1, Q;
+
+    //Ajuste do parâmetro D e Q
+    while(1){
+      if(jacobi(D, n)==(-1)) break;
+      else D+=4;
+     
+      if(jacobi_symbol_extension(minus_D, n)==(-1)){
+        D=minus_D;
+        break;
+      }
+      else minus_D-=4;
+
+    }
+
+    Q=(1-D)/4;
+  
+
+  // Teste 6.2: Teste PSW da sequência de Lucas
+  if(lucas_problable_prime_test(n, D, P, Q)==false)
     return false;
 
   // Caso o número passe no testes acima, um primo foi encontrado
-  else
-    return true;
+  return true;
+
 };
 
 //********************************************************************************************************************
