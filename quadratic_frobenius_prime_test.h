@@ -1,17 +1,44 @@
-// VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O TESTE DE FRÖBENIUS PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O TESTE DE FRÖBENIUS PARA TESTAR A PRIMALIDADE DE UM NÚMERO INTEIRO
 
 /*
-O TESTE DE PRIMALIDADE DE FRÖBENIUS É UM TESTE PROBABILÍSTICO QUE USA POLINÔMIOS DO SEGUNDO GRAU E OS CHAMADOS ENDOMORFISMOS DE FRÖBENIUS
-PARA TESTAR A PRIMALIDADE DE UM INTEIRO. NÚMEROS COMPOSTOS QUE PASSAM ESSE TESTES SÃO DENOMINADOS PSEUDOPRIMOS DE FRÖBENIUS. O TESTE EM
-QUESTÃO PODE TAMBÉM SER EXPRESSO EM TERMOS DE SEQUÊNCIAS DE LUCAS 
+O TESTE DE PRIMALIDADE DE FRÖBENIUS É UM TESTE PROBABILÍSTICO QUE USA POLINÔMIOS DO SEGUNDO GRAU E OS CHAMADOS
+ENDOMORFISMOS DE FRÖBENIUS (x->x^p EM ANEIS COMUTATIVOS COM CARACTERÍSICA p, COM p PRIMO) PARA TESTAR A
+PRIMALIDADE DE UM INTEIRO. NÚMEROS COMPOSTOS QUE PASSAM ESSE TESTES SÃO DENOMINADOS PSEUDOPRIMOS DE FRÖBENIUS.
+
+O TESTE É BASEADO NA SEGUINTE PROPOSIÇÃO: SEJAM a,b INTEIROS TAIS QUE Δ=a²-4b NÃO SEJA UM QUADRADO PERFEITO.
+UM INTEIRO COMPOSTO n É DENOMINADO UM PSEU DO PRIMO DE FRÖBENIUS EM RELAÇÃO A f(x)=x²-ax+b SE AS SEGUINTES 
+CONDIÇÕES FOREM VÁLIDAS:
+1. x²=(x-a) (mod f(x), n) se (Δ|n)=-1
+2. x²=x (mod f(x), n) se (Δ|n)=1
+(p|q) DENOTA O SÍMBOLO DE JACOBI.
+
+
+O TESTE DE FRÖBENIUS É UM DOS TESTES PROBABILÍSTICOS MAIS EFICIENTES QUE EXISTEM, COMPOSTOS TEM PROBABILIDADE 
+DE 1/7710 DE PASSAREM NO TESTE.
+
+O TESTE EM QUESTÃO PODE TAMBÉM SER EXPRESSO EM TERMOS DE SEQUÊNCIAS DE LUCAS DO PRIMEIRO E SEGUNDO TIPO.
+UM INTEIRO n É CONSIDERADO UM PSEUDOPRIMO DE FRÖBENIUS SE:
+SEJAM D=P²-4Q, δ=(D|n)
+
+1.gcd(n, 2QD)=1
+2. U(n-δ)=0 (mod n+1)
+3. V(n-δ)=2Q^((1-δ)/2)
+
+
+GENERALIZAÇÕES DESTE TESTE EXISTEM QUE INCORPORAM UMA CLASSE MAIOR DE POLINÔMIOS (VER ARTIGO NAS 
+REFERÊNECIAS).
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Quadratic_Frobenius_test#Concept
                           https://trizenx.blogspot.com/2020/01/primality-testing-algorithms.html
+                          https://en.wikipedia.org/wiki/Frobenius_endomorphism
+                          https://en.wikipedia.org/wiki/Frobenius_pseudoprime
+                          Prime Numbers A computational Perspective, by Richard Crandall and Carl Pomerance
 
 ARTIGO ORIGINAL DISPONÍVEL EM:
 https://www.sciencedirect.com/science/article/pii/S0022314X98922478?via%3Dihub
 
-*/
+
+*/ 
 
 //********************************************************************************************************************************************************************
 // CABEÇALHO
@@ -32,6 +59,7 @@ enum show_frobenius_witness{Verbose, Succint};
 // DECLARAÇÃO DE FUNÇÕES
 int64_t gcd_frobenius(int64_t, int64_t);
 int64_t modular_inverse(int64_t, int64_t);
+bool quadratic_frobenius_primality_test_one_run(int64_t, enum show_frobenius_witness);
 bool quadratic_frobenius_primality_test(int64_t, enum show_frobenius_witness);
 
 //********************************************************************************************************************************************************************
@@ -39,11 +67,9 @@ bool quadratic_frobenius_primality_test(int64_t, enum show_frobenius_witness);
 //Função que implementa o algoritmo de Euclides
 int64_t gcd_frobenius(int64_t a, int64_t b){
 
-  if(b==0)
-    return a;
-  else
-    return gcd_frobenius(b, (a%b));
-                                           };
+  if(b==0)return a;
+  else return gcd_frobenius(b, (a%b));
+};
 
 
 //Função que calcula inversos multiplicativo modular usando o algoritmo de Euclides extendido
@@ -80,22 +106,26 @@ int64_t modular_inverse(int64_t a, int64_t n){
     return (x1 + n);
   else
     return x1;
-                                             };
+
+};
 
 
-//Função que implementa o teste de primalidade de Fröbenius
-bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x){
+//Função que implementa uma rodada do teste de primalidade de Fröbenius
+bool quadratic_frobenius_primality_test_one_run(int64_t n, enum show_frobenius_witness x){
 
-  //Caso base: n é par
+  //Caso base: n é par e primos inferiores a 30
   if(!(n&1))
     return false;
 
-  //Semente para geraçção de números aleatórios
+  if(n==2 || n==3 || n==5 || n==7 || n==11 || n==13 || n==17 || n==19 || n==23 || n==29) return true;
+  if(n%2==0 || n%3==0 || n%5==0 || n%7==0 || n%11==0 || n%13==0 || n%17==0 || n%19==0 || n%23==0 || n%29==0) return false;
+
+  //Semente para geração de números aleatórios
   srand(time(NULL));
 
   //Variáveis locais
   int64_t tester;
-  int64_t a, b, b_inv, d;
+  int64_t a, b=1, b_inv, d;
   int64_t m, w;
   __int128_t temp, u, v;
   int* bit_string=NULL;
@@ -110,7 +140,7 @@ bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x
     b=1+rand()%(n-1);
     
 
-    if((b%2)==0 || a<0) goto start;
+    if((b&1)==0 || a<0) goto start;
 
     b_inv=modular_inverse(b, n);
     d=(a*a)-(4*b);
@@ -135,15 +165,13 @@ bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x
 
 
     //Calculando a string binária associada ao parâmetro m
-    while(m>0){
+    while (m > 0) {
       bit_size++;
-      bit_string=(int*)realloc(bit_string, bit_size*sizeof(int));
- 
-      if((b&1)) bit_string[bit_size-1]=1;
-      else bit_string[bit_size-1]=0;
+      bit_string = (int*)realloc(bit_string, bit_size * sizeof(int));
+      bit_string[bit_size - 1] = m & 1;
+      m >>= 1;
+    }
 
-      m>>=1;   
-              };
 
     //Ajuste dos parâmetros da sequência de Lucas
     u=2;
@@ -163,16 +191,22 @@ bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x
                           };
 
 
-                                      };
+    };
+
+
+    //Limpando o cachê de memória
+    if(bit_string) free(bit_string);
 
 
     //Análise da execução do algoritmo
       //Teste de Lucas
-      if((w*u)!=((v<<1)%n)){
+      if((w*u)%n!=((v<<1)%n)){
         if(x==Verbose)
           printf("Testemunha da composição de %li: %li e %li\n", n, a, b);
         return false;
-                           };
+      };
+
+
 
 
       //Teste de Fröbenius
@@ -188,12 +222,23 @@ bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x
       return false;
            };
 
+   
       return true;
 
-                                                                                 };
+};
 
 
+//Função que implementa o teste de primalidade de Fröbenius
+bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x){
 
+  //Resultado
+  for(int i=0; i<25; ++i){
+    if(quadratic_frobenius_primality_test_one_run(n, x)==true) return true;
+  }
+
+  return false;
+
+};
 
 
 //********************************************************************************************************************************************************************
