@@ -2,29 +2,35 @@
 
 
 '''
-O TESTE DE PRIMALIDADE DE KONYAGIN-PORMERANCE É UM ALGORITMO COM TEMPO DE EXECUÇÃO POLINOMIAL QUE PERMITE DETECTAR A PRIMALIDADE DE UM INTEIRO n PROVIDO QUE UMA
-FATORAÇÃO COMPLETA DE (n-1) SEJA PROVIDÊNCIADA.
+O TESTE DE PRIMALIDADE DE KONYAGIN-PORMERANCE É UM ALGORITMO COM TEMPO DE EXECUÇÃO POLINOMIAL
+QUE PERMITE DETECTAR A PRIMALIDADE DE UM INTEIRO n PROVIDO QUE UMA FATORAÇÃO COMPLETA DE
+(n-1) SEJA PROVIDÊNCIADA.
 
-A IDEIA FUNDAMENTAL DO ALGORITMO É QUE USANDO A FATORAÇÃO COMPLETA DE (n-1) PODEMOS DETERMINAR PARA UM INTEIRO a, COPRIMO COM n FACILMENTE A SUA ORDEM MULTIPLICATIVA,
-ISTO É, O MENOR INTEIRO r TALQUE QUE a^r=1 (mod n). TESTES ENVOLVENDO A ORDEM MULTIPLICATIVA DE UM GRUPO FINITO COMBINADO COMO TESTE DE FERMAT NOS PERMITEM DETERMINAR
-A PRIMALIDADE DO NÚMERO A SER TESTADO.
+A IDEIA FUNDAMENTAL DO ALGORITMO É QUE USANDO A FATORAÇÃO COMPLETA DE (n-1) PODEMOS DETERMINAR
+PARA UM INTEIRO a, COPRIMO COM n FACILMENTE A SUA ORDEM MULTIPLICATIVA, ISTO É, O MENOR
+INTEIRO r TALQUE QUE a^r=1 (mod n). TESTES ENVOLVENDO A ORDEM MULTIPLICATIVA DE UM GRUPO
+FINITO COMBINADO COMO TESTE DE FERMAT NOS PERMITEM DETERMINAR A PRIMALIDADE DO NÚMERO A SER
+TESTADO.
 
 PARA MAIORES INFORMAÇÕES: Number Theoretical Algorithms in Criptography by O. N. Vasilenko
 
 ''' 
 
-#IMPORTANDO BIBLIOTECAS USADAS NOP ALGORITMO
+#-------------------------------------------------------------------------------------------------------------------------------------
+#IMPORTANDO BIBLIOTECAS USADAS NO ALGORITMO
 from math import sqrt
 from sympy import factorint
 import gmpy2
 
-
+#-------------------------------------------------------------------------------------------------------------------------------------
 #FUNÇÕES
+
+#1
 def lcm(a:int, b:int)->int:
  '''Função que calcula o mmc de dois inteiros'''
  return ((a*b)//gmpy2.gcd(a,b))
 
-#4
+#2
 def integer_factorization(n:int)->(list, list):
  '''Função que fatora um inteiro e aloca os fatores primos e seus respectivos expoentes em listas'''
  #Variáveis locais
@@ -42,12 +48,7 @@ def integer_factorization(n:int)->(list, list):
  return prime_list, exponent_list
 
 
-'''TESTE 1, USE UM # APÓS O MESMO'''
-#p_list, e_list=integer_factorization(126)
-#print(e_list, p_list)
-
-
-#4.1
+#2.1
 def extract_prime_factors(n:int)->list:
  '''Função que fatora um inteiro e aloca os fatores primos uma lista'''
  #Variáveis locais
@@ -99,12 +100,8 @@ def multiplicative_order(a:int, n:int, prime_list:list, exponent_list:list)->int
 
 
 
-'''TESTE 2, USE UM # APÓS O MESMO'''
-#p2_list:list=extract_prime_factors(126) #Fatorar (n-1)
-#print(multiplicative_order(3, 127, p2_list, e_list))
 
-
-#6
+#3
 def generate_prime_list(n:int)->list:
  '''Função que gera uma pequena lista de números primos até log²(n)+1, onde n é o valor a ser testado'''
 
@@ -122,7 +119,7 @@ def generate_prime_list(n:int)->list:
  return small_prime_list
 
 
-#7
+#4
 def konyagin_pomerance_primality_test(n:int)->bool:
  '''Função que implementa o teste de primalidade de Konyagin-Pomerance para testar a primalidade de um inteiro'''
 
@@ -185,4 +182,3 @@ def konyagin_pomerance_primality_test(n:int)->bool:
  
  #Resultado: primalidade não detectada na parte principal do algoritmo
  return False
-
