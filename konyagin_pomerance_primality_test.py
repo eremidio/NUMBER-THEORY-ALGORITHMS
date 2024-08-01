@@ -64,13 +64,14 @@ def extract_prime_factors(n:int)->list:
 
 
 
-#5
+#3
 def multiplicative_order(a:int, n:int, prime_list:list, exponent_list:list)->int:
  '''Função que calcula a ordem multiplicativa de um inteiro E(a), a^E(a) =1 (mod n), provido a decomposição de (n-1) em fatores primos'''
  
  #Variáveis locais
  M:int=(n-1)
  j:int=0
+ result:int=M
  N:int=len(prime_list)
  A:int=0
 
@@ -85,23 +86,25 @@ def multiplicative_order(a:int, n:int, prime_list:list, exponent_list:list)->int
   #Loop sobre potências do j-ésimo fator primo
   for k in range((exponent_list[j]+1)):
 
-   if((A%n)==1):
-    return M
+   if((A%n)==1 and M<result):
+    result = M
+    break
    else:
     M*=prime_list[j]
-    temp:int=pow(A, prime_list[j])
-    A=temp
+
+   temp:int=pow(a, M)
+   A=temp
 
   #Atualizando variáveis para a próxima iteração
   j+=1
 
  #Resultado
- return (n-1)
+ return result
 
 
 
 
-#3
+#4
 def generate_prime_list(n:int)->list:
  '''Função que gera uma pequena lista de números primos até log²(n)+1, onde n é o valor a ser testado'''
 
@@ -119,7 +122,7 @@ def generate_prime_list(n:int)->list:
  return small_prime_list
 
 
-#4
+#5
 def konyagin_pomerance_primality_test(n:int)->bool:
  '''Função que implementa o teste de primalidade de Konyagin-Pomerance para testar a primalidade de um inteiro'''
 
@@ -182,3 +185,4 @@ def konyagin_pomerance_primality_test(n:int)->bool:
  
  #Resultado: primalidade não detectada na parte principal do algoritmo
  return False
+
