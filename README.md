@@ -76,6 +76,8 @@ https://github.com/armchaircaver/Baillie-PSW
 
 https://www.ams.org/journals/mcom/2002-71-240/S0025-5718-02-01424-2/S0025-5718-02-01424-2.pdf
 
+https://eprint.iacr.org/2005/462
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
