@@ -5,7 +5,7 @@ O ALGORITMO DE BERKELAMP-RABIN É UM ALGORITMO PROBABILÍSTICO QUE PERMITE DETER
 POLINÔNIO SOBRE UM CORPO FINITO DO PRIMEIRO TIPO (INTEIRO A MENOS DE UMA CONGRUÊNCIA) F(p).
 
 O ALGORITMO BASEIA-SE NA SEGUINTE OBERVAÇÃO: CALCULAR RAÍZES DE UM POLINÔMIO É EQUIVALENTE A SUA
-DECOMPOSIÇÃO EM FATORES LINEARES f(x)=x-a, a SENDO UMA RAÍZES.
+DECOMPOSIÇÃO EM FATORES LINEARES f(x)=x-a, a SENDO UMA DE SUAS RAÍZES.
 
 DE MODO SIMILAR AO GRUPO DE INTEIROS COM OPERAÇÃO DE MULTIPLICAÇÃO, PODE-SE DEFINIR UM ANÁLOGO A
 LEI DE RECIPROCIDADE QUADRATICA SE UMA EXPRESSÃO DO TIPO f(x)=x-a, FOR UM DIVISOR DE
@@ -41,7 +41,7 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Berlekamp–Rabin_algo
 //DECLARAÇÃO DE FUNÇÕES
 polynomial<int64_t> set_quadratic_polynomial(int64_t,int64_t);
 polynomial<int64_t> set_powering_polynomial(int64_t);
-bool find_quadratic_residue(int64_t&, int64_t, int64_t, int64_t);
+bool find_quadratic_residue(polynomial<int64_t>&, int64_t&, int64_t, int64_t, int64_t);
 int64_t berkelamp_rabin_modular_square_root(int64_t, int64_t);
 
 
@@ -94,11 +94,8 @@ polynomial<int64_t> set_powering_polynomial(int64_t a){
 };
 
 //Função que encontra classes residuais quadráticas β²=a (mod n)
-bool find_quadratic_residue(int64_t& beta, int64_t lambda, int64_t a, int64_t p){
+bool find_quadratic_residue(polynomial<int64_t>& power_poly, int64_t& beta, int64_t lambda, int64_t a, int64_t p){
 
-  //Variáveis locais
-  polynomial<int64_t> power_poly= set_powering_polynomial(a);
-  
   //Procedimentos
     //Testando o valor de λ
     polynomial<int64_t> quadratic_poly=set_quadratic_polynomial(lambda, a);
@@ -125,13 +122,14 @@ int64_t berkelamp_rabin_modular_square_root(int64_t a, int64_t p){
   if(legendre(a,p)!=1) return 0;
 
   //Variáveis locais
+  polynomial<int64_t> power_poly= set_powering_polynomial(a);
   int64_t beta, lambda=2, tester1, tester2;
 
   //Procedimentos
     //Determinando os parâmetros λ e β
     while(lambda <p){
 
-      if(find_quadratic_residue(beta, lambda, a, p)==true){
+      if(find_quadratic_residue(power_poly, beta, lambda, a, p)==true){
         tester1=(beta+lambda);
         tester2=(beta-lambda);
 
