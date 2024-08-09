@@ -140,6 +140,7 @@ void polynomial<T>::adjust_degree(){
     degree = polynomial_coefficients.size()-1;
     polynomial_powers.resize(0);
     for (int64_t i = degree; i >= 0; --i) polynomial_powers.push_back(i);
+    if(degree==0 && polynomial_coefficients.size()==0) polynomial_coefficients.push_back(0);
 
 }
 
@@ -153,6 +154,13 @@ std::string polynomial<T>::algebraic() {
   int64_t i;
 
   // Procedimentos
+   //Caso base: zero
+   if((polynomial_coefficients[0]==0 && degree==0) || polynomial_coefficients.size()==0){
+     polynomial_string = " ";
+     return polynomial_string;    
+   }
+    
+    
   // 1º coeficiente
   if (polynomial_coefficients[0] != 0) {
     polynomial_string += std::to_string(polynomial_coefficients[0]);
@@ -246,7 +254,7 @@ polynomial<T> polynomial<T>::operator+(polynomial<T>& p2) {
   };
 
   //Ajuste final
-  if(result.polynomial_coefficients[0]==0)
+  if(result.polynomial_coefficients[0]==0 && result.degree>0)
     result.adjust_degree();
 
   // Resultado
@@ -319,7 +327,7 @@ polynomial<T> polynomial<T>::operator-(polynomial<T>& p2) {
   };
 
   //Ajuste final
-  if(result.polynomial_coefficients[0]==0)
+  if(result.polynomial_coefficients[0]==0 && result.degree>0)
     result.adjust_degree();
 
   // Resultado
