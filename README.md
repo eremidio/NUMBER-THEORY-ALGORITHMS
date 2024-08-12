@@ -92,6 +92,12 @@ https://www.math.leidenuniv.nl/~lenstrahw/PUBLICATIONS/1990c/art.pdf
 
 https://arxiv.org/pdf/2212.04463
 
+https://www.ams.org/journals/mcom/1983-40-162/S0025-5718-1983-0689483-8/S0025-5718-1983-0689483-8.pdf
+
+https://link.springer.com/chapter/10.1007/978-3-642-34135-9_12
+
+http://archive.numdam.org/item/SB_1980-1981__23__243_0.pdf
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
