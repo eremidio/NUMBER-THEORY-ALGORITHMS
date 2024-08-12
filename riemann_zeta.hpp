@@ -207,7 +207,7 @@ double riemann_zeta_function_analytical_continuation(double x){
     if(i%2==0) sum+=parcel;
     
     //Definindo um limite
-    if(parcel<1e-e) break;
+    if(parcel<1e-9) break;
   };
 
   //Resultado
