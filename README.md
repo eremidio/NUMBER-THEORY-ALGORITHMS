@@ -106,6 +106,14 @@ https://cs-people.bu.edu/tromer/papers/tromer-phd.pdf
 
 https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8901977
 
+https://arxiv.org/pdf/math/0702227
+
+https://repository.rit.edu/cgi/viewcontent.cgi?article=1660&context=theses
+
+https://cs-people.bu.edu/tromer/papers/tromer-phd.pdf
+
+https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8901977
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
