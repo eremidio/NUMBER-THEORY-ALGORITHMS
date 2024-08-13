@@ -94,6 +94,12 @@ Matrix<T> matrix_powmod(Matrix<T>& m1, U exponent, U modulus) {
     Matrix<T> temp3 = multiplier * multiplier;
     multiplier = temp3;
     exponent >>= 1;
+
+      // Ajustando os elementos da matriz
+      for (int64_t i = 0; i < multiplier.rows; ++i) {
+        for (int64_t j = 0; j < multiplier.columns; ++j) multiplier.matrix[i][j] %= modulus;
+      };
+   
   };
 
   // Resultado
