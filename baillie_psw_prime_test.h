@@ -22,14 +22,13 @@ https://en.wikipedia.org/wiki/Baillie–PSW_primality_test
 #include <time.h>
 #include "jacobi_symbol.h"
 #include "mod_bin_exponentiation128.h"
-
+#include"fast_lucas_sequence.h"
 
 //********************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
 bool small_prime_factor_test(uint64_t , uint64_t[]);
 bool lucas_lehmer_test(uint64_t);
 bool baillie_test(uint64_t);
-bool lucas_problable_prime_test(int64_t, int64_t, int64_t, int64_t);
 bool baillie_psw_test(uint64_t);
 
 //********************************************************************************************************************
@@ -102,65 +101,14 @@ bool baillie_test(uint64_t n) {
   return true;
 };
 
-// Teste de Lucas usando sequências de Lucas
-bool lucas_problable_prime_test(int64_t n, int64_t D, int64_t P, int64_t Q){
-
-    //Função auxiliar usada para redução binária dos coeficientes da sequência de Lucas
-    int64_t div2mod(int64_t x, int64_t n) {
-        if (x & 1) {
-            return ((x + n) >> 1) % n;
-        } else {
-            return (x >> 1) % n;
-        }
-    }
-
-  
-
-    //Variáveis locais
-    int64_t U = 1;
-    int64_t V = P;
-    int64_t k = n + 1;
-    char digits[65];
-    int index = 0;
-
-
-    //Procedimentos
-    //Calculando string binária de (n+1)
-    while (k > 0) {
-        digits[index++] = (k & 1) ? '1' : '0';
-        k >>= 1;
-    }
-    digits[index] = '\0';
-
-
-    for (int i = 0; i < index / 2; i++) {
-        char temp = digits[i];
-        digits[i] = digits[index - i - 1];
-        digits[index - i - 1] = temp;
-    }
-
-    //Cálculando o (n+1)-ésimo termo da sequência de Lucas a menos de uma relação de congruência
-    for (int i = 1; i < index; i++) {
-        U = (U * V) % n;
-        V = div2mod((V * V) + (D * U * U), n);
-
-        if (digits[i] == '1') {
-            int64_t newU = div2mod((P * U) + V, n);
-            int64_t newV = div2mod((D * U) + (P * V), n);
-            U = newU;
-            V = newV;
-        }
-    }
-
-    //Resultado
-    if( U == 0) return true; //Condição de primalidade: U(n+1)= 0 (mod n)
-    else return false;
-
-
-}
-
 
 //Função que implementa uma versão menos robusta do teste de primalidade de Baillie-PSW
+/*
+NOTA: O algoritmo funciona corretamente sem o teste na etapa 5, porém a performance é 
+drasticamente reduzida.
+
+*/
+
 bool baillie_psw_test(uint64_t n) {
   // Caso trivial primos inferiores a 100
   if (n < 2) return false;
@@ -187,7 +135,7 @@ bool baillie_psw_test(uint64_t n) {
     if (mod_bin_pow(prime_seed[counter], (n - 1), n) != 1) return false;
   };
 
-  // Teste 5: Calculando o símbolo de Jacobi
+  // Teste 5: Calculando o símbolo de Jacobi: etapa para rápida detecção de primos
   if ((jacobi(2, n) * jacobi(2, n)) != 1) return true;
   if ((jacobi(3, n) * jacobi(3, n)) != 1) return true;
   if ((jacobi(5, n) * jacobi(5, n)) != 1) return true;
@@ -203,31 +151,32 @@ bool baillie_psw_test(uint64_t n) {
 
   //Etapa 6.1:seleção de parâmetros para o teste da sequência de Lucas
     //Variáveis locais
-    int64_t D=5;
-    int64_t minus_D=(-7);
-    int64_t P=1, Q;
+    int64_t D=5, P=1, Q;
+    int64_t limit=(2*log(n)*log(n));
+    __int128_t U, V;
 
     //Ajuste do parâmetro D e Q
+    new_lucas_test:
+
     while(1){
       if(jacobi(D, n)==(-1)) break;
-      else D+=4;
-     
-      if(jacobi_symbol_extension(minus_D, n)==(-1)){
-        D=minus_D;
-        break;
-      }
-      else minus_D-=4;
-
+      else D+=2;
     }
 
     Q=(1-D)/4;
   
 
-  // Teste 6.2: Teste PSW da sequência de Lucas
-  if(lucas_problable_prime_test(n, D, P, Q)==false)
-    return false;
+  //Teste 6.2: Teste PSW da sequência de Lucas
+  fast_modular_lucas_sequence(P, Q, (n+1), n, &U, &V);
+  if(U==0) goto final_step;
+  if(U!=0 && D>limit) return false; //Checando a relação U(n+1) = 0 mod n
+  if(U!=0 && D<limit){
+   D+=2;
+   goto new_lucas_test;
+  } 
 
   // Caso o número passe no testes acima, um primo foi encontrado
+  final_step:
   return true;
 
 };
