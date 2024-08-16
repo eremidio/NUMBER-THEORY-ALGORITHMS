@@ -100,6 +100,7 @@ __int128_t garner_algorithm(int64_t a[], int64_t m[], int r_size){
 
     for(int j=1; j<r_size; ++j){
       u=((a[j]-n)*ci_array[j])%m[j];
+      if (u < 0) u += m[j];
       n=n+(mi_array[j]*u);
       
     }
