@@ -116,6 +116,8 @@ https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=8901977
 
 https://www.ams.org/journals/mcom/1975-29-130/S0025-5718-1975-0384673-1/S0025-5718-1975-0384673-1.pdf
 
+https://projecteuclid.org/journals/duke-mathematical-journal/volume-21/issue-4/Prime-divisors-of-second-order-recurring-sequences/10.1215/S0012-7094-54-02163-8.short
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
