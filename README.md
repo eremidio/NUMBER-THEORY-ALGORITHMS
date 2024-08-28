@@ -120,6 +120,12 @@ https://msp.org/pjm/1959/9-4/pjm-v9-n4-p23-p.pdf
 
 https://projecteuclid.org/journals/duke-mathematical-journal/volume-21/issue-4/Prime-divisors-of-second-order-recurring-sequences/10.1215/S0012-7094-54-02163-8.short
 
+https://cs.uwaterloo.ca/journals/JIS/VOL13/Luca/luca33.pdf
+
+https://open.library.ubc.ca/media/download/pdf/51869/1.0107231/1
+
+https://web.archive.org/web/20180421064540id_/http://siauliaims.su.lt/pdfai/2008/ericksen-08.pdf
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
@@ -135,5 +141,8 @@ Prime Numbers And Computer Methods For Factorization, by Hans Riesel
 Prime Numbers A computational Perspective, by Richard Crandall and Carl Pomerance
 
 The Joy Of Factoring by Samuel Wagstaff Jr
+
+Elementary Methods in Number Theory, by Melvin B. B. Nathanson
+
 
 Number Theoretical Algorithms in Criptography by O. N. Vasilenko
