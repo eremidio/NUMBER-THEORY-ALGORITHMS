@@ -96,7 +96,7 @@ polynomial<T> polynomial_reversal(polynomial<T>&p1){
 };
 
 
-//Função que implementa o teste de primalidade de Perron para polinômios mônicos
+//Função que implementa o teste de irredutibilidade de Perron para polinômios mônicos
 template<typename T>
 bool perron_irreducibility_criterion(polynomial<T>& p1){
 
@@ -183,7 +183,7 @@ bool cohn_irreducibility_criterion(polynomial<T>& p1, T bound){
 
 
 
-//Funcão que implementa o critério de irredutibilidade de Eisentein
+//Funcão que implementa o critério de irredutibilidade de Eisenstein
 template<typename T>
 bool eisenstein_irreducibility_criterion(polynomial<T>& p1){
 
@@ -193,6 +193,7 @@ bool eisenstein_irreducibility_criterion(polynomial<T>& p1){
   if(p1.degree==1) return true;
 
   //Variáveis locais
+  
   std::vector<int64_t> primes;
   std::string prime_string;
   int64_t prime;
@@ -218,7 +219,8 @@ bool eisenstein_irreducibility_criterion(polynomial<T>& p1){
 
       //Teste 1
       if(p1.polynomial_coefficients[0]%p==0) return false;
-     
+      else p1.polynomial_coefficients[0]=1;
+
       //Teste 2
       if((p1.polynomial_coefficients[p1.polynomial_coefficients.size()-1]%(p*p))==0)
         return false;
