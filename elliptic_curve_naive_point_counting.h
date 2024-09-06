@@ -45,16 +45,26 @@ PARA MAIORES REFERÊNCIAS: Prime Numbers. A Computational Perspective by R.Crand
 //CABEÇALHOS
 #ifndef NAIVE_ELLIPTIC_CURVE_POINTING_COUNTING_H
 #define NAIVE_ELLIPTIC_CURVE_POINTING_COUNTING_H
-#include"legendre_symbol.h"
+#include"mod_bin_exponentiation.h"
 #include<assert.h>
 
 
 //*********************************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
+int legendre(int64_t, int64_t);
 int64_t elliptic_curve_point_counting(int64_t, int64_t, int64_t);
 
 //*********************************************************************************************************************************************************
 //FUNÇÕES
+//Função que calcula o símbolo de Legendre usando o critério de Euler
+int legendre(int64_t n, int64_t p){
+
+  if((n%p)==0) return 0;
+  else if(mod_bin_pow(n, ((p-1)/2), p)==1) return 1;
+  else return (-1);
+
+};
+
 //Função que computa o número de pontos em uma curva elíptica módulo um primo pequeno
 int64_t elliptic_curve_point_counting(int64_t a, int64_t b, int64_t p){
 
@@ -68,7 +78,7 @@ int64_t elliptic_curve_point_counting(int64_t a, int64_t b, int64_t p){
     //Procedimentos
       //Loop principal sobre elementos em GF(P) inteiros a menos de uma congruência mod p
       for(int64_t x=0; x<p; ++x){
-        numerator=(x*x*x)%p+(a*x)%p+b;
+        numerator=(x*x*x)+(a*x)+b;
         sum+=legendre((numerator%p), p);
         
       }
