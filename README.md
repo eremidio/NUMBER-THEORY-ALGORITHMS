@@ -126,6 +126,12 @@ https://open.library.ubc.ca/media/download/pdf/51869/1.0107231/1
 
 https://web.archive.org/web/20180421064540id_/http://siauliaims.su.lt/pdfai/2008/ericksen-08.pdf
 
+https://mae.ufl.edu/~uhk/IMPROVED-METHOD-LARGE-N.pdf
+
+https://cir.nii.ac.jp/crid/1571698602310086656
+
+https://docs.lib.purdue.edu/dissertations/AAI3263600/
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
