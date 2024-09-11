@@ -61,7 +61,7 @@ int64_t ls_modular_square_root(int64_t n, int64_t prime){
   int64_t h, result;
 
   //Procedimentos
-    //Seleção dos paÂmetros da sequência de Lucas
+    //Seleção dos parâmetros da sequência de Lucas
     parameter_selection(&h, n, prime);
 
     //Computando o (p+1)-ésimo termo da sequência mod
@@ -69,7 +69,7 @@ int64_t ls_modular_square_root(int64_t n, int64_t prime){
 
 
     //Ajuste fino do resultado
-    result= (v>>1)%prime;
+    result= (v*((prime+1)>>1))%prime;
     while((result*result)%prime!=n) result++;
 
   //Resultado
