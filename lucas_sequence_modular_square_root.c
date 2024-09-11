@@ -24,9 +24,9 @@ int main(){
     root = ls_modular_square_root(n, p);
 
     if(root==0)
-      printf("Não foram em contradas raízes quadradas de %lu (mod %lu)\n", n, p);
+      printf("Não foram em contradas raízes quadradas de %li (mod %li)\n", n, p);
     else
-      printf("Raíz quadrada de %lu (mod %lu)=%lu.\n", n, p, root);
+      printf("Raíz quadrada de %li (mod %li)=%li.\n", n, p, root);
 
   //Finalizando a aplicação
   return 0;
