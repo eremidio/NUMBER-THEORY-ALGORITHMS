@@ -125,7 +125,7 @@ bool n_plus_one_primality_test(int64_t n) {
   uint64_t prime_factor_array[30], divisors_array[30];
   int64_t P, Q;
   int multiplicities[30];
- 
+  int64_t max_P=4*std::log(n)*log(n);
 
   
 
@@ -148,17 +148,32 @@ bool n_plus_one_primality_test(int64_t n) {
     //Selecionando parâmetros P e Q para o cálculo das sequências de Lucas
     set_lucas_sequence_parameters(&P, &Q, n);
 
+    start_test:
     //Teste 1: checando se U(n+1)= 0 (mod n)
     Matrix<__int128_t> lucas_matrix1=lucas_sequence_modular_matrix<__int128_t, __int128_t>(P, Q, n, n);
-    if(lucas_matrix1.matrix[0][0]!=0) return false;
+    if(lucas_matrix1.matrix[0][0]!=0){ 
+      if(P<max_P){
+        Q=(Q+P+1);
+        P=P+2;
+        goto start_test;
+      }
+      else return false;
+    }
 
     //Teste 2: checando se para cada divisor de p de (n+1) se U((n+1)/p) ≠ 0 (mod n)
     for(int k=0; k<30; ++k){
       if(divisors_array[k]>1){
         Matrix<__int128_t> lucas_matrix2=lucas_sequence_modular_matrix<__int128_t, __int128_t>(P, Q, divisors_array[k], n);
-        if(lucas_matrix2.matrix[1][0]==0) return false;
-      }
+        if(lucas_matrix2.matrix[1][0]==0){
+          if(P<max_P){
+            Q=(Q+P+1);
+            P=P+2;
+            goto start_test;
+          }
+          else return false;
+        }
 
+      }
     }
 
   //Caso passe nos testes acima um primofoi encontrado
