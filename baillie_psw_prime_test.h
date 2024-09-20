@@ -5,8 +5,7 @@ O TESTE DE PRIMALIDADE BAILLIE-PSW É UM DOS TESTE DE PRIMALIDADE MAIS
 IMPORTANTES EM TEORIA DE NÚMEROS. É UMA MISTURA DAS ABORDAGENS DO TESTE DE
 MILLER-RABIN E DO TESTE DE LUCAS PARA PROVÁVEIS PRIMOS.
 
-PARA MAIORES INFORMAÇÕES:
-https://en.wikipedia.org/wiki/Baillie–PSW_primality_test
+PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Baillie–PSW_primality_test
                           https://en.wikipedia.org/wiki/Lucas_pseudoprime#Strong_Lucas_pseudoprimes
                           https://medium.com/@shruti.singh20/primality-testing-algorithms-dbea1ff9f0c7
 
@@ -156,7 +155,7 @@ bool baillie_psw_test(uint64_t n) {
     __int128_t U, V;
 
     //Ajuste do parâmetro D e Q
-    new_lucas_test:
+    
 
     while(1){
       if(jacobi(D, n)==(-1)) break;
@@ -167,12 +166,14 @@ bool baillie_psw_test(uint64_t n) {
   
 
   //Teste 6.2: Teste PSW da sequência de Lucas
+  new_lucas_test:
   fast_modular_lucas_sequence(P, Q, (n+1), n, &U, &V);
   if(U==0) goto final_step;
   if(U!=0 && D>limit) return false; //Checando a relação U(n+1) = 0 mod n
   if(U!=0 && D<limit){
-   D+=2;
-   goto new_lucas_test;
+    Q+=(P+1);
+    P+=2; 
+    goto new_lucas_test;
   } 
 
   // Caso o número passe no testes acima, um primo foi encontrado
