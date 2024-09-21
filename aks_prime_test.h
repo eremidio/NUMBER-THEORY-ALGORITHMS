@@ -50,7 +50,7 @@ uint64_t mul_mod(uint64_t, uint64_t, uint64_t);
 uint64_t pow_mod(uint64_t, uint64_t, uint64_t);
 uint64_t multiplicative_order(uint64_t, uint64_t);
 uint64_t gcd_u64(uint64_t, uint64_t);
-uint64_t binomial_coefficient(uint64_t n, uint64_t k, uint64_t mod);
+uint64_t binomial_coefficient(uint64_t, uint64_t, uint64_t);
 
 bool power_prime_test(uint64_t);
 uint64_t lowest_multiplicative_order(uint64_t);
@@ -131,38 +131,31 @@ NOTA: usaremos a biblioteca gmp, normalmente disponíveis em sistemas Unix
       Consultar tutoriais online se necessário. 
       
 */
-uint64_t binomial_coefficient(uint64_t n, uint64_t k, uint64_t mod) {
+uint64_t binomial_coefficient(uint64_t n, uint64_t k, uint64_t m) {
 
   //Restrições
-  if(k < 0 || k > n) {
-    return 0;
-  };
+  if (k > n) return 0; // C(n, k) is 0 se k > n
+  if (k > n / 2) k = n - k; //Explorando a propriedade de simetria dos coefficientes
 
-  //Inicializando variáveis
-  mpz_t num, den, result;
-  mpz_init(num);
-  mpz_init(den);
+  //Inicializando variáveis locais
+  mpz_t result;
   mpz_init(result);
+  mpz_set_ui(result, 1); 
 
 
-  //Procedimentos  
-    //Calculanado n!
-    mpz_fac_ui(num, n);// num = n!
-    mpz_fac_ui(den, k);// den = k!
-    mpz_fac_ui(den, n - k);// den *= (n - k)!
+  //Procedimentos
+    //Loop principal: Cálculando C(n, k), usaremos que C(n, k+1)= C(n,k)[(n-k)/(k+1)]
+    for (unsigned long i = 0; i < k; i++) {
+        mpz_mul_ui(result, result, n - i);
+        mpz_divexact_ui(result, result, i + 1);
+        mpz_mod_ui(result, result, m);
+    }
 
- 
-    mpz_div(result, num, den);//result = num / den
-    mpz_mod_ui(result, result, mod);
 
-    //Convertendo o resultado final 
-    uint64_t final_result = mpz_get_ui(result);
-
-    //Limpando o cachê de memória e retornando o resultado final
-    mpz_clear(num);
-    mpz_clear(den);
-    mpz_clear(result);
-    return final_result;
+  //Limpando o cachê de memória e retornando o resultado final
+  uint64_t final_result = mpz_get_ui(result); 
+  mpz_clear(result); 
+  return final_result;
 }
 
 //**********************************************************************************************************************************************************************
