@@ -101,15 +101,16 @@ uint64_t pow_mod(uint64_t a, uint64_t b, uint64_t m) {
 uint64_t multiplicative_order(uint64_t n, uint64_t m) {
   // Variáveis locais
   uint64_t power, i;
+  uint64_t  limit=sqrt(n);
 
   // Procedimentos
-  for (i = 1; i <= UINT64_MAX; ++i) {
+  for (i = 1; i <= limit; ++i) {
     power = pow_mod(n, i, m);
     if (power == 1) return i;
   };
 
   // Caso o resultado acima falhe
-  return 0;
+  return (n-1);
 };
 
 
@@ -147,7 +148,6 @@ uint64_t binomial_coefficient(uint64_t n, uint64_t k, uint64_t mod) {
   //Procedimentos  
     //Calculanado n!
     mpz_fac_ui(num, n);// num = n!
-    mpz_fac_ui(den, k);// den = k!
     mpz_fac_ui(den, k);// den = k!
     mpz_fac_ui(den, n - k);// den *= (n - k)!
 
@@ -269,10 +269,14 @@ bool polinomial_test(uint64_t n, uint64_t r) {
 
 // Função que implementa o teste de primalidade AKS (Agrawal-Kayal-Saxena)
 bool aks_primality_test(uint64_t n) {
-  // Caso trivial: primos inferiores a 20
+  // Caso trivial: primos inferiores a 100
   if (n < 2) return false;
-  if (n == 2 || n==3 || n==5 || n==7 || n==11 || n==13 || n==17 || n==19) return true;
-  if ((n % 2) == 0 || (n % 3) == 0 || (n % 5) == 0 || (n % 7) == 0 || (n % 11) == 0 || (n % 13) == 0 || (n % 17) == 0 || (n % 19) == 0 ) return false;
+
+  uint64_t prime_seed[25]={2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
+  for(int i=0; i<25; ++i){
+    if(n==prime_seed[i]) return true;
+    if((n%prime_seed[i])==0) return false;
+  }
 
   // Teste 1: checando se o número é da forma a^b
   if (power_prime_test(n) == false) return false;
