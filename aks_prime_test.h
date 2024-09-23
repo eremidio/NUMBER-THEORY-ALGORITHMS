@@ -186,6 +186,7 @@ bool power_prime_test(uint64_t n) {
 
 // Função que calcula o menor r tal que a ordem multiplicativa de Ord(n) (mod r)>4log2(n²)
 uint64_t lowest_multiplicative_order(uint64_t n) {
+ 
   // Váriáveis
   uint64_t ord = multiplicative_order(n, 2), tester;
   uint64_t limit = (4*log2(n) * log2(n));
@@ -206,19 +207,13 @@ uint64_t lowest_multiplicative_order(uint64_t n) {
 bool trial_division(uint64_t n, uint64_t ord) {
 
   // Variáveis locais
-  uint64_t upper_bound;
+  uint64_t upper_bound=4*log(n)*log(n);
 
-  // Procedimentos
-  // Calculando o limite superior
-  if ((n - 1) >= ord)
-    upper_bound = ord;
-  else
-    upper_bound = (n - 1);
-
-  // Teste da divisão
-  for (uint64_t i = 2; i <= upper_bound; i++) {
-    if ((n%i)==0) return false;
-  };
+  //Procedimentos
+    // Teste da divisão
+    for (uint64_t i = 2; i <= upper_bound; i++) {
+      if ((n%i)==0) return false;
+    };
 
   // Caso o número a ser testado passe no teste acima
   return true;
