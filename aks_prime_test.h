@@ -11,8 +11,8 @@ O TESTE BASEIA-SE NA SEGUINTE IDENTIDADE (x+a)^n (mod n)=(x^n)+a PARA n PRIMOS.
 ENQUANTO ESTA RELAÇÃO CONSITITUI UM TESTE DE PRIMALIDADE EM SI.
 COMPUTANCIONALMENTE ELA NÃO É VIÁVEL, POIS O NÚMERO DE TERMOS CRESCE
 EXPONENCIALMENTE COMO VALOR DE n. ESCOLHENDO UM VALOR DE r ADEQUADO ESCREVEMOS
-(x+a)^n = f(x)q(x)+s(x), ONDE f(x), q(x), s(x) SÃO POLINÔMIOS E r(x) TEM GRAU
-(r-1). O TESTE SE REDUZ ENTÃO A TESTES SOBRE OS COEFICIENTES DE s(x). ALGUNS
+(x+a)^n = f(x)q(x)+r(x), ONDE f(x), q(x), r(x) SÃO POLINÔMIOS E r(x) TEM GRAU
+(r-1). O TESTE SE REDUZ ENTÃO A TESTES SOBRE OS COEFICIENTES DE r(x). ALGUNS
 TESTES ADICIONAIS SÃO PERFORMADOS ENVOLVENDO A ORDEM MULTIPLICATIVA DE n PARA
 DETECTAR A PRIMALIDADE DO NÚMERO EM QUESTÃO.
 
@@ -98,19 +98,23 @@ uint64_t pow_mod(uint64_t a, uint64_t b, uint64_t m) {
 };
 
 // Função que calcula a ordem multiplicativa de um inteiro
-uint64_t multiplicative_order(uint64_t n, uint64_t m) {
+uint64_t multiplicative_order(uint64_t a, uint64_t n) {
   // Variáveis locais
   uint64_t power, i;
-  uint64_t  limit=sqrt(n);
+  uint64_t limit = (log2(n) * log2(n));
+  uint64_t limit2 = (log2(n) * log2(n) *log2(n) * log2(n) * log2(n))+1;
 
   // Procedimentos
-  for (i = 1; i <= limit; ++i) {
-    power = pow_mod(n, i, m);
+  for (i = (limit+1); i <limit2; ++i) {
+    power = pow_mod(a, i, n);
     if (power == 1) return i;
   };
 
-  // Caso o resultado acima falhe
-  return (n-1);
+  // Caso o teste acima falhe
+  if(pow_mod(a, (n-1), n))
+    return (n-1);
+  else return 0;
+
 };
 
 
@@ -188,15 +192,15 @@ bool power_prime_test(uint64_t n) {
 uint64_t lowest_multiplicative_order(uint64_t n) {
  
   // Váriáveis
-  uint64_t ord = multiplicative_order(n, 2), tester;
-  uint64_t limit = (4*log2(n) * log2(n));
+  uint64_t ord = multiplicative_order(2, n), tester;
+  uint64_t limit = (4*log2(n) * log2(n) * log2(n));
   uint64_t limit2 = sqrt(n);
   uint64_t i;
 
   // Procedimentos
   // Loop principal
-  for (i = (limit + 1); i < limit2; i++) {
-    if (gcd_u64(n, i) == 1) tester = multiplicative_order(n, i);
+  for (i = 3; i < limit2; i++) {
+    if (gcd_u64(n, i) == 1) tester = multiplicative_order(i, n);
     if (tester < ord) ord = tester;
   };
   // Resultado
@@ -207,7 +211,7 @@ uint64_t lowest_multiplicative_order(uint64_t n) {
 bool trial_division(uint64_t n, uint64_t ord) {
 
   // Variáveis locais
-  uint64_t upper_bound=4*log(n)*log(n);
+  uint64_t upper_bound=((n-1)>ord)?ord:(n-1);
 
   //Procedimentos
     // Teste da divisão
@@ -227,6 +231,7 @@ produzir resultados corretos.
 */
 
 bool polinomial_test(uint64_t n, uint64_t r) {
+
   // Variáveis locais
   uint64_t i, j, counter = 0, polynomial_coefficient;
 
@@ -255,6 +260,7 @@ bool polinomial_test(uint64_t n, uint64_t r) {
   return true;
 };
 
+
 // Função que implementa o teste de primalidade AKS (Agrawal-Kayal-Saxena)
 bool aks_primality_test(uint64_t n) {
   // Caso trivial: primos inferiores a 100
@@ -273,11 +279,12 @@ bool aks_primality_test(uint64_t n) {
   uint64_t ord = lowest_multiplicative_order(n);
 
   // Testes 2 e 3: testes envolvendo a ordem multiplicativa do número em questão
-  if (ord >= n) return true;
+  if (ord ==0 || ord>=n) return true;
+  if (trial_division(n, ord) == false) return false; 
 
-  if (trial_division(n, ord) == false) return false;
+  //if(ord>=sqrt(n)) return true;   /*CONDIÇÃO DE SUFICIÊNCIA PARA TESTAR A PRIMALIDADE DE n*/
 
-  // Teste 4: Checando a relação de congruência (x+a)^n = x^n+a (mod [x^r-1], n)
+  // Teste 4: Checando a relação de congruência (x+a)^n = x^n+a (mod [x^r-1], n) para a=1
   if (polinomial_test(n, ord) == false) return false;
 
   // Caso o número passe nos testes acima sua primalidade está provada
