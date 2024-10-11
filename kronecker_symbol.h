@@ -7,6 +7,7 @@ E DE JACOBI VÁLIDOS PARA TODOS OS NÚMEROS INTEIROS.
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Kronecker_symbol
                           Elementary Number Theory by Edmund Landau
                           A Course In Computational Algebraic Number Theory by Henri Cohen
+                          https://acadsol.eu/en/articles/25/1/2.pdf
 
 */
 
@@ -28,119 +29,94 @@ int kronecker(int64_t, int64_t);
 // FUNÇÕES
 
 // Função que calcula o símbolo de Kronecker (a|n)
-int kronecker(int64_t a, int64_t n){
+int kronecker(int64_t a, int64_t b){
 
-  //Variável global:resultado
+  //Variável global: resultado
   int k=1;
 
-  //Caso base: n= 2
-  if(n==2){
+
+  //Casos bases
+  if(!(a&1) && !(b&1)) return 0;
+  else if(b==0 && (a*a)!=1) return 0;
+  else if(b==0) return 1;
+  if(b==1) return k;
+
+  if(((-1)*b)==1){
+    if(a>=0) return k;
+    else return ((-1)*k);
+  }
+
+  if(b==2){
     if((a%8)==1 || (a%8)==7)
       return k;
     if((a%8)==3 || (a%8)==5)
       return (-1)*k;
     else
       return 0;
-           };
-
-  //Caso base: n=0
-  if(n==0){
-    if((a*a)==1)
-      return k;
-    else
-      return 0;
-
-          };
-
-  //Caso base: n=1
-  if(n==1)
-    return k;
-
-  //Caso base: n= -1
-  if((-1)*n==1){
-    if(a>=0)
-      return k;
-    else
-      return (-1)*k;
-             };
+  };
 
 
-  //Caso trivial: a, n são ambos pares 
-  if(!(a&1) && !(n&1))
-    return 0;
+  //Variáveis auxiliares
+  int64_t a0=a, r;
 
-  //Caso geral: usando a lei da reciprocidade quadrática para computar o símbolo de Kronecker de forma eficiente
-    //Variáveis locais
-    int residue_table[8]={0,1,0, (-1), 0, (-1), 0, 1};
-    int64_t b=n;
-    int64_t r=0, v=0;
+  //Procedimentos
+    //Ajuste de sinais: os dois argumentos devem ser positivos
+    if(a<0){
+      if(b<0){
+        a*=(-1); b*=(-1); k*=(-1);
+      }
+      else a*=(-1);
+    };
+
+    if(b<0) b*=(-1); 
+
+    //Ajuste da paridade do segundo termo
+    while(!(b&1)){
+
+      b>>=1;
+      r=(a&7);
+      if(r==3 || r==5) k*=(-1);
+
+    };
+
+    if(a0<0 && (b&3)==3) k*=(-1);
 
 
-    //Procedimentos
-      step2:
-      //Removendo fatores 2 do segundo argumento
-      v=0;
-      while(!(b&1)){
-        v++;
-        b>>=1;
-                   };
-
-      //Ajuste de variáveis
-      if(!(v&1))
-        k=1;
-      else
-        k=residue_table[a&7];
-
+    //Loop principal
+    while(a>0){
     
-      if(b<0) b=(-1)*b;
-      if(a<0) k=(-1)*k;
-
-
-       step3:
-       //Reduzindo o valor de a (mod b)
-       a%=b;
-
-       step4:
-      //Condição que determina o fim do algoritmo
-      if(a==0 && b>1)
-        return 0;
-      if(a==0 && b==1)
-        return k;
-
- 
-      step5:
-      //Ajuste de variáveis
-      v=0;
+      //Checando a paridade do primeiro argumento
       while(!(a&1)){
-        v++;
         a>>=1;
-                   };
+        r=(b&7);
+        if(r==3 || r==5) k*=(-1);
+      }
 
-      if((v&1))
-       k=residue_table[b&7];
+      //Condição que determina o fim do loop
+      if(a==1){
+        b=1;
+        break;
+      }
 
-     
-      step6:
-      r=b-a;
-      if(r>=0){
+      //Redução dos argumentos da função
+      if(a<b){
+        r=a; a=b; b=r;
+        if((a&3)==3 && (b&3)==3) k*=(-1);
+      }
 
-       //Aplicando a lei da reciprocidade quadrática
-       if(a&b&2)
-        k=(-1)*k;
+      a=((a-b)>>1);
+      r=(b&7);
+      if(r==3 || r==5) k*=(-1);
 
-       //Ajuste de variáveis
-       b=a;
-       a=r;
-               };
-     
-       if(r<0) a=(-1)*r;
-
-     goto step4;
+    }; //Fim do loop principal
 
 
-    //Em caso de erro 
-    return 2;
-                                   };
+  //Resultado
+  if(b==1) return k;
+  else return 0;
+
+
+};
 
 //*****************************************************************************************************************************************************************
 // FIM DO HEADER
