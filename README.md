@@ -132,6 +132,18 @@ https://cir.nii.ac.jp/crid/1571698602310086656
 
 https://docs.lib.purdue.edu/dissertations/AAI3263600/
 
+https://www.unioviedo.es/grau/ARTICULOS%20PUBLICADOS/articulo69.pdf
+
+https://www.sciencedirect.com/science/article/abs/pii/S0378475421000677
+
+https://www.cambridge.org/core/journals/bulletin-of-the-australian-mathematical-society/article/generalised-lucasian-primality-test/77D299F8E525D7E77CFAC6941E2D57AD
+
+http://mpqs.free.fr/LucasPseudoprimes.pdf
+
+https://wstein.org/edu/2010/414/projects/stueve.pdf
+
+https://ouci.dntb.gov.ua/en/works/4ko8gmW4/
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
