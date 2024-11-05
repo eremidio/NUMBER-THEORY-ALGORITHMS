@@ -215,12 +215,16 @@ struct elliptic_curve_point<T> point_addition(struct elliptic_curve_point<T> poi
 
     //Caso 2: x1≠x2
     slope=((point2.y-point1.y)*modular_inverse<T>((point2.x-point1.x), e_curve.p, gcd))%e_curve.p;
+    if(gcd>1){
+      result={0,1,0};//O-> ponto no infinito
+      return result;
+    }
   
     //Calculando as coordenadas do ponto em questão
     set_coordinates:
       result.z=1;
       result.x=(((slope*slope)%e_curve.p)-point1.x-point2.x)%e_curve.p;
-      result.y=((slope*(point1.x-point2.x))-point1.y)%e_curve.p;
+      result.y=((slope*(point1.x-result.x))-point1.y)%e_curve.p;
 
 
   //Resultado
