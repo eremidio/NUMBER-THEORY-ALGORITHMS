@@ -8,20 +8,22 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-int64_t x, y, m, d;
 
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um inteiro m:");
-scanf("%li", &m);
-printf("Digite um inteiro d:");
-scanf("%li", &d);
+  //Variáveis locais
+  int64_t x, y, m, d;
 
-//Executando o algoritmo
-connarchia_algorithm(d, m, &x, &y);
-printf("Solução de x²+%liy²=%li\n x=%li, y=%li\n", d, m, x, y);
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um inteiro m:");
+    scanf("%li", &m);
+    printf("Digite um inteiro d:");
+    scanf("%li", &d);
 
-//Finalizando a aplicação
-return 0;
-          }
+  //Executando o algoritmo
+  connarchia_algorithm(d, m, &x, &y);
+  printf("Solução de x²+%liy²=%li\n x=%li, y=%li\n", d, m, x, y);
+
+  //Finalizando a aplicação
+  return 0;
+
+}
