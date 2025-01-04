@@ -8,6 +8,7 @@ FATORES PRIMOS DE n ENTÃO f(x) É IRREDUTÍVEL SE E SOMENTE SE f(x) E p(x)=x^[p
 i=1,..,k NÃO TIVEREM FATORES COMUNS.
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#cite_note-5
+                          https://epubs.siam.org/doi/10.1137/0209024
                           https://github.com/eremidio/NUMBER-THEORY-ALGORITHMS/blob/main/polynomial_irreducibility.h
 
 */ 
@@ -60,7 +61,7 @@ template<typename T>
 bool rabin_irredutibility_criterion(polynomial<T>& p1, int64_t prime){
 
   //Variáveis locais
-  polynomial<__int128_t> f=polynomial_cast<T, __int128_t>(p1);
+  polynomial<__int128_t> f=polynomial_cast<T, __int128_t>(p1), q, r;
   polynomial<__int128_t> gcd_poly, tester_poly;
   std::vector<int64_t> f_degree_factors;
   int64_t exponent;
@@ -85,10 +86,9 @@ bool rabin_irredutibility_criterion(polynomial<T>& p1, int64_t prime){
     //Testando se g(x)=x^[deg(f(x))]-x mod(f(x), p) é igual a 0
     exponent=f.degree;
     tester_poly=generate_rabin_factor_polynomial(prime, exponent);
-    gcd_poly=remainder<__int128_t>(tester_poly, f);
-    for(auto& c:gcd_poly.polynomial_coefficients) c%=prime; gcd_poly.adjust_degree();
+    fast_polynomial_division_finite_field<__int128_t>(tester_poly, f, q, r, (__int128_t)prime);
 
-    if(is_zero_polynomial<__int128_t>(gcd_poly)==false) return false;
+    if(is_zero_polynomial<__int128_t>(r)==false) return false;
 
 
   //Caso passe nos testes acima um polinômio irredutível sobre GF(p) foi encontrado
