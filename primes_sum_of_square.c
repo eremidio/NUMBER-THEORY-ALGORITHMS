@@ -7,18 +7,19 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-int64_t prime;
 
-//Procedimentos
+  //Variáveis locais
+  int64_t prime;
 
-//Recebendo input do usuário
-printf("Digite um inteiro p primo:");
-scanf("%li", &prime);
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um inteiro p primo:");
+    scanf("%li", &prime);
 
-//Testedo algoritmo que expressaprimos em termos de formas quadrá
-prime_sum_of_square(prime);
+    //Testedo algoritmo que expressaprimos em termos de formas quadrá
+    prime_sum_of_square(prime);
 
-//Finalizando a aplicação
-return 0;
-          }
+    //Finalizando a aplicação
+    return 0;
+
+}
