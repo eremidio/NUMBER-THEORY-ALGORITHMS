@@ -20,7 +20,7 @@ int main(){
     scanf("%li", &d);
 
   //Executando o algoritmo
-  connarchia_algorithm(d, m, &x, &y);
+  cornarcchia_algorithm_composite_modulus(d, m, &x, &y);
   printf("Solução de x²+%liy²=%li\n x=%li, y=%li\n", d, m, x, y);
 
   //Finalizando a aplicação

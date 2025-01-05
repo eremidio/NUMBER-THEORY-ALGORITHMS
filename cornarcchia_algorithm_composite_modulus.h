@@ -23,7 +23,7 @@ void cornarcchia_algorithm_composite_modulus(int64_t, int64_t, int64_t*, int64_t
 //*********************************************************************************************************************************
 //FUNÇÕES
 //Função que implementauma variante do algoritmo de  Connarchia generalizado módulo números compostos
-void connarchia_algorithm(int64_t d, int64_t m, int64_t* x, int64_t* y){
+void cornarcchia_algorithm_composite_modulus(int64_t d, int64_t m, int64_t* x, int64_t* y){
 
 
   //Variáveis locais
