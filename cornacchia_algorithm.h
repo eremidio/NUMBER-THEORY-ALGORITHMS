@@ -10,8 +10,8 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Cornacchia%27s_algorit
 
 //*********************************************************************************************************************************
 //CABEÇALHO
-#ifndef CONNACCHIA_ALGORITHM_H
-#define CONNACCHIA_ALGORITHM_H
+#ifndef CORNACCHIA_ALGORITHM_H
+#define CORNACCHIA_ALGORITHM_H
 #include<math.h>
 #include"tonelli_shanks.h"
 #include"binary_jacobi_symbol.h"
@@ -70,8 +70,8 @@ void cornacchia_algorithm(int64_t d, int64_t m, int64_t* x, int64_t* y){
 
 
     //Etapa 3: cálculo dos resultados
-    c=(m-(b*b))/d;
-    if(c%d!=0 || fast_square_detection(c, &l)==false){
+    c=(m-(b*b));
+    if(c%d!=0 || fast_square_detection((c/d), &l)==false){
       (*x)=0; (*y)=0;
       return;
     }
