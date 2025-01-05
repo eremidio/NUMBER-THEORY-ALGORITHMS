@@ -8,8 +8,7 @@ QUE p SEJA EXPRESSO POR MEIO DE RELAÇÕES DO TIPO p=x²+ny², COM x, y, n INTEI
 PARA VALORES FIXOS DE n. OS VALORES DE x, y PODEM SER OBTIDOS POR MEIO DO
 ALGORITMO DE CORNARCHIA.
 
-PARA MAIORES INFORMAÇÕES: Primes of the Form x² + ny² : Fermat, Class Field
-Theory, and Complex Multiplication by D. A. Cox
+PARA MAIORES INFORMAÇÕES: Primes of the Form x² + ny² : Fermat, Class Field Theory, and Complex Multiplication by D. A. Cox
                           http://math.uchicago.edu/~may/REU2014/REUPapers/Kaplan.pdf
 
 */
@@ -19,7 +18,7 @@ Theory, and Complex Multiplication by D. A. Cox
 #ifndef PRIME_SUM_OF_SQUARE_H
 #define PRIME_SUM_OF_SQUARE_H
 #include <stdio.h>
-#include "cornacchia_algorithm_composite_modulus.h"  //Dependências necessárias estão inclusas
+#include "cornacchia_algorithm.h"  //Dependências necessárias estão inclusas
 
 
 //************************************************************************************************************************************************************
@@ -287,86 +286,86 @@ void prime_sum_of_square(int64_t p) {
   // Procedimentos
   // Teste se um primo pode ser escrito na forma p=x²+y²
   if (test1(p) == true) {
-    cornacchia_algorithm_composite_modulus(1, p, &x, &y);
+    cornacchia_algorithm(1, p, &x, &y);
     printf("Solução de %li=x²+y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+2y²
   if (test2(p) == true) {
-    cornacchia_algorithm_composite_modulus(2, p, &x, &y);
+    cornacchia_algorithm(2, p, &x, &y);
     printf("Solução de %li=x²+2y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+3y²
   if (test3(p) == true) {
-    cornacchia_algorithm_composite_modulus(3, p, &x, &y);
+    cornacchia_algorithm(3, p, &x, &y);
     printf("Solução de %li=x²+3y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+4y²
   if (test4(p) == true) {
-    cornacchia_algorithm_composite_modulus(4, p, &x, &y);
+    cornacchia_algorithm(4, p, &x, &y);
     printf("Solução de %li=x²+4y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+5y²
   if (test5(p) == true) {
-    cornacchia_algorithm_composite_modulus(5, p, &x, &y);
+    cornacchia_algorithm(5, p, &x, &y);
     printf("Solução de %li=x²+5y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+6y²
   if (test6(p) == true) {
-    cornacchia_algorithm_composite_modulus(6, p, &x, &y);
+    cornacchia_algorithm(6, p, &x, &y);
     printf("Solução de %li=x²+6y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+7y²
   if (test7(p) == true) {
-    cornacchia_algorithm_composite_modulus(7, p, &x, &y);
+    cornacchia_algorithm(7, p, &x, &y);
     printf("Solução de %li=x²+7y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+10y²
   if (test10(p) == true) {
-    cornacchia_algorithm_composite_modulus(10, p, &x, &y);
+    cornacchia_algorithm(10, p, &x, &y);
     printf("Solução de %li=x²+10y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+13y²
   if (test13(p) == true) {
-    cornacchia_algorithm_composite_modulus(13, p, &x, &y);
+    cornacchia_algorithm(13, p, &x, &y);
     printf("Solução de %li=x²+13y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+14y²
   if (test14(p) == true) {
-    cornacchia_algorithm_composite_modulus(14, p, &x, &y);
+    cornacchia_algorithm(14, p, &x, &y);
     if (x > 0 || y > 0)
       printf("Solução de %li=x²+14y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+15y²
   if (test15(p) == true) {
-    cornacchia_algorithm_composite_modulus(15, p, &x, &y);
+    cornacchia_algorithm(15, p, &x, &y);
     printf("Solução de %li=x²+15y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+21y²
   if (test21(p) == true) {
-    cornacchia_algorithm_composite_modulus(21, p, &x, &y);
+    cornacchia_algorithm(21, p, &x, &y);
     printf("Solução de %li=x²+21y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+22y²
   if (test22(p) == true) {
-    cornacchia_algorithm_composite_modulus(22, p, &x, &y);
+    cornacchia_algorithm(22, p, &x, &y);
     printf("Solução de %li=x²+22y²\n x=%li, y=%li\n", p, x, y);
   };
 
   // Teste se um primo pode ser escrito na forma p=x²+30y²
   if (test30(p) == true) {
-    cornacchia_algorithm_composite_modulus(30, p, &x, &y);
+    cornacchia_algorithm(30, p, &x, &y);
     printf("Solução de %li=x²+30y²\n x=%li, y=%li\n", p, x, y);
   };
 };
