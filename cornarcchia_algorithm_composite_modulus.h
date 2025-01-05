@@ -28,14 +28,16 @@ void connarchia_algorithm(int64_t d, int64_t m, int64_t* x, int64_t* y){
 
   //Variáveis locais
   int64_t r0=(-1), r1, r2, s, t;
-  int64_t i=0, trial=0;
+  int64_t i=0, trial=sqrt(m);
 
 
   //Procedimentos
     //Etapa 1: encontrando um valor de r0 tal que r0²=-d (mod m)
     restart:
-    trial++;
-    if(trial>10000) return;
+    if(i>trial){
+      (*x)=0; (*y)=0; 
+       return;
+    };
 
     for(; i<=m; i++){
       if((((i*i)+d)%m==0)){
