@@ -1,148 +1,136 @@
-// VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE CIPOLLA PARA ENCONTRAR
-// RAÍZES QUADRADAS CONGRUENTE MÓDULO UM NÚMERO PRIMO
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE CIPOLLA PARA ENCONTRAR RAÍZES QUADRADAS CONGRUENTE MÓDULO UM NÚMERO PRIMO
 
 /*
 O ALGORITMO DE CIPOLLA É UM ALGORITMO EFICIENTE PARA RESOLVER EQUAÇÕES DO TIPO:
 x² = N (mod p), COM p PRIMO. ESTE ALGORITMO USA ARITMÉTICA BÁSICA EM CORPOS
 NÚMERICOS ALGÉBRICOS Q(√n), COM ELEMENTOS z=(a+b√n) (n>0 OU n<0). USANDO A
-NOTAÇÃO ω=√n, TEMOS PARA z1=a1+b1ω e z2=a2+b2ω  AS SEGUINTES OPERAÇÕES:
+NOTAÇÃO ω=√n, TEMOS PARA z1=a1+b1ω e z2=a2+b2ω, AS SEGUINTES OPERAÇÕES:
 z1+z2=(a1+a2)+(b1+b2)ω e
 z1.z2=(a1.a2+b1.b2.ω²)+(a1.b2+a2.b1)ω=(a1.a2+b1.b2.n)+(a1.b2+a2.b1)ω.
 
-NESTE ALGORITMO A ARIMÉTICA É FEITA SOBRE O CORPO FINITO F(p), INTEIROS A MENOS
-DE UMA CONGRUÊNCIA MÓDULO p.
+NESTE ALGORITMO A ARIMÉTICA É FEITA SOBRE O CORPO FINITO GF(p²), NÚMEROS
+ALGÉBRICOS A MENOS DE UMA CONGRUÊNCIA MÓDULO p.
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Cipolla%27s_algorithm
+                          Prime Numbers A computational Perspective, by Richard Crandall and Carl Pomerance
 
 */
 
-//*******************************************************************************************************************************************************************
-// CABEÇALHO
+
+//****************************************************************************************************
+//CABEÇALHO
 #ifndef CIPOLLA_ALGORITHM_H
 #define CIPOLLA_ALGORITHM_H
-#include <math.h>
 #include <stdio.h>
+#include <assert.h>
+#include "kronecker_symbol.h"
+#include "mod_bin_exponentiation128.h"
 
-#include "mod_bin_exponentiation.h"
 
-//*******************************************************************************************************************************************************************
-// DECLARAÇÃO DE FUNÇÕES
-int64_t legendre_symbol(int64_t, int64_t);
-void algebraic_multiplication(int64_t[], int64_t[], int64_t[], int64_t, int64_t);
+
+//****************************************************************************************************
+// ESTRUTURAS E FUNÇÕES AUXILIARES USADAS NO ALGORITMO
+//Estrutura que representa um número algébrico Q(ω), ω=√n, z=a+bω
+struct algebraic_quadratic_number{
+
+  __int128_t a;//Usaremos inteiros de 128bits para evitar integer overflow
+  __int128_t b;
+  __int128_t d;
+
+};
+
+//Função que executa a multiplicação de números algebricos em GF(p²)
+   //z1.z2=(a1.a2+b1.b2.ω²)+(a1.b2+a2.b1)ω=(a1.a2+b1.b2.n)+(a1.b2+a2.b1)ω (mod p)
+struct algebraic_quadratic_number algebraic_quadratic_mul_mod(struct algebraic_quadratic_number z1, struct algebraic_quadratic_number z2, int64_t prime){
+
+  //Restrição
+  assert(z2.d==z1.d);
+
+  //Variáveis locais
+  struct algebraic_quadratic_number z;
+
+  //Procedimentos
+    //Ajustes do resultado
+    z.d=z1.d;
+    z.a=((z1.a*z2.a)%prime) + ((z1.b*z2.b)%prime)*z2.d;
+    z.b=(z1.a*z2.b) + (z1.b*z2.a);
+
+    z.a%=prime;
+    z.b%=prime;
+    
+    
+
+  //Resultado
+  return z;
+
+};
+
+
+//Função que executa a exponenciação de números algebricos em GF(p²)
+struct algebraic_quadratic_number algebraic_quadratic_pow_mod(struct algebraic_quadratic_number z1, int64_t power, int64_t prime){
+
+  //Variáveis locais
+  struct algebraic_quadratic_number z={1,0, z1.d}, q={z1.a, z1.b, z1.d};
+
+
+  //Procedimento
+    //Loop sobre os bits do expoente
+    while(power>0){
+
+      //Checando a paridade do bit do expoente
+      if(power&1) z=algebraic_quadratic_mul_mod(z, q, prime);
+
+      //Atualizando avariáveis para a próxima iteração
+      q=algebraic_quadratic_mul_mod(q, q, prime);
+      power>>=1;
+
+    }
+
+  //Resultado
+  return z;
+
+};
+
+//****************************************************************************************************
+//DECLARAÇÃO DE FUNÇÕES
 int64_t cipolla_algorithm(int64_t, int64_t);
 
-//*******************************************************************************************************************************************************************
-// FUNÇÕES
-// Função que calcula o símbolo de Legendre usandoo critério de Euler
-int64_t legendre_symbol(int64_t a, int64_t p) {
-  // Variáveis locais
-  uint64_t a_ = a;
-  uint64_t p_ = p;
 
-  // Resultado
-  return mod_bin_pow(a_, ((p_ - 1) / 2), p_);
-};
+//****************************************************************************************************
+//FUNÇÕES
+int64_t cipolla_algorithm(int64_t n, int64_t p){
 
-// Função que executa a multiplicação de números em um corpo algebrico a menos de uma relação de congruência
-//  z1.z2=(a1.a2+b1.b2.ω²)+(a1.b2+a2.b1)ω=(a1.a2+b1.b2.n)+(a1.b2+a2.b1)ω.
-void algebraic_multiplication(int64_t result[], int64_t parcel1[],
-                              int64_t parcel2[], int64_t root_squared,
-                              int64_t prime) {
-  // Calculando a 1ª parcela do resultado
-  result[0] =
-      (parcel1[0] * parcel2[0]) + (parcel1[1] * parcel2[1] * root_squared);
+  // Teste se n é uma classe residual quadrático módulo p usando o critério de Euler
+  if(kronecker(n, p)!= 1) return 0;
 
-  // Ajuste do valor da 1ª parcela  módulo primo congruente
-  while (result[0] < 0 && abs(result[0]) > prime) result[0] = result[0] + prime;
-  if (result[0] > prime) result[0] = (result[0] % prime);
 
-  // Calculando a 2ª parcela do resultado
-  result[1] = (parcel1[0] * parcel2[1]) + (parcel1[1] * parcel2[0]);
-
-  // Ajuste do valor da 2ª parcela  módulo primo congruente
-  while (result[1] < 0 && abs(result[1]) > prime) result[1] = result[1] + prime;
-  if (result[1] > prime) result[1] = (result[1] % prime);
-};
-
-// Função quer implementa o algoritmo de Cipolla
-int64_t cipolla_algorithm(int64_t n, int64_t prime) {
-  // Variáveis locais
-  int64_t a, tester, root;
-  int64_t max_power = ((prime + 1) / 2);
-  int64_t power = 0;
-  int64_t algebraic_number[2], algebraic_product[2], algebraic_squared[2],
-      temp[2];
+  //Variáveis locais
+  struct algebraic_quadratic_number z, zp;
+  int64_t a=2, root;
+  int64_t max_power = ((p + 1)>>1); 
+  int64_t result;
 
   // Procedimento
-  // Seleção do parâmetro tal que (a²-n|p)=1
-  for (a = 2;; a++) {
-    tester = (a * a) - n;
-    root = tester;
+    //Seleção do parâmetro tal que (a²-n|p)=(-1)
+    while(1){
+      root=(a*a)-n;
+      if(kronecker(root, p)==(-1)) break;  
+      else a++;
+  
+    }; 
 
-    while (tester < 0) tester += prime;
+    //Ajuste de variáveis
+    z.a=a; z.b=1; z.d=root;
+    zp=algebraic_quadratic_pow_mod(z, max_power, p);
+    
 
-    if (legendre_symbol(tester, prime) == (prime - 1)) break;
-  };
+  //Resultado
+  result=zp.a;
+  return result;
 
-
-
-  // Arítmetica no corpo algébrico Q(√n) mod p
-  // Ajuste de variáveis
-  algebraic_number[0] = a;
-  algebraic_number[1] = 1;
-
-  // 1ª iteração
-  algebraic_multiplication(algebraic_squared, algebraic_number,
-                           algebraic_number, root, prime);
-  power += 2;
-
-  // Ajuste de variáveis
-  algebraic_product[0] = algebraic_squared[0];
-  algebraic_product[1] = algebraic_squared[1];
-
-  // Loop principal com otimização binária
-  while (power < max_power) {
-    // Caso 1
-    if ((power * power) < max_power) {
-      algebraic_multiplication(temp, algebraic_product, algebraic_product, root,
-                               prime);
-
-      // Ajuste de variáveis
-      algebraic_product[0] = temp[0];
-      algebraic_product[1] = temp[1];
-
-      power *= 2;
-    };
-
-    // Caso 2
-    if ((power + 2) < max_power) {
-      algebraic_multiplication(temp, algebraic_product, algebraic_squared, root,
-                               prime);
-
-      // Ajuste de variáveis
-      algebraic_product[0] = temp[0];
-      algebraic_product[1] = temp[1];
-
-      power += 2;
-    };
-
-    // Caso 3
-    if (power == (max_power - 1)) {
-      algebraic_multiplication(temp, algebraic_product, algebraic_number, root,
-                               prime);
-
-      // Ajuste de variáveis
-      algebraic_product[0] = temp[0];
-      algebraic_product[1] = temp[1];
-
-      power++;
-    };
-  };
-
-  // Resultado
-  return algebraic_product[0];
 };
 
-//*******************************************************************************************************************************************************************
-// FIM DO HEADER
+
+//****************************************************************************************************
+//FIM DO HEADER
 #endif
