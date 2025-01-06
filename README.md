@@ -144,6 +144,8 @@ https://wstein.org/edu/2010/414/projects/stueve.pdf
 
 https://ouci.dntb.gov.ua/en/works/4ko8gmW4/
 
+https://colab.ws/articles/10.1090%2Fs0025-5718-1976-0414473-6
+
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
 
 Introduction to Modern Number Theory, by Yuri I. Manin and Alexei A. Panchishkin
