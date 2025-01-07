@@ -42,21 +42,23 @@ PARA MAIORES INFORMAÇÕES:https://en.wikipedia.org/wiki/AKS_primality_test
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <gmp.h>
+#include<stdio.h>
+#include "aks_prime_test_polynomial_congruence_test.h"
+
+
+//CONSTANTES GLOBAIS
+enum Show_Multiplicative_Order{Yes, No};
 
 //**********************************************************************************************************************************************************************
 // DECLARAÇÃO DE FUNÇÕES
 uint64_t mul_mod(uint64_t, uint64_t, uint64_t);
 uint64_t pow_mod(uint64_t, uint64_t, uint64_t);
-uint64_t multiplicative_order(uint64_t, uint64_t);
-uint64_t gcd_u64(uint64_t, uint64_t);
-uint64_t binomial_coefficient(uint64_t, uint64_t, uint64_t);
+uint64_t multiplicative_order(uint64_t, uint64_t, uint64_t);
 
 bool power_prime_test(uint64_t);
 uint64_t lowest_multiplicative_order(uint64_t);
 bool trial_division(uint64_t, uint64_t);
-bool polinomial_test(uint64_t, uint64_t);
-bool aks_primality_test(uint64_t);
+bool aks_primality_test(uint64_t, enum Show_Multiplicative_Order);
 
 //**********************************************************************************************************************************************************************
 // FUNÇÕES AUXILIARES
@@ -98,111 +100,82 @@ uint64_t pow_mod(uint64_t a, uint64_t b, uint64_t m) {
 };
 
 // Função que calcula a ordem multiplicativa de um inteiro
-uint64_t multiplicative_order(uint64_t a, uint64_t n) {
+uint64_t multiplicative_order(uint64_t a, uint64_t limit, uint64_t n) {
+
   // Variáveis locais
-  uint64_t power, i;
-  uint64_t limit = (log2(n) * log2(n));
-  uint64_t limit2 = (log2(n) * log2(n) *log2(n) * log2(n) * log2(n))+1;
-
-  // Procedimentos
-  for (i = (limit+1); i <limit2; ++i) {
-    power = pow_mod(a, i, n);
-    if (power == 1) return i;
-  };
-
-  // Caso o teste acima falhe
-  if(pow_mod(a, (n-1), n))
-    return (n-1);
-  else return 0;
-
-};
-
-
-//Função que implementa o algoritmo de Euclides
-uint64_t gcd_u64(uint64_t a, uint64_t b){
-
-  if(b==0) return a;
-  else return gcd_u64(b, (a%b));
-
-};
-
-
-// Função que calcula um coeficiente binomial a menos de uma congruência
-/* 
-NOTA: usaremos a biblioteca gmp, normalmente disponíveis em sistemas Unix
-      para evitar integer overflow e testar números de maior magnitude.
-      A biblioteca GMP deve estar instalada para se usar este programa.
-      Consultar tutoriais online se necessário. 
-      
-*/
-uint64_t binomial_coefficient(uint64_t n, uint64_t k, uint64_t m) {
-
-  //Restrições
-  if (k > n) return 0; // C(n, k) is 0 se k > n
-  if (k > n / 2) k = n - k; //Explorando a propriedade de simetria dos coefficientes
-
-  //Inicializando variáveis locais
-  mpz_t result;
-  mpz_init(result);
-  mpz_set_ui(result, 1); 
-
-
+  uint64_t i;
+  
   //Procedimentos
-    //Loop principal: Cálculando C(n, k), usaremos que C(n, k+1)= C(n,k)[(n-k)/(k+1)]
-    for (unsigned long i = 0; i < k; i++) {
-        mpz_mul_ui(result, result, n - i);
-        mpz_divexact_ui(result, result, i + 1);
-        mpz_mod_ui(result, result, m);
-    }
+    //Loop principal
+    for (i = 2; i <limit; ++i) {
+      if (pow_mod(a, i, n) == 1) return i;
+    };
 
+  //Caso o teste acima falhe
+  return (n-1);
 
-  //Limpando o cachê de memória e retornando o resultado final
-  uint64_t final_result = mpz_get_ui(result); 
-  mpz_clear(result); 
-  return final_result;
-}
+};
+
 
 //**********************************************************************************************************************************************************************
 // FUNÇÕES
 // Função que testa se n é da forma a^b
 bool power_prime_test(uint64_t n) {
+
   // Variáveis locais
   uint64_t max_power = log2(n);
   uint64_t sqrt_n = sqrt(n);
   uint64_t tester;
 
   // Procedimentos
-  // Loop principal
-  for (uint64_t i = 3; i <= sqrt_n; i += 2) {
-    tester = i;
-    for (uint64_t j = 1; j < max_power; j++) {
-      tester *= i;
+    // Loop principal
+    for (uint64_t i = 95; i <= sqrt_n; i += 6) {
 
-      if (tester == n) return false;  // O número em questão não é primo
+      tester = i;
+      for (uint64_t j = 1; j < max_power; j++) {
+        tester *= i;
+        if (tester == n) return false;  // O número em questão não é primo
+        if (tester > n) break;
+      };
 
-      if (tester > n) break;
+      tester = (i+2);
+      for (uint64_t k = 1; k < max_power; k++) {
+        tester *= (i+2);
+        if (tester == n) return false;  // O número em questão não é primo
+        if (tester > n) break;
+      };
     };
-  };
+
 
   // Resultado caso o número passe no teste acima
   return true;
+
 };
 
 // Função que calcula o menor r tal que a ordem multiplicativa de Ord(n) (mod r)>4log2(n²)
 uint64_t lowest_multiplicative_order(uint64_t n) {
  
   // Váriáveis
-  uint64_t ord = multiplicative_order(2, n), tester;
-  uint64_t limit = (4*log2(n) * log2(n) * log2(n));
-  uint64_t limit2 = sqrt(n);
-  uint64_t i;
+  uint64_t sqrt_n = sqrt(n);
+  uint64_t ord = multiplicative_order(2, sqrt_n, n), tester;
+  uint64_t limit = (16*log2(n) * log2(n) * log2(n));
+  uint64_t limit2 = (log2(n) * log2(n) * log2(n) * log2(n));
+
 
   // Procedimentos
-  // Loop principal
-  for (i = 3; i < limit2; i++) {
-    if (gcd_u64(n, i) == 1) tester = multiplicative_order(i, n);
-    if (tester < ord) ord = tester;
-  };
+    //Caso base
+    if(ord<limit) return ord;
+    
+    //Ajuste de variáveis
+    if(limit2>sqrt_n) limit2=sqrt_n;
+
+    // Loop principal
+    for(uint64_t i = 3; i < limit; i++) {
+      tester = multiplicative_order(i, limit2, n);
+      if (tester < ord) ord = tester;
+      if(ord<limit) return ord;
+    };
+
   // Resultado
   return ord;
 };
@@ -215,54 +188,18 @@ bool trial_division(uint64_t n, uint64_t ord) {
 
   //Procedimentos
     // Teste da divisão
-    for (uint64_t i = 2; i <= upper_bound; i++) {
-      if ((n%i)==0) return false;
+    for (uint64_t i = 95; i <= upper_bound; i+=6) {
+      if ((n%i)==0 || (n%(i+2))==0) return false;
     };
 
   // Caso o número a ser testado passe no teste acima
   return true;
 };
 
-// Função que testa a relação de congruência (x+a)^n = x^n+a (mod [x^r-1], n)
-/*
-NOTA: Estritamente o algoritmo requer que sejam testados valores no intervalo 2≲ a ≲ (√φ(r))log₂(n).
-Porém,certas conjecturas ainda não comprovadas postulam que o teste com a=1 é suficiente para
-produzir resultados corretos.
-*/
-
-bool polinomial_test(uint64_t n, uint64_t r) {
-
-  // Variáveis locais
-  uint64_t i, j, counter = 0, polynomial_coefficient;
-
-  // Procedimentos
-  // Loop principal (i conta o número de termos no polinômio resto [1, ...,  r], j são os indexes usados no cálculo dos coefficientes)
-  for (i = 0; i < n; ++i) {
-    // Ajuste de variáveis
-    polynomial_coefficient = 0;
-
-    // Computando o termo do resto da divisão por  x^r-1, reduzindo módulo via adição os coeficientes binomiais de (x+a)^n
-    for (j = i; j < n; j += r){
-      polynomial_coefficient = polynomial_coefficient + binomial_coefficient(n, j, n);
-      if(polynomial_coefficient>n) polynomial_coefficient%=n;
-    }
-
-    // Condição que verifica se um número é composto
-    if (polynomial_coefficient > 0 && i > 0) return false;
-    if (polynomial_coefficient != 1 && i == 0) return false;
-
-    // Fim do teste
-    counter++;
-    if (counter == r) break;
-  };
-
-  // Caso o número testado passe no teste acima
-  return true;
-};
-
 
 // Função que implementa o teste de primalidade AKS (Agrawal-Kayal-Saxena)
-bool aks_primality_test(uint64_t n) {
+bool aks_primality_test(uint64_t n, enum Show_Multiplicative_Order x) {
+
   // Caso trivial: primos inferiores a 100
   if (n < 2) return false;
 
@@ -277,12 +214,12 @@ bool aks_primality_test(uint64_t n) {
 
   // Etapa 2: calculando a menor ordem multiplicativa para o número em questão
   uint64_t ord = lowest_multiplicative_order(n);
+  if(x==Yes) printf("[Menor ordem multiplicativa] ord:%li\n", ord);
 
   // Testes 2 e 3: testes envolvendo a ordem multiplicativa do número em questão
-  if (ord ==0 || ord>=n) return true;
+  if (ord>=n) return true;
   if (trial_division(n, ord) == false) return false; 
-
-  //if(ord>=sqrt(n)) return true;   /*CONDIÇÃO DE SUFICIÊNCIA PARA TESTAR A PRIMALIDADE DE n*/
+  if(ord>=sqrt(n)) return true;   /*CONDIÇÃO DE SUFICIÊNCIA PARA TESTAR A PRIMALIDADE DE n*/
 
   // Teste 4: Checando a relação de congruência (x+a)^n = x^n+a (mod [x^r-1], n) para a=1
   if (polinomial_test(n, ord) == false) return false;
