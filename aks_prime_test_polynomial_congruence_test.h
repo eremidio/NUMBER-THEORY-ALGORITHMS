@@ -81,7 +81,7 @@ __int128_t* poly_pow_aks(uint64_t n, uint64_t s, uint64_t b){
 
     //Loop principal
     while(e > 0) {
-      if(e % 2 == 1) {  // If e is odd, multiply y by z
+      if(e&1) {
         __int128_t* temp = poly_mul_aks(y, z, n, s);
         if(temp == NULL) {
           free(y);
@@ -116,10 +116,10 @@ __int128_t* poly_pow_aks(uint64_t n, uint64_t s, uint64_t b){
 
 // Função que testa a relação de congruência (x+b)^n = x^n+b (mod [x^s-1], n)
 /*
-  NOTA: Estritamente o algoritmo requer que sejam testados valores no intervalo 1≲ a ≲ (√φ(r))log₂(n).
+  NOTA: Estritamente o algoritmo requer que sejam testados valores no intervalo 1≲ b ≲ (√φ(r))log₂(n).
   (φ é a função totiente de Euler). Porém,certas conjecturas ainda não comprovadas postulam que
   o teste com a=1 é suficiente para produzir resultados corretos. A função a seguir pode ser
-  modificada de modo a testar os valores no intervalo 1≲ a ≲ (√r)log₂(n) por exemplo. 
+  modificada de modo a testar os valores no intervalo 1≲ b ≲ (√r)log₂(n) por exemplo. 
 */
 
 bool polinomial_test(uint64_t n, uint64_t s){
