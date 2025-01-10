@@ -34,63 +34,68 @@ ADAPTAÇÕES DESTE ALGORITMO PODEM SER USADOS PARA DIVERSAS APLICAÇÕES EM CRIP
 //**************************************************************************************************************************
 //FUNÇÕES
 void extended_euclidean_algorithm(int64_t a, int64_t b){
-//Variáveis locais
-int64_t r0,r1, x0, x1, y0, y1, r2, x2, y2;
-//Procedimentos 
-//Ajuste de variáveis
-r0=a;
-r1=b;
-r2=1;
-x0=1;
-x1=0;
-y0=0;
-y1=1;
-//Calculando os valores finais coeficientes recursivamente
 
-while(r2>0){
-int64_t quotient= r0/r1;
+  //Variáveis locais
+  int64_t r0,r1, x0, x1, y0, y1, r2, x2, y2;
 
-r2=r0-quotient*r1;
-x2=x0-quotient*x1;
-y2=y0-quotient*y1;
-//Atualizando variáveis para a próxima iteração
-if(r2>0){
-r0=r1;
-r1=r2;
-x0=x1;
-x1=x2;
-y0=y1;
-y1=y2;
-        };
+  //Procedimentos 
+    //Ajuste de variáveis
+    r0=a;
+    r1=b;
+    r2=1;
+    x0=1;
+    x1=0;
+    y0=0;
+    y1=1;
+    //Calculando os valores finais coeficientes recursivamente
+    while(r2>0){
+      int64_t quotient= r0/r1;
+      r2=r0-quotient*r1;
+      x2=x0-quotient*x1;
+      y2=y0-quotient*y1;
 
-            };
+      //Atualizando variáveis para a próxima iteração
+      if(r2>0){
+        r0=r1; r1=r2;
+        x0=x1; x1=x2;
+        y0=y1; y1=y2;
+      };
 
-//Ajuste de sinal
-if(x2<0)
-x2*=(-1);
-if(y2<0)
-y2*=(-1);
+    };
 
-printf("mdc(%li, %li)= %li\n",a, b, r1);
-printf("Coeficiente da identidade de Bézout: %li, %li\n", x1, y1);
-printf("Razão de %li e %li pelo mmc(%li, %li): %li, %li\n",a, b, a, b, y2, x2);
-                                                      };
+
+   //Ajuste de sinal
+   if(x2<0) x2*=(-1);
+   if(y2<0) y2*=(-1);
+
+
+  printf("mdc(%li, %li)= %li\n",a, b, r1);
+  printf("Coeficiente da identidade de Bézout: %li, %li\n", x1, y1);
+  printf("Razão de %li e %li pelo mdc: %li, %li\n", a, b, y2, x2);
+
+};
+
 
 //**************************************************************************************************************************
 //FUNÇÃO PRINCIPAL
 int main(){
-//Variáveis locais
-int64_t a, b;
-//Procedimentos 
-//Recebendo input do usuário
-printf("Usuário digite um número inteiro: ");
-scanf("%li",&a);
-printf("Usuário digite um número inteiro: ");
-scanf("%li",&b);
 
-//Realizando o teste
-extended_euclidean_algorithm(a,b);
+  //Variáveis locais
+  int64_t a, b;
 
-//Finalizando a aplicação
-return 0;
-          }
+
+  //Procedimentos 
+    //Recebendo input do usuário
+    printf("Usuário digite um número inteiro: ");
+    scanf("%li",&a);
+    printf("Usuário digite um número inteiro: ");
+    scanf("%li",&b);
+
+  
+    //Realizando o teste
+    extended_euclidean_algorithm(a,b);
+
+    //Finalizando a aplicação
+    return 0;
+
+}
