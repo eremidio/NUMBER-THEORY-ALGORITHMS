@@ -68,95 +68,97 @@ bool is_square_free_integer(T);
 //FUNÇÕES
 //Função que detecta se um inteiro possui fatores primos repetidos
 bool is_square_free_integer(int64_t x64){
-//Restrição a inteiros positivos
-if(x64<0)
-x64*=(-1);
 
-//Variáveis locais
-int64_t root=static_cast<int64_t>(std::sqrt(x64));
-int64_t divisors[8]={7,11,13,17,19,23,29,31};
-int64_t i, j, tester;
+  //Restrição a inteiros positivos
+  if(x64<0) x64*=(-1);
 
-//Procedimentos
-//Fatores 2,3,5
-if((x64%4)==0 || (x64%9)==0 || (x64%25)==0)
-return false;
-
-//Loop principal
-for(i=0;;++i){
+  //Variáveis locais
+  int64_t root=static_cast<int64_t>(std::sqrt(x64));
+  int64_t divisors[8]={7,11,13,17,19,23,29,31};
+  int64_t i, j, tester;
 
 
-for(j=0; j<8; ++j){
-tester=(30*i)+divisors[j];
+  //Procedimentos
+    //Fatores 2,3,5
+    if((x64%4)==0 || (x64%9)==0 || (x64%25)==0) return false;
 
-if((x64%(tester*tester))==0)
-return false;
-
-if(tester>root)
-return true;
-                  };
+    //Loop principal
+    for(i=0;;++i){
 
 
-             };
+    for(j=0; j<8; ++j){
+      tester=(30*i)+divisors[j];
 
-//Erro
-return false;
-                                        };
+      if((x64%(tester*tester))==0) return false;
+
+      if(tester>root) return true;
+    };
+
+};
+
+
+  //Erro
+  return false;
+
+};
 
 
 //**********************************************************************************************************************************************
 //CLASSE DE CORPOS ALGÉBRICOS QUADRÁTICOS
 template<typename T>
 class algebraic_quadratic_field{
-public:
-//------------------------------------
-//MEMBROS
-int64_t d;//Discriminante
-T a;
-T b;
+    public:
 
-//------------------------------------
-//CONSTRUTORES E DESTRUIDORES
-algebraic_quadratic_field(){
-d=0; a=0; b=0;
-                           };
-
-algebraic_quadratic_field(int64_t x){
-d=x;
-a=0; b=0;
-
-//Restrição
-assert(is_square_free_integer(d));
-
-                                    };
-
-algebraic_quadratic_field(T x, T y, int64_t z){
-d=z;
-a=x;
-b=y;
-
-//Restrição
-assert(is_square_free_integer(d));
-                                              };
+  //------------------------------------
+  //MEMBROS
+  int64_t d;//Discriminante
+  T a;
+  T b;
 
 
-~algebraic_quadratic_field(){ };
+  //------------------------------------
+  //CONSTRUTORES E DESTRUIDORES
+  algebraic_quadratic_field(){
+      d=0; a=0; b=0;
+  };
 
 
-//------------------------------------
-//MÉTODOS  DA CLASSE
-std::string algebraic();
-void set();
-T norm();
-algebraic_quadratic_field<T> conjugate();
+  algebraic_quadratic_field(int64_t x){
+    d=x;
+    a=0; b=0;
+
+    //Restrição
+    assert(is_square_free_integer(d));
+
+  };
 
 
-algebraic_quadratic_field<T> operator+(algebraic_quadratic_field<T>);
-algebraic_quadratic_field<T> operator-(algebraic_quadratic_field<T>);
-algebraic_quadratic_field<T> operator*(algebraic_quadratic_field<T>);
-algebraic_quadratic_field<T> operator/(algebraic_quadratic_field<T>);
+  algebraic_quadratic_field(T x, T y, int64_t z){
+    d=z; a=x; b=y;
 
-                               };
+    //Restrição
+    assert(is_square_free_integer(d));
+ 
+  };
+
+
+  ~algebraic_quadratic_field(){ };
+
+
+  //------------------------------------
+  //MÉTODOS  DA CLASSE
+  std::string algebraic();
+  void set();
+  T norm();
+  algebraic_quadratic_field<T> conjugate();
+
+
+  algebraic_quadratic_field<T> operator+(algebraic_quadratic_field<T>);
+  algebraic_quadratic_field<T> operator-(algebraic_quadratic_field<T>);
+  algebraic_quadratic_field<T> operator*(algebraic_quadratic_field<T>);
+  algebraic_quadratic_field<T> operator/(algebraic_quadratic_field<T>);
+
+};
 
 
 //**********************************************************************************************************************************************
@@ -165,115 +167,116 @@ algebraic_quadratic_field<T> operator/(algebraic_quadratic_field<T>);
 //Função que escreve um inteiro algébrico como uma string
 template<typename T>
 std::string algebraic_quadratic_field<T>::algebraic(){
-//Variáveis locais
-std::string algebraic_number_string="";
 
-//Procedimentos
-algebraic_number_string+=std::to_string(a);
+  //Variáveis locais
+  std::string algebraic_number_string="";
 
-if(b>0)
-algebraic_number_string+="+";
+  //Procedimentos
+  algebraic_number_string+=std::to_string(a);
+  if(b>0) algebraic_number_string+="+";
+  algebraic_number_string+=std::to_string(b);
 
-algebraic_number_string+=std::to_string(b);
+  algebraic_number_string+="(√";
+  algebraic_number_string+=std::to_string(d);
+  algebraic_number_string+=")";
 
-algebraic_number_string+="(√";
-algebraic_number_string+=std::to_string(d);
-algebraic_number_string+=")";
+  //Resultados
+  return algebraic_number_string;
 
-//Resultados
-return algebraic_number_string;
-                                                     };
+};
 
 
 //Função que define os coeficientes de um número algébrico
 template<typename T>
 void algebraic_quadratic_field<T>::set(){
-if(d==0){
-std::cout<<"a+b(√d) --> valor do discriminante d: ";
-std::cin>>d;
 
-assert(is_square_free_integer(d));
-        };
+  if(d==0){
+    std::cout<<"a+b(√d) --> valor do discriminante d: ";
+    std::cin>>d;
 
-std::cout<<"a+b(√d) --> valor do coeficiente a: ";
-std::cin>>a;
-std::cout<<"a+b(√d) --> valor do coeficiente b: ";
-std::cin>>b;
-                                        };
+    assert(is_square_free_integer(d));
+
+  };
+
+  std::cout<<"a+b(√d) --> valor do coeficiente a: ";
+  std::cin>>a;
+  std::cout<<"a+b(√d) --> valor do coeficiente b: ";
+  std::cin>>b;
+
+};
 
 //Função que calcula a  norma de um número algébrico
 template<typename T>
 T algebraic_quadratic_field<T>::norm(){
 
-//Caso 1: d>0
-if(d>0){
+  //Caso 1: d>0
+  if(d>0){
+  
+  if((d%4)==2 || (d%4)==3) return ((a*a)-(b*b*d));
+  else if((d%4)==1) return ((a*a)-(b*a) -(((d-1)/4)*b*b));
 
-if((d%4)==2 || (d%4)==3)
-return ((a*a)-(b*b*d));
-
-else if((d%4)==1)
-return ((a*a)-(b*a) -(((d-1)/4)*b*b));
-
-       };
+  };
 
 
-//Caso 2: d<0
-if(d<0){
+  //Caso 2: d<0
+  if(d<0){
 
-//Variável local
-int64_t d_=(-1)*d;
+    //Variável local
+    int64_t d_=(-1)*d;
 
-//Resultado
-
-if((d_%4)==2 || (d_%4)==1)
-return ((a*a)-(b*b*d));
-
-else if((d_%4)==3)
-return ((a*a)-(b*a) -(((d-1)/4)*b*b));
-       };
+    //Resultado
+    if((d_%4)==2 || (d_%4)==1)
+      return ((a*a)-(b*b*d));
+    else if((d_%4)==3)
+      return ((a*a)-(b*a) -(((d-1)/4)*b*b));
+  };
 
 
-//Erro
-return 0;
-                                      };
+  //Erro
+  return 0;
+ 
+};
 
 
 //Função que retorna o conjugado de número algébrico
 template<typename T>
 algebraic_quadratic_field<T> algebraic_quadratic_field<T>::conjugate(){
 
-//Variáveis locais
-algebraic_quadratic_field<T> result;
+  //Variáveis locais
+  algebraic_quadratic_field<T> result;
 
-//Procedimentos
-result.a=a;
-result.b=b*(-1);
-result.d=d;
+  //Procedimentos
+  result.a=a;
+  result.b=b*(-1);
+  result.d=d;
 
 
-//Resultado
-return result;
-                                                                      };
+  //Resultado
+  return result;
+
+};
 
 
 
 //Soma de números algébricos
 template<typename T>
 algebraic_quadratic_field<T> algebraic_quadratic_field<T>::operator+(algebraic_quadratic_field<T> z1){
-//Restrição
-assert(d==z1.d);
 
-//Variáveis locais
-algebraic_quadratic_field<T> result;
+  //Restrição
+  assert(d==z1.d);
 
-//Procedimentos
-result.d=d;
-result.a=a+z1.a;
-result.b=b+z1.b;
+  //Variáveis locais
+  algebraic_quadratic_field<T> result;
 
-//Resultado
-return result;
-                                                                                                     };
+  //Procedimentos
+  result.d=d;
+  result.a=a+z1.a;
+  result.b=b+z1.b;
+
+  //Resultado
+  return result;
+
+};
 
 
 
@@ -281,66 +284,70 @@ return result;
 //Subtração de números algébricos
 template<typename T>
 algebraic_quadratic_field<T> algebraic_quadratic_field<T>::operator-(algebraic_quadratic_field<T> z1){
-//Restrição
-assert(d==z1.d);
 
-//Variáveis locais
-algebraic_quadratic_field<T> result;
+  //Restrição
+  assert(d==z1.d);
 
-//Procedimentos
-result.d=d;
-result.a=a-z1.a;
-result.b=b-z1.b;
+  //Variáveis locais
+  algebraic_quadratic_field<T> result;
 
-//Resultado
-return result;
-                                                                                                      };
+  //Procedimentos
+  result.d=d;
+  result.a=a-z1.a;
+  result.b=b-z1.b;
+
+  //Resultado
+  return result;
+
+};
 
 
 //Multiplicação de números algébricos
 template<typename T>
 algebraic_quadratic_field<T> algebraic_quadratic_field<T>::operator*(algebraic_quadratic_field<T> z1){
-//Restrição
-assert(d==z1.d);
 
-//Variáveis locais
-algebraic_quadratic_field<T> result;
+  //Restrição
+  assert(d==z1.d);
 
-//Procedimentos
-result.d=d;
-result.a=(a*z1.a)+(d*b*z1.b);
-result.b=(a*z1.b)+(b*z1.a);
+  //Variáveis locais
+  algebraic_quadratic_field<T> result;
 
-//Resultado
-return result;
+  //Procedimentos
+  result.d=d;
+  result.a=(a*z1.a)+(d*b*z1.b);
+  result.b=(a*z1.b)+(b*z1.a);
 
-                                                                                                     };
+  //Resultado
+  return result;
+
+};
 
 
 //Divisão de números algébricos
 template<typename T>
 algebraic_quadratic_field<T> algebraic_quadratic_field<T>::operator/(algebraic_quadratic_field<T> z1){
-//Restrição
-assert(d==z1.d);
 
-//Variáveis locais
-algebraic_quadratic_field<T> result;
-T quadratic_norm=((z1.a*z1.a)-(d*z1.b*z1.b));
+  //Restrição
+  assert(d==z1.d);
 
-//Procedimentos
-result.d=d;
+  //Variáveis locais
+  algebraic_quadratic_field<T> result;
+  T quadratic_norm=((z1.a*z1.a)-(d*z1.b*z1.b));
 
-result.a=(a*z1.a)-(d*b*z1.b);
-result.a/=quadratic_norm;
+  //Procedimentos
+  result.d=d;
+  
+  result.a=(a*z1.a)-(d*b*z1.b);
+  result.a/=quadratic_norm;
 
-result.b=(b*z1.a)-(a*z1.b);
-result.b/=quadratic_norm;
+  result.b=(b*z1.a)-(a*z1.b);
+  result.b/=quadratic_norm;
+  
 
+  //Resultado
+  return result;
 
-//Resultado
-return result;
-
-                                                                                                     };
+};
 
 //**********************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES AUXILIARES
@@ -359,58 +366,62 @@ algebraic_quadratic_field<T> quadratic_pow(algebraic_quadratic_field<T>, U);
 //Função que determina se um número algébrico é uma unidade (possui norma 1)
 template<typename T>
 bool is_unity(algebraic_quadratic_field<T> z){
-//Variáveis locais
-int64_t unit_norm= static_cast<int64_t>(z.norm());
 
-//Resultado
-if(unit_norm==1 || (-1)*unit_norm==1)
-return true;
-else
-return false;
-                                             };
+  //Variáveis locais
+  int64_t unit_norm= static_cast<int64_t>(z.norm());
+
+  //Resultado
+  if(unit_norm==1 || (-1)*unit_norm==1)
+    return true;
+  else
+    return false;
+
+};
 
 //Função que determina se o quociente de dois números algébricos é uma unidade
 template<typename T>
 bool is_associated(algebraic_quadratic_field<T> z1, algebraic_quadratic_field<T> z2){
-//Variáveis locais
-algebraic_quadratic_field<T> quotient=z1/z2;
 
-//Resultado
-if(is_unity(quotient)==true)
-return true;
-else
-return false;
+  //Variáveis locais
+  algebraic_quadratic_field<T> quotient=z1/z2;
 
-                                                                                    };
+  //Resultado
+  if(is_unity(quotient)==true)
+    return true;
+  else
+    return false;
+
+};
 
 
 //Função que eleva um número algébrico a uma potência inteira racional
 template<typename T, typename U>
 algebraic_quadratic_field<T> quadratic_pow(algebraic_quadratic_field<T> z, U power){
-//Restrição a expoentes inteiro racionais
-static_assert(std::is_integral<U>::value==true);
 
-//Variáveis locais
+  //Restrição a expoentes inteiro racionais
+  static_assert(std::is_integral<U>::value==true);
 
-algebraic_quadratic_field<T> result(1,0, z.d), temp;
+  //Variáveis locais
+  algebraic_quadratic_field<T> result(1,0, z.d), temp;
 
 
-//Procedimentos
-//Loop principal
-while(power>0){
+  //Procedimentos
+   //Loop principal
+   while(power>0){
 
-//Testando os bits do expoente
-if(power&1)
-result=result*z;
+    //Testando os bits do expoente
+    if(power&1) result=result*z;
 
-//Atualizando variáveis para a próxima iteração
-z=z*z;
-power>>=1;
-              };
+    //Atualizando variáveis para a próxima iteração
+    z=z*z;
+    power>>=1;
+  };
 
-//Resultado
-return result;
-                                                                                   };
+
+  //Resultado
+  return result;
+
+};
 
 
 //**********************************************************************************************************************************************

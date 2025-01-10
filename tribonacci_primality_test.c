@@ -23,51 +23,53 @@ PARA MAIORES INFORMAÇÕES: https://trizenx.blogspot.com/2020/01/primality-testi
 //*********************************************************************************************************************************************************************
 //FUNÇÕES 
 bool tribonacci_primality_test(int64_t n){
-//Variáveis locais
-int64_t t0=0, t1=0, t2=9, t3;
-int64_t i;
 
-//Procedimentos
-for(i=0; i<=(n-3); i++){
-t3=((t2%n)+((3*t1)%n)+((9*t1)%n))%n;
+  //Variáveis locais
+  int64_t t0=0, t1=0, t2=9, t3;
+  int64_t i;
 
-//Atualizando variáveis para a próxima iteração
-t0=t1;
-t1=t2;
-t2=t3;
-                       };
+  //Procedimentos
+  for(i=0; i<=(n-3); i++){
+    t3=((t2%n)+((3*t1)%n)+((9*t1)%n))%n;
 
-//Resultado da execução do algoritmo
-if(t3==0){
-if((n%8)==1 || (n%8)==3)
-return true;
-         };
+    //Atualizando variáveis para a próxima iteração
+    t0=t1;
+    t1=t2;
+    t2=t3;
+  };
 
-if(t3==4){
-if((n%8)==7 || (n%8)==5)
-return true;
-         };
+  //Resultado da execução do algoritmo
+  if(t3==0){
+    if((n&7)==1 || (n&7)==3) return true;
+  };
 
-return false;
+  if(t3==4){
+    if((n&7)==7 || (n&7)==5)  return true;
+  };
 
-                                        };
+  return false;
+
+};
 
 //*********************************************************************************************************************************************************************
 //FUNÇÃO PRINCIPAL
 int main(){
-//Váriaveis
-uint64_t number;
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um número que será testado:\n");
-scanf("%lu", &number);
 
-//Executando o teste
-if(tribonacci_primality_test(number)==true)
-printf("Provável primo encontrado!\n");
-else
-printf("Número composto.\n");
+  //Váriaveis
+  uint64_t number;
 
-//Finalizando a aplicação
-return 0;
-          }
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um número que será testado:\n");
+    scanf("%lu", &number);
+
+    //Executando o teste
+    if(tribonacci_primality_test(number)==true)
+      printf("Provável primo encontrado!\n");
+    else
+      printf("Número composto.\n");
+
+  //Finalizando a aplicação
+  return 0;
+
+}
