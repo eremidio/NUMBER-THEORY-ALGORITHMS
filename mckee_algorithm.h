@@ -26,6 +26,7 @@ fator primo de n e combinar os resultados via teorema do resíduo chinês.
 //CABEÇALHO
 #ifndef MCKEE_ALGORITHM_H
 #define MCKEE_ALGORITHM_H
+#include"kronecker_symbol.h"
 #include"prime_power_detection.h"
 #include<stdio.h>
 #include<stdlib.h>
@@ -153,6 +154,7 @@ void mckee_algorithm(int64_t n){
       roots=(int64_t*)realloc(roots, 0);
       root_size=0;
       int64_t temp1=(4*a*n)%(4*d);
+      if(kronecker(temp1, (d<<2))==(-1)) continue;
 
       for(int64_t i=root_4d; i<(d<<2); ++i){
         if(((i*i)%(d<<2))==temp1){
