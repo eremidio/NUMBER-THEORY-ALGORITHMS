@@ -32,6 +32,14 @@ https://en.wikipedia.org/wiki/Prime-counting_function#The_Meissel–Lehmer_algor
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include"mapes_precomputation.h"
+#include"euler_totient_function.h"
+
+
+//CONSTANTES GLOBAIS
+const int PHI_MAX2=30030; // [Primorial]13#
+const int eulerPHI_MAX2=5760;// [Função totiente de Euler]φ(13#)
+const int MAPLE_TABLE_MAX=100000; 
 
 //****************************************************************************************************************************************************
 // DECLARAÇÃO DE FUNÇÕES
@@ -111,20 +119,76 @@ int64_t small_counting(int64_t n) {
 
 // Função auxiliar Φ(m, n)
 int64_t phi_mn(int64_t m, int64_t n, int64_t prime_array[]) {
-  // Resultado
-  if (n == 0)
-    return floor(m);
-  else if (prime_array[n - 1] > m)
-    return 1;
-  else
-    return phi_mn(m, (n - 1), prime_array) -
+
+  //Casos bases
+    //Ajuste de variáveis:  Φ(sm+t, n)= sφ(m)+Φ(t, n) onde φ(m) é a função totient de Euler
+    if(m>PHI_MAX){
+      int64_t s=m/PHI_MAX2;
+      m%=PHI_MAX2;
+    
+      if(n==2) return eulerPHI_MAX2*s+mapes2[m];
+      else if(n==3) return eulerPHI_MAX2*s+mapes3[m];
+      else if(n==4) return eulerPHI_MAX2*s+mapes4[m];
+      else if(n==5) return eulerPHI_MAX2*s+mapes5[m];
+      else if(n==6) return eulerPHI_MAX2*s+mapes6[m];
+      else if(n==7) return eulerPHI_MAX2*s+mapes7[m];
+      else if(n==8) return eulerPHI_MAX2*s+mapes8[m];
+      else if(n==9) return eulerPHI_MAX2*s+mapes9[m];
+      else if(n==10) return eulerPHI_MAX2*s+mapes10[m];
+      else return eulerPHI_MAX2*s+phi_mn(m,n, prime_array);
+
+    };
+
+
+    //Ajuste de variáveis:  Φ(t, n)= φ(m#)-Φ(m#-t-1, n) onde φ(m) é a função totient de Euler e m# é um primorial com m pequeno
+    if(m>(PHI_MAX>>1)){
+      m=PHI_MAX2-m-1; 
+
+      if(n==2) return eulerPHI_MAX2-mapes2[m];
+      else if(n==3) return eulerPHI_MAX2-mapes3[m];
+      else if(n==4) return eulerPHI_MAX2-mapes4[m];
+      else if(n==5) return eulerPHI_MAX2-mapes5[m];
+      else if(n==6) return  eulerPHI_MAX2-mapes6[m];
+      else if(n==7) return  eulerPHI_MAX2-mapes7[m];
+      else if(n==8) return  eulerPHI_MAX2-mapes8[m];
+      else if(n==9) return  eulerPHI_MAX2-mapes9[m];
+      else if(n==10) return  eulerPHI_MAX2-mapes10[m];
+      else return eulerPHI_MAX2-phi_mn(m, n, prime_array);
+
+    };
+
+    if(m<MAPLE_TABLE_MAX && n<=10){
+
+      if(n==2) return mapes2[m];
+      else if(n==3) return mapes3[m];
+      else if(n==4) return mapes4[m];
+      else if(n==5) return mapes5[m];
+      else if(n==6) return mapes6[m];
+      else if(n==7) return mapes7[m];
+      else if(n==8) return mapes8[m];
+      else if(n==9) return mapes9[m];
+      else if(n==10) return  mapes10[m];
+
+    }
+
+
+
+   // Recursão
+    if (n == 0)
+      return floor(m);
+    else if (prime_array[n - 1] > m)
+      return 1;
+    else if(n==1) return floor((m+1)/2);
+    else
+      return phi_mn(m, (n - 1), prime_array) -
            phi_mn(m / prime_array[n - 1], (n - 1), prime_array);
 };
+
 
 // Função que implementa o algoritmo de Legendre para a função de contagem de primos
 int64_t prime_counting_function(int64_t n) {
   // Caso base
-  if (n <= 1000) return small_counting(n);
+  if (n <= 100) return small_counting(n);
 
   // Variáveis locais
   int64_t* prime_array = NULL;
@@ -132,11 +196,10 @@ int64_t prime_counting_function(int64_t n) {
   int64_t phi, result;
 
   // Procedimentos
-  // Preenchendo um buffer de primos e computando onúmero de primos  até a raíz
-  // quadrada do limite desejado
   prime_array = prime_sieving_counting(n, &prime_root_counter);
 
   // Computando a função auxiliar Φ(m, n)
+  mapes_precomputation();
   phi = phi_mn(n, prime_root_counter, prime_array);
 
   // Computando a contagem de primos até o limite especificado pelo usuário
