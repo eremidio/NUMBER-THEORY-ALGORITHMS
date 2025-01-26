@@ -70,7 +70,8 @@ void select_montgomery_parameters(int64_t* R, int* s, int64_t* N1,  int64_t N){
     }
 
     //Calculando N-¹ mod R
-    N_=fast_modular_inverse(N, R_);  
+    N_=fast_modular_inverse(N, R_); 
+    if(N_<0) N_+=R_ ;
 
   //Resultado
   (*R)=R_;
