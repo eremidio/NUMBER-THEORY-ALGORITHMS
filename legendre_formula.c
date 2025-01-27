@@ -22,6 +22,11 @@ int main(){
   printf("Número de primos até %li: %li.\n", limit, prime_counting_function(limit));
 
 
+  //Testando peneira num intervalo
+  printf("Teste  Φ(1000, 11): %li\n", phi_mn_raw(1000, 11));
+  printf("Teste  Φ(10000, 25): %li\n", phi_mn_raw(10000, 25));
+  printf("Teste  Φ(1000000, 168): %li\n", phi_mn_raw(1000000, 168));
+
  //Finalizando a aplicação
  return 0;
 

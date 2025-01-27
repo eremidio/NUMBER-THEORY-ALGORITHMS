@@ -40,11 +40,13 @@ https://en.wikipedia.org/wiki/Prime-counting_function#The_Meissel–Lehmer_algor
 const int PHI_MAX2=30030; // [Primorial]13#
 const int eulerPHI_MAX2=5760;// [Função totiente de Euler]φ(13#)
 const int MAPLE_TABLE_MAX=100000; 
+const int MAX_RAW_PHI=1000000; 
 
 //****************************************************************************************************************************************************
 // DECLARAÇÃO DE FUNÇÕES
 int64_t* prime_sieving_counting(int64_t, int64_t*);
 int64_t small_counting(int64_t);
+int64_t phi_mn_raw(int64_t, int64_t);
 int64_t phi_mn(int64_t, int64_t, int64_t[]);
 int64_t prime_counting_function(int64_t);
 
@@ -117,47 +119,67 @@ int64_t small_counting(int64_t n) {
   return counter;
 };
 
-// Função auxiliar Φ(m, n)
+// Função auxiliar Φ(m, n) via peneira: n<168
+int64_t phi_mn_raw(int64_t m, int64_t n){
+
+ // Variáveis locais
+  int small_primes[168] = {
+      2,   3,   5,   7,   11,  13,  17,  19,  23,  29,  31,  37,  41,  43,
+      47,  53,  59,  61,  67,  71,  73,  79,  83,  89,  97,  101, 103, 107,
+      109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181,
+      191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263,
+      269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349,
+      353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433,
+      439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521,
+      523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613,
+      617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701,
+      709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809,
+      811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887,
+      907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997};
+  int64_t counter = 0;
+  int32_t sieving_interval[MAX_RAW_PHI];
+  int current_prime;
+  
+  //Procedimentos
+    //Iniciando o array de contagem
+    for(int32_t i=0; i<MAX_RAW_PHI; ++i){
+      sieving_interval[i]=i;
+    }
+
+    //Filtrando compostos no intervalo não divísiveis por pequenos primos
+    for(int i =0; i<n; ++i){
+      current_prime=small_primes[i];
+
+      for(int32_t j=current_prime; j<MAX_RAW_PHI; j+=current_prime){
+        sieving_interval[j]=0; 
+      }
+
+    };
+
+    //Contando primos no intervalo
+    for(int32_t i=1; i<=m; ++i){
+      if(sieving_interval[i]>0) counter++;
+    }    
+
+
+  //Resultado
+  return counter;
+
+};
+
+// Função auxiliar Φ(m, n) computada via recursão
+/*
+  NOTA: As seguintes identidades são utéis para computar a função Φ(m, n)
+        Φ(sm#+t, n)= sφ(m#)+Φ(t, n); Φ(t, n)= φ(m#)-Φ(m#-t-1, n);
+        onde φ(m) é a função totient de Euler e m#>t é um primorial com m pequeno
+
+*/
+
 int64_t phi_mn(int64_t m, int64_t n, int64_t prime_array[]) {
 
+
   //Casos bases
-    //Ajuste de variáveis:  Φ(sm+t, n)= sφ(m)+Φ(t, n) onde φ(m) é a função totient de Euler
-    if(m>PHI_MAX){
-      int64_t s=m/PHI_MAX2;
-      m%=PHI_MAX2;
-    
-      if(n==2) return eulerPHI_MAX2*s+mapes2[m];
-      else if(n==3) return eulerPHI_MAX2*s+mapes3[m];
-      else if(n==4) return eulerPHI_MAX2*s+mapes4[m];
-      else if(n==5) return eulerPHI_MAX2*s+mapes5[m];
-      else if(n==6) return eulerPHI_MAX2*s+mapes6[m];
-      else if(n==7) return eulerPHI_MAX2*s+mapes7[m];
-      else if(n==8) return eulerPHI_MAX2*s+mapes8[m];
-      else if(n==9) return eulerPHI_MAX2*s+mapes9[m];
-      else if(n==10) return eulerPHI_MAX2*s+mapes10[m];
-      else return eulerPHI_MAX2*s+phi_mn(m,n, prime_array);
-
-    };
-
-
-    //Ajuste de variáveis:  Φ(t, n)= φ(m#)-Φ(m#-t-1, n) onde φ(m) é a função totient de Euler e m# é um primorial com m pequeno
-    if(m>(PHI_MAX>>1)){
-      m=PHI_MAX2-m-1; 
-
-      if(n==2) return eulerPHI_MAX2-mapes2[m];
-      else if(n==3) return eulerPHI_MAX2-mapes3[m];
-      else if(n==4) return eulerPHI_MAX2-mapes4[m];
-      else if(n==5) return eulerPHI_MAX2-mapes5[m];
-      else if(n==6) return  eulerPHI_MAX2-mapes6[m];
-      else if(n==7) return  eulerPHI_MAX2-mapes7[m];
-      else if(n==8) return  eulerPHI_MAX2-mapes8[m];
-      else if(n==9) return  eulerPHI_MAX2-mapes9[m];
-      else if(n==10) return  eulerPHI_MAX2-mapes10[m];
-      else return eulerPHI_MAX2-phi_mn(m, n, prime_array);
-
-    };
-
-    if(m<MAPLE_TABLE_MAX && n<=10){
+    if(m<MAPLE_TABLE_MAX){
 
       if(n==2) return mapes2[m];
       else if(n==3) return mapes3[m];
@@ -170,7 +192,6 @@ int64_t phi_mn(int64_t m, int64_t n, int64_t prime_array[]) {
       else if(n==10) return  mapes10[m];
 
     }
-
 
 
    // Recursão
