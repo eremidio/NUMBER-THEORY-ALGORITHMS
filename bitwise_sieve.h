@@ -1,11 +1,11 @@
 //VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA UMA PENEIRA DE ERATÓSTENES COM OTIMIZAÇÃO ESPACIAL
 
 /*
-ESTOCANDO-SE INTEIROS DE UM TAMANHO EM BITS MÚLTPILO DE 2 SUPORTADO POR UMA DETERMINADA ARQUITETURA
+ESTOCANDO-SE INTEIROS DE UM TAMANHO EM BITS MÚLTIPLO DE 2 SUPORTADO POR UMA DETERMINADA ARQUITETURA
 É POSSÍVEL REDUZIR O ESPAÇO REQUERIDO PARA ALOCAR NÚMEROS PRIMOS AO SE USAR A PENEIRA DE ERATÓSTENES.
 
 NO PRESENTE ALGORITMO USAREMOS INTEIROS DE 8 BITS PARA ALOCAR NÚMEROS INTEIROS USANDO O ALGORITMO
-TRRADICIONAL DA PENEIRA DE ERATÓSTENES.
+TRADICIONAL DA PENEIRA DE ERATÓSTENES.
 
 PARA MAIORES INFORMAÇÕES: https://www.geeksforgeeks.org/bitwise-sieve/
 
@@ -44,7 +44,7 @@ void start_sieving_array(uint8_t bit8_array[], uint64_t array_size){
     bit8_array[0]=252;
 
     //Inicializando os demais elementos do array
-  for(uint64_t i=1; i<array_size; ++i) bit8_array[i]=255;
+    for(uint64_t i=1; i<array_size; ++i) bit8_array[i]=255;
 
 };
 
@@ -53,7 +53,7 @@ void start_sieving_array(uint8_t bit8_array[], uint64_t array_size){
 bool prime_checking(uint8_t bit8_array[], uint64_t n){
 
   //Variaveis locais
-  uint64_t slot=n/8;
+  uint64_t slot=(n>>3);// div 8
   int bit_slot=(n&7); // mod 8
   uint8_t mask=(1<<bit_slot);
 
@@ -69,7 +69,7 @@ bool prime_checking(uint8_t bit8_array[], uint64_t n){
 void mark_non_prime(uint8_t bit8_array[], uint64_t n){
 
   //Variaveis locais
-  uint64_t slot=n/8;
+  uint64_t slot=(n>>3);// div 8
   int bit_slot=(n&7); // mod 8
   uint8_t mask=~(1<<bit_slot);
 
