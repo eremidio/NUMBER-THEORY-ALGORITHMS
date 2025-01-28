@@ -37,8 +37,6 @@ https://en.wikipedia.org/wiki/Prime-counting_function#The_Meissel–Lehmer_algor
 
 
 //CONSTANTES GLOBAIS
-const int PHI_MAX2=30030; // [Primorial]13#
-const int eulerPHI_MAX2=5760;// [Função totiente de Euler]φ(13#)
 const int MAPLE_TABLE_MAX=100000; 
 const int MAX_RAW_PHI=1000000; 
 
@@ -179,6 +177,14 @@ int64_t phi_mn(int64_t m, int64_t n, int64_t prime_array[]) {
 
 
   //Casos bases
+    //n=1, números de ímpares menores que m
+    if(n==1) return floor((m+1)/2); 
+
+    //O n-ésimo primo é maior que m (só resta 1)
+    if (prime_array[n - 1] > m) return 1;
+
+
+    //Cachê
     if(m<MAPLE_TABLE_MAX){
 
       if(n==2) return mapes2[m];
@@ -190,18 +196,14 @@ int64_t phi_mn(int64_t m, int64_t n, int64_t prime_array[]) {
       else if(n==8) return mapes8[m];
       else if(n==9) return mapes9[m];
       else if(n==10) return  mapes10[m];
+      else if(n==15) return  mapes15[m];
+      else if(n==20) return  mapes20[m];
 
     }
 
 
-   // Recursão
-    if (n == 0)
-      return floor(m);
-    else if (prime_array[n - 1] > m)
-      return 1;
-    else if(n==1) return floor((m+1)/2);
-    else
-      return phi_mn(m, (n - 1), prime_array) -
+    //Recursão
+    return phi_mn(m, (n - 1), prime_array) -
            phi_mn(m / prime_array[n - 1], (n - 1), prime_array);
 };
 

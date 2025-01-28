@@ -18,7 +18,7 @@ int main(){
      VER: Prime Numbers And Computer Methods For Factorization, by Hans Riesel,
      na página 15 para ver a tabela a ser reproduzida aqui.
   */
-  for(int i=0; i<1000; ++i) printf("φ(%d, 20)=%li\n", i, mapes20[i]);
+  for(int i=0; i<1000; ++i) printf("φ(%d, 15)=%li\n", i, mapes15[i]);
    
 
 
