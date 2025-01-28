@@ -1,4 +1,4 @@
-//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE LEGENDRE PARA COMPUTAR A FUNÇÃO  π(x) DE CONTAGEM DE NÚMEROS PRIMOS
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA O ALGORITMO DE LEGENDRE PARA COMPUTAR A FUNÇÃO π(x) DE CONTAGEM DE NÚMEROS PRIMOS
 
 /*
 O ALGORITMO DE LEGENDRE É UM EFICIENTE ALGORITMO QUE CONTABILIZA A FUNÇÃO π(x) PARA
@@ -8,7 +8,7 @@ PRIMOS {p(1), ..., p(a)} O PRINCÍPIO DE INCLUSÃO-EXCLUSÃO AFIRMA QUE:
 O INTEIRO MENOR MAIS PRÓXIMO DE x).
 
 É POSSÍVEL MOSTRAR QUE O SOMATÓRIO ACIMA PODE SER REESCRITO COMO
-π(x)-π(√x)-1=φ(x, π(√x)) ONDE φ(m, n) É UMA FUNÇÃO QUE CONTABILIZA O NÚMERO DE
+π(x)-π(√x)+1=φ(x, π(√x)) ONDE φ(m, n) É UMA FUNÇÃO QUE CONTABILIZA O NÚMERO DE
 INTEIROS MENORES QUE m NÃO DIVISÍVEIS PELOS n-ÉSIMOS PRIMEIROS NÚMEROS PRIMOS. A
 FUNÇÃO φ(m, n) PODE SER COMPUTADA RECURSIVAMENTE POR MEIO DAS RELAÇÕES:
 φ(m, 0)=|_m_| E φ(m, n)=φ(m, (n-1))-φ(m/p(n), (n-1)).
@@ -18,8 +18,11 @@ REELABORAÇÕES DO SOMATÓRIO ORIGINAL PARA REDUZIR O ESPAÇO USADO PARA ALOCAR 
 LISTA PRÉ-COMPUTADA DE PRIMOS E PARA REDUZIR A CHAMADAS RECURSIVAS NO CÁLCULO DA
 FUNÇÃO φ(m, n).
 
-PARA MAIORES REFERÊNCIAS:
-https://en.wikipedia.org/wiki/Prime-counting_function#The_Meissel–Lehmer_algorithm
+PARA MAIORES REFERÊNCIAS: https://en.wikipedia.org/wiki/Prime-counting_function#The_Meissel–Lehmer_algorithm
+                          https://github.com/kimwalisch/primecount/blob/master/doc/Partial-Sieve-Function.md
+                          https://rosettacode.org/wiki/Legendre_prime_counting_function
+                          Prime Numbers And Computer Methods For Factorization, by Hans Riesel
+
 
 */
 
@@ -177,6 +180,9 @@ int64_t phi_mn(int64_t m, int64_t n, int64_t prime_array[]) {
 
 
   //Casos bases
+    //m=0
+    if(m==0) return 0;
+ 
     //n=1, números de ímpares menores que m
     if(n==1) return floor((m+1)/2); 
 
@@ -198,7 +204,7 @@ int64_t phi_mn(int64_t m, int64_t n, int64_t prime_array[]) {
       else if(n==10) return  mapes10[m];
       else if(n==15) return  mapes15[m];
       else if(n==20) return  mapes20[m];
-
+      
     }
 
 
@@ -212,6 +218,7 @@ int64_t phi_mn(int64_t m, int64_t n, int64_t prime_array[]) {
 int64_t prime_counting_function(int64_t n) {
   // Caso base
   if (n <= 100) return small_counting(n);
+ 
 
   // Variáveis locais
   int64_t* prime_array = NULL;
