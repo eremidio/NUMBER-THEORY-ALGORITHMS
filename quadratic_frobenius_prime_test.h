@@ -44,8 +44,9 @@ https://www.sciencedirect.com/science/article/pii/S0022314X98922478?via%3Dihub
 // CABEÇALHO
 #ifndef QUADRATIC_FROBENIUS_PRIMALITY_TEST_H
 #define QUADRATIC_FROBENIUS_PRIMALITY_TEST_H
-#include"mod_bin_exponentiation.h"
-#include"jacobi_symbol.h"
+#include"mod_bin_exponentiation128.h"
+#include"kronecker_symbol.h"
+#include <unistd.h> /*Para windows use o arquivo 'windows.h' e 'conio.h' que contém a mesma função sleep()*/
 #include<stdbool.h>
 #include<stdio.h>
 #include<stdlib.h>
@@ -136,8 +137,8 @@ bool quadratic_frobenius_primality_test_one_run(int64_t n, enum show_frobenius_w
   //Procedimentos
     start:
     //Definindo parâmetros a,b no intervalo [1,2,...,(n-2)]
-    a=1+rand()%(n-1);
-    b=1+rand()%(n-1);
+    a=1+rand()%((n-1)>>3);
+    b=1+rand()%((n-1)>>3);
     
 
     if((b&1)==0 || a<0) goto start;
@@ -159,7 +160,7 @@ bool quadratic_frobenius_primality_test_one_run(int64_t n, enum show_frobenius_w
 
 
     //Cálculo dos parâmetros w, m usados no algoritmo
-    m=(n-jacobi(d, n))/2;
+    m=(n-kronecker(d, n))/2;
     temp=((((a*a)%n)*b_inv)-2)%n;
     w=temp;
 
@@ -232,8 +233,9 @@ bool quadratic_frobenius_primality_test_one_run(int64_t n, enum show_frobenius_w
 bool quadratic_frobenius_primality_test(int64_t n, enum show_frobenius_witness x){
 
   //Resultado
-  for(int i=0; i<25; ++i){
+  for(int i=0; i<3; ++i){
     if(quadratic_frobenius_primality_test_one_run(n, x)==true) return true;
+    sleep(1);
   }
 
   return false;
