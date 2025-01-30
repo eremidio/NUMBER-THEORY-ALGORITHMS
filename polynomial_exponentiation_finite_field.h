@@ -12,6 +12,7 @@ COEFICIENTES EM UM CORPO FINITO F(p) INTEIROS A MENOS DE UMA CONGRUÊNCIA MÓDUL
 #ifndef POLYNOMIAL_EXPONENTIATION_FINITE_FIELD_H
 #define POLYNOMIAL_EXPONENTIATION_FINITE_FIELD_H
 #include"polynomial_exponentiation.h"
+#include"fast_polynomial_division_finite_field.h"
 
 //****************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
@@ -81,7 +82,7 @@ polynomial<T> polynomial_bin_pow_finite_field(polynomial<T>& p1, U exponent, U p
 
 // Função que implementa o algoritmo de exponenciação modular para polinômios sobre F(p)
 template <typename T, typename U>
-polynomial<T> polynomial_powmod_finite_field(polynomial<T>& p1, polynomial<T>& p2,
+polynomial<T> polynomial_powmod_finite_field(polynomial<T>& p1, polynomial<T>& p2/* p2 deve ser mônico*/,
                                 U exponent, U prime_base) {
   // Restrição a expoentes inteiros
   static_assert(std::is_integral<U>::value, "Expoentes devem ser inteiros");
@@ -112,25 +113,32 @@ polynomial<T> polynomial_powmod_finite_field(polynomial<T>& p1, polynomial<T>& p
     // Loop sobre os bits do expoente
     while (exponent > 0) {
       if ((exponent & 1)) {
-        polynomial<T> temp = result * multiplier;
-        result = temp;
+        result = result * multiplier;
 
         if (result.degree > p2.degree) {
-          polynomial<T> temp2 = remainder(result, p2);
-          result = temp2;
-          for(auto& c:result.polynomial_coefficients) c%= prime_base;
+          polynomial<T> q, r;
+          fast_polynomial_division_finite_field<T, U>(result, p2, q, r, prime_base);
+          result=r;
         };
+
       };
 
       // Atualizando variáveis para a proxima iteração
-      polynomial<T> temp3 = multiplier * multiplier;
-      multiplier = temp3;
-      for(auto& c1:multiplier.polynomial_coefficients) c1%= prime_base;
+      multiplier = multiplier * multiplier;
+      if (multiplier.degree > p2.degree) {
+          polynomial<T> q, r;
+          fast_polynomial_division_finite_field<T, U>(multiplier, p2, q, r, prime_base);
+          multiplier=r;
+      };
       exponent >>= 1;
     };
 
     //Ajuste final dos coeficientes do resultado final
-    for(auto& c:result.polynomial_coefficients) c%= prime_base;
+    if (result.degree > p2.degree) {
+      polynomial<T> q, r;
+      fast_polynomial_division_finite_field<T, U>(result, p2, q, r, prime_base);
+      result=r;
+    };
 
   // Resultado
   return result;
