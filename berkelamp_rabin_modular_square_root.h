@@ -36,6 +36,7 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Berlekamp–Rabin_algo
 #include"legendre_symbol.h"
 #include"polynomial_exponentiation.h"
 #include"polynomial_modulus_reduction.h"
+#include"fast_polynomial_division_finite_field.h"
 
 //-------------------------------------------------------------------------------------------------------------
 //DECLARAÇÃO DE FUNÇÕES
@@ -99,11 +100,12 @@ bool find_quadratic_residue(polynomial<int64_t>& power_poly, int64_t& beta, int6
   //Procedimentos
     //Testando o valor de λ
     polynomial<int64_t> quadratic_poly=set_quadratic_polynomial(lambda, a);
-    polynomial<int64_t>remainder_poly=remainder(power_poly, quadratic_poly);
-    polynomial<int64_t>reduced_poly=polynomial_modulus_reduction<int64_t,int64_t>(remainder_poly, p);
+    polynomial<int64_t> q, r;
 
-    if(reduced_poly.degree==1){
-        beta=reduced_poly.polynomial_coefficients[1];
+    fast_polynomial_division_finite_field<int64_t, int64_t>(power_poly, quadratic_poly, q, r, p);
+
+    if(r.degree==1){
+        beta=r.polynomial_coefficients[1];
         return true;
     }      
 
