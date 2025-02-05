@@ -24,56 +24,64 @@ SUBSTITUIÇÃO DIRETA NOS MOSTRA QUE PARA ESTES VALORES O TEOREMA DE PITÁGORAS 
 //FUNÇÃO PRINCIPAL
 
 int main(){
-//Variáveis locais
-long long int limit;
-long long int m, n, a, b, c;
-bool end;
-//Procedimentos
-//Recebendo input do usuário
-printf("Usuário digite um limitante superior para as triplas pitagóricas: ");
-scanf("%lli", &limit);
 
-//Printando as triplas pitagóricas na tela
-printf("Eis a sua lista de triplas pitagóricas:\n");
-for(m=2; m<limit; m++){
-//Caso 1: m é par
-if(m%2==0){
-for(n=1; n<m; n+=2){
-a=(m*m)-(n*n);
-b=2*m*n;
-c=(m*m)+(n*n);
+  //Variáveis locais
+  long long int limit;
+  long long int m, n, a, b, c;
+  bool end;
 
-//Finalizando o loop
-if(c>limit){
-end=true;
-break;
-           } 
 
-printf("(%lli, %lli, %lli)\n", a, b, c);
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Usuário digite um limitante superior para as triplas pitagóricas: ");
+    scanf("%lli", &limit);
+
+
+    //Printando as triplas pitagóricas na tela
+    printf("Eis a sua lista de triplas pitagóricas:\n");
+    
+    for(m=2; m<limit; m++){
+    
+      //Caso 1: m é par
+      if(!(m&1)){
+        for(n=1; n<m; n+=2){
+          a=(m*m)-(n*n);
+          b=2*m*n;
+          c=(m*m)+(n*n);
+
+            //Finalizando o loop
+            if(c>limit){
+              end=true;
+              break;
+            } 
+
+          printf("(%lli, %lli, %lli)\n", a, b, c);
                   };
           };
 
-//Caso 1: m é par
-if(m%2==1){
-for(n=2; n<m; n+=2){
-a=(m*m)-(n*n);
-b=2*m*n;
-c=(m*m)+(n*n);
 
-//Finalizando o loop
-if(c>limit){
-end=true;
-break;
-           } 
+      //Caso 2: m é par
+      if(m%2==1){
 
-printf("(%lli, %lli, %lli)\n", a, b, c);
-                  };
-          };
+        for(n=2; n<m; n+=2){
+          a=(m*m)-(n*n);
+          b=2*m*n;
+          c=(m*m)+(n*n);
 
-if(end==true)
-break;
-                      };
+          //Finalizando o loop
+          if(c>limit){
+            end=true;
+            break;
+          } 
 
-//Finalizando a aplicação
-return 0;
-          };
+        printf("(%lli, %lli, %lli)\n", a, b, c);
+       };
+     };
+
+      if(end==true) break;
+    };
+
+  //Finalizando a aplicação
+  return 0;
+
+};
