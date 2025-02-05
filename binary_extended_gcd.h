@@ -3,6 +3,7 @@
 /*
 PARA MAIORES INFORMAÇÕES: A Course In Computational Algebraic Number Theory by Henri Cohen
                           Prime Numbers A computational Perspective, by Richard Crandall and Carl Pomerance
+                          Number Theoretical Algorithms in Criptography by O. N. Vasilenko
 
 */
 
@@ -23,79 +24,116 @@ void binary_extended_gcd(int64_t*, int64_t*, int64_t*, int64_t, int64_t);
 
 //*******************************************************************************************************************************************
 //FUNÇÕES
-//Função que implementa uma versão binária do algoritmo de Euclides extendido
+//Função que implementa uma versão binária do algoritmo de Euclides extendido ( ax+bx=mdc(a,b))
 void binary_extended_gcd(int64_t* a, int64_t* b, int64_t* gcd, int64_t x, int64_t y){
 
   //Variáveis locais
-  int64_t a_, b_, h=0;
-  int64_t t1, t2, t3;
-  int64_t v1, v2, v3;
+  int64_t u, v, d;
+  int64_t t1, t3, v1, v3;
   int bit_shift=0;
-
+  bool f1=false, f2=false;
 
   //Procedimentos
-    //Removendo fatores 2 comuns
+    //Redução da ordem dos operandos
+    if(x<y){
+      int64_t temp=y;
+      y=x; x=temp;
+      f1=true;
+    }
+   
+    //Caso base: b=0
+    base_case:
+    if(y==0){
+      if(f1==false){
+        u=1; v=0; d=x;
+        goto yield_result;
+      }
+
+      if(f1==true){
+        u=0; v=1; d=x;
+        goto yield_result;
+      }
+
+    };
+
+    //Redução
+      /*NOTA: Essa etapa é feita para que os números de bits de x e y, o algoritmo em questão se aplica se apenas um dos
+            argumentos for um inteiro de precisão multipla, nesse caso as variáveis auxiliares t1, t3, v1, v3
+            necessitam ser um inteiro de precisão múltipla
+      */
+      int64_t r=(x%y);
+      int64_t q=(x/y);
+      x=y; y=r;
+      if(y==0) goto base_case;
+
+    //Removendo os fatores 2 em comum
     while(!(x&1) && !(y&1)){
       x>>=1; y>>=1;
       bit_shift++;
+    };     
 
+    
+    //Inicializando variáveis
+    if(!(y&1)){
+      int64_t temp=y;
+      y=x; x=temp;
+      f2=true;
     }
 
-    //Inicializando variáveis
-    a_=1; b_=0; h=x; 
-    v1=y; v2=(1-x); v3=y;
-
-    if(!(x&1)){
-      t1=1; t2=0; t3=x;
+    u=1; d=x; v1=0; v3=y;
+    if(x&1){
+      t1=0; t3=(-y);
+      goto positive_check;    
     }
     else{
-      t1=0; t2=(-1); t3=(-1)*y;
+      t1=((y+1)>>2); t3=(x>>1);
     };
 
+    //Loop principal: redução euclidiana
+    while(t3>0){
 
-    goto even_check;
-
-    //Loop principal
-    while(1){
-
-      //Checando a paridade dos parâmetros t1, t2, t3
-      if(!(t1&1) && !(t2&1)){
-        t1>>=1; t2>>=1; t3>>=1;
+      //Removendo fatores 2 restante
+      if(!(t3&1)){
+        t3>>=1;
+        if(!(t1&1)) t1>>=1;
+        else t1=((t1+y)>>1);  
       }
-      else{
-        t1+=y; t2-=x;
-        t1>>=1; t2>>=1; t3>>=1;
-      }  
-
-      even_check:
-      if(!(t3&1)) continue;   
 
       //Ajuste de variáveis
+      positive_check:
       if(t3>0){
-        a_=t1; b_=t2; h=t3;    
-      }
+        u=t1; d=t3;
+      } 
       else{
-        v1=y-t1;  v2=(-1)*x-t2; v3=(-1)*t3;
-      };
-
-      //Redução euclidiana
-      t1=(a_)-v2; t2=(b_)-v2; t3=h-v3;
-      if(t1<0){
-        t1+=y; t2-=x;
+        v1=(y-t1); v3=(-t3);
       }
 
-      //Condição que determina o fim do loop
-      if(t3==0) break;
-      
-
-    };//Fim  do loop principal
+      t1=(u-v1);
+      t3=(d-v3);
+      if(t1<0) t1+=y;
+  
+    };//Fim do loop principal
 
 
     //Ajuste fino do resultado
-    if(bit_shift>0) (*gcd)=(h<<bit_shift);
-    else (*gcd)=h;
-    (*a)=a_; (*b)=b_;
+    v=(d-(x*u))/y;
+    if(f2==true){
+      int64_t temp=u;
+      u=v; v=temp;
+    }
+    
+    u=-(v*q);
 
+    //Resultado
+    yield_result:
+      if(f1==true){
+        (*a)=u; (*b)=v;
+      }
+      else{
+        (*a)=v; (*b)=u;
+      }
+      if(bit_shift>0) (*gcd)=(d<<bit_shift);
+      else (*gcd)= d;
 
 };
 
