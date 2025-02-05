@@ -13,6 +13,11 @@ a=m²-n², b=2mn, c=m²+n².
 
 SUBSTITUIÇÃO DIRETA NOS MOSTRA QUE PARA ESTES VALORES O TEOREMA DE PITÁGORAS É VÁLIDO.
 
+DADO UM NÚMERO COMPLEXO z=a+bi, TEMOS QUE z.z=(a²-b²)+(2ab)i  E |z|²=z*z=a²+b².
+ESTAS SÃO EXATAMENTE AS FÓRMULASDE EUCLIDES PARA AS TRIPLAS PITAGÓRICAS.
+DESTA FORMA COMPLEXOS DA FORMA z=a+bi, COM a, b INTEIROS E DE PARIDADES DIFERENTES NOS DÃO OUTRA FORMA DE CALCULA TRIPLAS PITAGÓRICAS.
+
+
 */
 
 //*************************************************************************************************************************
