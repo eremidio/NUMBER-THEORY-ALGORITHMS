@@ -22,8 +22,8 @@ PARA MAIORES INFORMAÇÕES: https://cs.uwaterloo.ca/journals/JIS/VOL3/KANEKO/AT-
 //*********************************************************************************************************************
 //ESTRUTURAS E FUNÇÕES AUXILIARES USADAS NO ALGORITMO
 
-  //Função que calcula o gcd de dois inteiros de 64 bits
-  int64_t aki_tan_gcd(int64_t a, int64_t b){
+  //Função que calcula o gcd de dois inteiros de 128 bits
+  __int128_t aki_tan_gcd(__int128_t a, __int128_t b){
  
     if(b==0) return a;
     else return aki_tan_gcd(b, (a%b));
@@ -33,14 +33,14 @@ PARA MAIORES INFORMAÇÕES: https://cs.uwaterloo.ca/journals/JIS/VOL3/KANEKO/AT-
 
   //----------------------------------------------
 //Estrutura que representa o n-ésimo  número de Bernoulli como uma fração
-/*NOTA: nos restringiremos a inteiros de 64 bits, para grandes valores é necessário
+/*NOTA: nos restringiremos a inteiros de 128 bits, para grandes valores é necessário
         usar bibliotecas como GMP para operar com números inteiros de precisão
         múltipla.
 */
 struct bernoulli_fraction{
 
-  int64_t num;
-  int64_t den;
+  __int128_t num;
+  __int128_t den;
 
 };
 

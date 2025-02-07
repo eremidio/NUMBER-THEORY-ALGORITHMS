@@ -1,5 +1,7 @@
 //VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO akiyama_tanigawa_algorithm.h
 //COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o akiyama_tanigawa_algorithm akiyama_tanigawa_algorithm.c 
+
+
 //Cabeçalho
 #include"akiyama_tanigawa_algorithm.h"
 
@@ -21,7 +23,7 @@ int main(){
     akiyama_tanigawa_algorithm(n);
 
     for(int i=0; i<n; ++i)
-      printf("%li/%li, ", bernoulli_fractions_array[i].num, bernoulli_fractions_array[i].den);
+      printf("%li/%li, ", ((int64_t)bernoulli_fractions_array[i].num), ((int64_t)bernoulli_fractions_array[i].den));
     printf("...\n");
 
 
