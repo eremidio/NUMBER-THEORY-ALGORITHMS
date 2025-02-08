@@ -7,32 +7,46 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-int64_t n, minus_n;
 
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um número inteiro correspondente a um discriminante fundamental: ");
-scanf("%li", &n);
+  //Variáveis locais
+  int64_t n, minus_n;
 
-minus_n = (-1)*n;
+  
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um número inteiro correspondente a um discriminante fundamental: ");
+    scanf("%li", &n);
 
-//Testando se n e -n são discriminantes fundamentais
-if(is_fundamental_discriminant(n)==true)
-printf("%li é um discrimante fundamental.\n", n);
-else
-printf("%li não é um discrimante fundamental.\n", n);
-
-if(is_fundamental_discriminant(minus_n)==true)
-printf("%li é um discrimante fundamental.\n", minus_n);
-else
-printf("%li não é um discrimante fundamental.\n", minus_n);
+    minus_n = (-1)*n;
 
 
-//Calculando o número de classe
-if(is_fundamental_discriminant(minus_n)==true)
-printf("h(%li)=%li (fórmula de Dirichlet)\n", minus_n, class_number_negative_discriminant(minus_n));
+    //Testando se n e -n são discriminantes fundamentais
+    if(is_fundamental_discriminant(n)==true)
+      printf("%li é um discrimante fundamental.\n", n);
+    else
+      printf("%li não é um discrimante fundamental.\n", n);
 
-//Finalizando a aplicação
-return 0;
-          }
+    if(is_fundamental_discriminant(minus_n)==true)
+      printf("%li é um discrimante fundamental.\n", minus_n);
+    else
+      printf("%li não é um discrimante fundamental.\n", minus_n);
+
+
+  //Calculando o número de classe
+  if(is_fundamental_discriminant(minus_n)==true){
+    if(minus_n<(-4))
+      printf("h(%li)=%li (fórmula do número de classe)\n", minus_n, class_number_negative_discriminant(minus_n));
+    printf("h(%li)=%li (via séries de Dirichlet)\n", minus_n, class_number_dirichlet_series(minus_n));
+
+  }
+
+
+
+
+
+
+
+  //Finalizando a aplicação
+  return 0;
+
+}

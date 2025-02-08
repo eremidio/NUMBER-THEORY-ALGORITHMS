@@ -8,18 +8,21 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-int64_t n;
 
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um número inteiro correspondente a um discriminante fundamental: ");
-scanf("%li", &n);
+  //Variáveis locais
+  int64_t n;
 
-//Calculando o número de classe
-printf("h+(%li)=%li (número de classe reduzido)\n", n, narrow_class_number_positive_discriminant(n));
-printf("h(%li)=%li\n", n, class_number_positive_discriminant(n));
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um número inteiro correspondente a um discriminante fundamental: ");
+    scanf("%li", &n);
 
-//Finalizando a aplicação
-return 0;
-          }
+    //Calculando o número de classe
+    printf("h+(%li)=%li (número de classe reduzido)\n", n, narrow_class_number_positive_discriminant(n));
+    printf("h(%li)=%li\n", n, class_number_positive_discriminant(n));
+
+
+  //Finalizando a aplicação
+  return 0;
+
+}
