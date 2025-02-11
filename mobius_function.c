@@ -8,16 +8,20 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-uint64_t number;
-//Procedimentos
-//Recebendo input do usuário
-printf("Usuário digite um número inteiro: ");
-scanf("%lu", &number);
-//Caçlculando as funções de Möbius e as funções de Mertens
-printf("μ(%lu) = %d\n", number, mobius_function(number));
-printf("M(%lu) = %li\n", number, mertens_function(number));
 
-//Finalizando a aplicação
-return 0;
+ //Variáveis locais
+ uint64_t number;
+
+ //Procedimentos
+  //Recebendo input do usuário
+  printf("Usuário digite um número inteiro: ");
+  scanf("%lu", &number);
+
+  //Calculando as funções de Möbius e as funções de Mertens
+  printf("μ(%lu) = %d\n", number, mobius_function(number));
+  printf("M(%lu) = %li\n", number, mertens_function(number));
+
+ //Finalizando a aplicação
+ return 0;
+
           };

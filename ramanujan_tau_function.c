@@ -6,17 +6,20 @@
 #include"ramanujan_tau_function.h"
 
 //Função principal
-//Função principal
 int main(){
-//Variáveis locais
-int64_t number;
-//Procedimentos
-//Recebendo input do usuário
-printf("Usuário digite um número inteiro: ");
-scanf("%li", &number);
-//Calculando as funções de Möbius e as funções de Mertens
-printf("τ(%li) = %li\n", number, ramanujan_tau_function(number));
+
+  //Variáveis locais
+  int64_t number;
+
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Usuário digite um número inteiro: ");
+    scanf("%li", &number);
+
+  //Calculando a função tau de Ramanujan
+  printf("τ(%li) = %li\n", number, ramanujan_tau_function(number));
 
 //Finalizando a aplicação
 return 0;
-          };
+
+};
