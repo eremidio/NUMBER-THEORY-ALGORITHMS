@@ -13,20 +13,22 @@ https://en.wikipedia.org/wiki/Chebyshev_function
 #ifndef LOGARITHMIC_FUNCTIONS_H
 #define LOGARITHMIC_FUNCTIONS_H
 #include"prime_power_detection.h"
+#include"prime_table_reading.h"
 #include<stdlib.h>
 
 
 //**********************************************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
-double von_mangoldt_function(int64_t);
-double first_chebyshev_function(int64_t);
-double second_chebyshev_function(int64_t);
-double pi_weight_function(int64_t);
+double von_mangoldt_function(uint64_t);
+double first_chebyshev_function(uint64_t, uint64_t[]);
+double second_chebyshev_function(uint64_t, uint64_t[]);
+
+
 
 //**********************************************************************************************************************************************************************
 //FUNÇÕES
 //Função Λ de von Mangoldt
-double von_mangoldt_function(int64_t n){
+double von_mangoldt_function(uint64_t n){
 
   //Variáveis locais
   int64_t prime;
@@ -38,74 +40,52 @@ double von_mangoldt_function(int64_t n){
 };
 
 //Função Θ de Chebyshev do primeiro tipo
-double first_chebyshev_function(int64_t n){
+double first_chebyshev_function(uint64_t n, uint64_t prime_list[]){
 
 
   //Variáveis locais
-  int64_t i=0;
   double result=0.0;
 
   //Procedimentos
-  for(i=2; i<=n; ++i){
-    if(baillie_psw_test(i)==true) result+=log(i);
-  };
+    //Loop sobre números primos estocados em uma lista
+    for(int64_t i=0; prime_list[i]<=n ; ++i){
+     result+=log(prime_list[i]);
+
+
+    }
 
   //Resultado
   return result;
+
 };
 
 //Função ψ de Chebyshev do segundo tipo
-double second_chebyshev_function(int64_t n){
+double second_chebyshev_function(uint64_t n, uint64_t prime_list[]){
 
   //Variáveis locais
-  int64_t i,prime;
-  double result=0.0;
+  double result=0.0, log_pp;
+  uint64_t prime_power;
+
 
   //Procedimentos
-    //Loop principal
-    for(i=2; i<=n; ++i){
-      if(fast_prime_power_detection(i, &prime)==false) continue;
-      else result+=log(prime);
-    }
+    //Loop sobre números primos estocados em uma lista
+    for(uint64_t i=0; prime_list[i]<=n ; ++i){
+ 
+        prime_power=prime_list[i];
+        log_pp=log(prime_power);
+
+        while(prime_power<=n){
+          result+=log_pp; log_pp+=log_pp;//log(x^n)=nlog(x)
+          prime_power*=prime_power;
+        }
+
+    };
 
   //Resultado
   return result;
 
 };
 
-
-//Função Π de contagem de primos de Riemann
-double pi_weight_function(int64_t n){
-
-  //Variáveis locais
-  int64_t i, prime, power;
-  double sum=0.0;
-
-  //Procedimentos
-
-
-  
-    //Loop principal
-    for(i=2; i<=n; i++){
-
-      //Checando se o número em questão é potência de um primo
-      if(fast_prime_power_detection(i, &prime)==true){
-        power=0;
-        while(i>=2){
-          i/=prime;
-          power++;
-        }
-        sum+=(1.0/power);
-
-      }
-
-    }
-
-  //Resultado
-  return sum;
-
-
-};
 
 //**********************************************************************************************************************************************************************
 //FIM DO HEADER

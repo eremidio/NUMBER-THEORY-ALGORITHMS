@@ -43,7 +43,7 @@ int64_t ramanujan_sum(int64_t q, int64_t n) {
     for (; factor1 < q; factor1++) {
       if ((q % factor1) == 0) {
         factor2 = n / factor1;
-        if (euclides_algorithm(factor1, factor2) == 1) break;
+        if (gcd_s64(factor1, factor2) == 1) break;
       };
     };
 
@@ -65,7 +65,7 @@ int64_t ramanujan_sum(int64_t q, int64_t n) {
 
   // Procedimentos
   for (a = 1; a <= q; ++a) {
-    if (euclides_algorithm(a, q) == 1) {
+    if (gcd_s64(a, q) == 1) {
       quotient = (2.0 * pi * a * n) / q;
       sum += cos(quotient);
     };
