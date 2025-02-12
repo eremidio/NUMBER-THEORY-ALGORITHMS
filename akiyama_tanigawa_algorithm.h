@@ -59,14 +59,20 @@ struct bernoulli_fraction compute_bernoulli_fraction(struct bernoulli_fraction b
 
   //Variáveis locais
   struct bernoulli_fraction b3;
+  int64_t ratio;
 
   //Procedimentos
     //Cálculo do numerador e denominador
-    b3.num=index*((b1.num*b2.den)-(b2.num*b1.den));
+    b3.num=((b1.num*b2.den)-(b2.num*b1.den));
     b3.den=(b1.den*b2.den);
 
+    ratio= aki_tan_gcd(index, b3.den);
+    index=index/ratio; b3.den=b3.den/ratio;
+    b3.num=b3.num*index;
+
+
     //Racionalizando o resultado
-    int64_t ratio= aki_tan_gcd(b3.num, b3.den);
+    ratio= aki_tan_gcd(b3.num, b3.den);
     if(ratio>1){
       b3.num=b3.num/ratio; b3.den=b3.den/ratio;
     }
