@@ -8,20 +8,24 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-int64_t a, b;
-//Procedimento
-//REcebendo input do usuário
-printf("Digite um número inteiro: ");
-scanf("%li", &a);
-printf("Digite um número inteiro: ");
-scanf("%li", &b);
-//Performando operações aritméticas
-printf("%li+%li=%li\n", a, b, bit_add(a, b));
-printf("%li-%li=%li\n", a, b, bit_sub(a, b));
-printf("%li*%li=%li\n", a, b, bit_mul(a, b));
-printf("%li/%li=%li\n", a, b, bit_div(a, b));
+
+  //Variáveis locais
+  int64_t a, b;
+
+  //Procedimento
+    //Recebendo input do usuário
+    printf("Digite um número inteiro: ");
+    scanf("%li", &a);
+    printf("Digite um número inteiro: ");
+    scanf("%li", &b);
+
+    //Performando operações aritméticas
+    printf("%li+%li=%li\n", a, b, bit_add(a, b));
+    printf("%li-%li=%li\n", a, b, bit_sub(a, b));
+    printf("%li*%li=%li\n", a, b, bit_mul(a, b));
+    printf("%li/%li=%li\n", a, b, bit_div(a, b));
 
 //Finalizando a aplicação
 return 0;
-          }
+
+}

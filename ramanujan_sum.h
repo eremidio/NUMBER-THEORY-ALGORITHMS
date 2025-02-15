@@ -36,13 +36,23 @@ int64_t ramanujan_sum(int64_t q, int64_t n) {
 
   // Usando a propriedade multiplicativa de c(q, n)
   if (n > 25000) {
-    int64_t factor1 = sqrt(q), factor2 = 0;
-    int64_t i;
+    int64_t factor1 = 0, factor2 = 0;
+    int64_t  sqrt_n = sqrt(q);
+   
 
     // Procedimento
-    for (; factor1 < q; factor1++) {
-      if ((q % factor1) == 0) {
-        factor2 = n / factor1;
+    for (int64_t i = (sqrt_n - 1); i > 1; --i) {
+      if ((n % i) == 0) {
+        factor1 = i;
+        factor2 = n / i;
+
+        if (gcd_s64(factor1, factor2) == 1) break;
+      };
+
+      if ((n % (sqrt_n - i)) == 0 && (sqrt_n - i) >= 2) {
+        factor1 = (sqrt_n - i);
+        factor2 = n / (sqrt_n - i);
+
         if (gcd_s64(factor1, factor2) == 1) break;
       };
     };
