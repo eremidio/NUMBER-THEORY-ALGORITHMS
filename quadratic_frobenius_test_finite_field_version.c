@@ -1,0 +1,30 @@
+//VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO quadratic_frobenius_test_finite_field_version.h
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o quadratic_frobenius_test_finite_field_version quadratic_frobenius_test_finite_field_version.c -O2 -lm
+
+
+//Cabeçalho
+#include"quadratic_frobenius_test_finite_field_version.h"
+
+
+//Função principal
+int main(){
+  //Variáveis locais
+  int64_t number;
+
+  //Procedimentos
+    //Recebendo o input
+    printf("Número a ser testado: ");
+    if(scanf("%li", &number)!=1)  return 0;
+
+
+    //Usando o teste de Fröbenius simplificado para inteiros de 64 bits
+    if(quadratic_frobenius_test_finite_field(number)==true)
+      printf("O número em questão é primo.\n");
+    else
+      printf("O número em questão é composto.\n");
+
+
+  //Finalizando a aplicação
+  return 0;
+
+} 
