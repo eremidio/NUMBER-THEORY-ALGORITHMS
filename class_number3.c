@@ -25,7 +25,7 @@ int main(){
     printf("Unidade fundamental de Q(√%li): η=(1/2)(%li+%li√%li)\n\n", d , t, u, d);
 
     //Computando o número de classe
-    printf("h(%li)=%li (via número fórmula de classe)\n", d, class_number_formula_positive_discriminant(d));
+    printf("h(%li)=%li (via fórmula do número de classe)\n", d, class_number_formula_positive_discriminant(d));
 
 
   //Finalizando a aplicalção
