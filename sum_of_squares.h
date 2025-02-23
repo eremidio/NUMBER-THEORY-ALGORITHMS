@@ -1,14 +1,11 @@
-// VAMOS CRIAR UM PROGRAMA PARA EXPRESSAR NÚMEROS INTEIROS COMO A SOMA DE
-// QUADRADOS PERFEITOS
+// VAMOS CRIAR UM PROGRAMA PARA EXPRESSAR NÚMEROS INTEIROS COMO A SOMA DE QUADRADOS PERFEITOS
 
 /*
+
 A FUNÇÃO r(k,n) É UMA FUNÇÃO ARITMÉTICA QUE COMPUTA DE QUANTAS FORMAS DIFERENTES
 UM INTEIRO n PODE SER EXPRESSO COMO A SOMA DE k QUADRADOS PERFEITOS
 n=a(0)²+...+a(k)². FÓRMULAS EXPLICÍTAS EXISTEM PARA ALGUNS CASOS PARTICULARES
 COMO k=2, 3, 4, 6, ENTRE OUTROS.
-
-A FUNÇÃO r(k, n) CORRESPONDE AOS COEFICIENTES DA EXPANSÃO EM SÉRIE DE FOURIER DA
-k-ÉSIMA POTÊNCIA DA FUNÇÃO THETA DE JACOBI.
 
 ALGUNS TEOREMAS IMPORTANTES DÃO CONDIÇÕES NECESSÁRIAS PARA QUE n SEJA EXPRESSO
 COMO A SOMA DE QUADRADOS PERFEITOS E/OU DETERMINAM DE QUANTAS FORMAS DIFERENTES
@@ -16,12 +13,12 @@ ISSO PODE SER FEITO. EM PARTICULAR:
 
 TEOREMA DA SOMA: UM NÚMERO PODE SER EXPRESSO COMO A SOMA DE DOIS QUADRADOS
 n=a²+b², SE E SOMENTE SE EM SUA DECOMPOSIÇÃO EM FATORES PRIMOS NÃO HOUVER UM
-FATOR p^k COM p PRIMO E k ÍMPAR.
+FATOR p^k COM p=3 (mod 4) PRIMO E k ÍMPAR.
 
 TEOREMA DE LEGENDRE: UM NÚMERO PODE SER EXPRESSO COMO A SOMA DE TRÊS QUADRADOS
-n=a²+b²+c², SE E SOMENTE ELE NÃO FOR DA FORMA  n=(4^m)(8n+7) COM m, n INTEIROS.
+n=a²+b²+c², SE E SOMENTE ELE NÃO FOR DA FORMA n=(4^m)(8n+7) COM m, n INTEIROS.
 
-TEOREMA DE LANGRANGE: TODO NÚMERO NATURAL n PODE EXPRESSO COMO A SOMA DE QUATRO
+TEOREMA DE LANGRANGE: TODOS NÚMEROS NATURAIS n PODEM EXPRESSO COMO A SOMA DE QUATRO
 QUADRADOS PERFEITOS n=a²+b²+c²+d².
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Sum_of_squares_function
@@ -59,7 +56,7 @@ bool is_square_summable(int64_t n) {
     while ((n % 2) == 0) n /= 2;
 
     // Contando o número de fatores primos da forma p = 3 (mod 4)
-    for (i = 3; i < limit; i++) {
+    for (i = 3; i < limit; i+=2) {
 
       // Removendo fatores p = 1 (mod 4)
       if ((i % 4) == 1) {
@@ -105,6 +102,9 @@ void write_square_sum(int64_t n) {
   // Caso trivial
   if (n == 2) {
     printf("2=1²+1²\n");
+    printf("2=(-1)²+1²\n");
+    printf("2=1²+(-1)²\n");
+    printf("2=(-1)²+(-1)²\n");
     return;
   };
 
@@ -120,6 +120,9 @@ void write_square_sum(int64_t n) {
      b_squared = n - (a * a);
      if (fast_square_detection(b_squared, &b) == true) {
       printf("%li=%li²+%li²\n", n, a, b);
+      printf("%li=(-%li)²+%li²\n", n, a, b);
+      printf("%li=%li²+(-%li)²\n", n, a, b);
+      printf("%li=(-%li)²+(-%li)²\n", n, a, b);
     };
   };
 };
