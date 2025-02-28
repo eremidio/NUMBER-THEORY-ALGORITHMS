@@ -173,12 +173,13 @@ int mobius_function(uint64_t n) {
 int64_t mertens_function(uint64_t n) {
   // Variáveis locais
   int64_t result = 0;
+  int64_t bound=floor(n/3.0);  
 
   // Procedimento:loop principal
-  for (uint64_t i = 1; i <= n; ++i) result += mobius_function(i);
+  for (uint64_t i = 1; i <=bound; ++i) result += (floor((n-i)/(2.0*i))*mobius_function(i));
 
   // Resultado
-  return result;
+  return (-1)*result;
 };
 
 //*************************************************************************************************************************

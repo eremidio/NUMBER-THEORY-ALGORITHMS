@@ -61,159 +61,182 @@ complex<double> jacobi_theta_function(complex<double>, complex<double>);
 //FUNÇÕES
 //Funções que implementam as séries de Einsenstein G(k, z) e G(k, ω1, ω2) usaremos uma malha de 2000x2000 pontos no cálculo
 complex<double> eisenstein_series(complex<double> omega1, complex<double> omega2, int64_t k){
-//Restrição
-complex<double> quotient=omega1/omega2;
-assert(quotient.imag>0);
-assert((omega1.real/omega2.real)!=(omega1.imag/omega2.imag));
-assert(k%2==0 && k>=2);
 
-//Variáveis locais
-complex<double> m, n;
-complex<double> result(0.0, 0.0), parcel;
-int64_t lattice_points=2000;
-int64_t i, j;
+  //Restrição
+  complex<double> quotient=omega1/omega2;
+  assert(quotient.imag>0);
+  assert((omega1.real/omega2.real)!=(omega1.imag/omega2.imag));
+  assert(k%2==0 && k>=2);
 
-//Procedimentos
-for(i=(-1)*lattice_points; i<(lattice_points+1); i++){
-for(j=(-1)*lattice_points; j<(lattice_points+1); j++){
-//Excluindo a origem
-if(i==0 && j==0)
-continue;
 
-//Computando os termos da soma
-m=complexification(i);
-n=complexification(j);
-parcel=((m*omega1)+(n*omega2)).pow(k);
-parcel=parcel.inv();
-result = result+parcel;
-                                                     };
-                                                     };
-//Resultados
-result.real/=(lattice_points*lattice_points);
-result.imag/=(lattice_points*lattice_points);
-return result;
-                                                                                            };
+  //Variáveis locais
+  complex<double> m, n;
+  complex<double> result(0.0, 0.0), parcel;
+  int64_t lattice_points=2000;
+  int64_t i, j;
+
+  //Procedimentos
+    //Loop principal
+    for(i=(-1)*lattice_points; i<(lattice_points+1); i++){
+      for(j=(-1)*lattice_points; j<(lattice_points+1); j++){
+
+        //Excluindo a origem
+        if(i==0 && j==0) continue;
+
+        //Computando os termos da soma
+        m=complexification(i);
+        n=complexification(j);
+        parcel=((m*omega1)+(n*omega2)).pow(k);
+        parcel=parcel.inv();
+        result = result+parcel;
+      };
+   };
+
+
+  //Resultados
+  result.real/=(lattice_points*lattice_points);
+  result.imag/=(lattice_points*lattice_points);
+  return result;
+
+};
 
 
 complex<double> eisenstein_series(complex<double> z, int64_t k){
-//Restrições
-assert(z.imag>0);
-assert(k%2==0 && k>=2);
 
-//Variáveis locais
-complex<double> m, n;
-complex<double> result(0.0, 0.0), parcel;
-int64_t lattice_points=2000;
-int64_t i, j;
+  //Restrições
+  assert(z.imag>0);
+  assert(k%2==0 && k>=2);
 
-//Procedimentos
-for(i=(-1)*lattice_points; i<(lattice_points+1); i++){
-for(j=(-1)*lattice_points; j<(lattice_points+1); j++){
-//Excluindo a origem
-if(i==0 && j==0)
-continue;
+  //Variáveis locais
+  complex<double> m, n;
+  complex<double> result(0.0, 0.0), parcel;
+  int64_t lattice_points=2000;
+  int64_t i, j;
 
-//Computando os termos da soma
-m=complexification(i);
-n=complexification(j);
-parcel=((m*z)+n).pow(k);
-parcel=parcel.inv();
-result = result+parcel;
-                                                     };
-                                                     };
-//Resultados
-result.real/=(lattice_points*lattice_points);
-result.imag/=(lattice_points*lattice_points);
-return result;
-                                                               };
+
+  //Procedimentos
+    //Loop principal
+    for(i=(-1)*lattice_points; i<(lattice_points+1); i++){
+      for(j=(-1)*lattice_points; j<(lattice_points+1); j++){
+
+        //Excluindo a origem
+        if(i==0 && j==0) continue;
+
+        //Computando os termos da soma
+        m=complexification(i);
+        n=complexification(j);
+        parcel=((m*z)+n).pow(k);
+        parcel=parcel.inv();
+        result = result+parcel;
+     };
+   };
+
+  //Resultados
+  result.real/=(lattice_points*lattice_points);
+  result.imag/=(lattice_points*lattice_points);
+  return result;
+
+};
+
 
 complex<double> normalized_eisenstein_series(complex<double> z, int64_t k){
-//Variáveis locais
-double k_=static_cast<double>(k);
-complex<double> result = eisenstein_series(z, k);
 
-//Resultado
-result.real/=(2*riemann_zeta_function(k_));
-result.imag/=(2*riemann_zeta_function(k_));
-return result;
-                                                                          };
+  //Variáveis locais
+  double k_=static_cast<double>(k);
+  complex<double> result = eisenstein_series(z, k);
+
+
+  //Resultado
+  result.real/=(2*riemann_zeta_function(k_));
+  result.imag/=(2*riemann_zeta_function(k_));
+  return result;
+
+};
 
 //Função que implementa a função (Δ) discriminante modular
 complex<double> modular_discriminant(complex<double> z){
-//Variáveis locais
-complex<double>sixty=complexification(60.0);
-complex<double>one_hunrdred_fourty=complexification(140.0);
-complex<double>twenty_seven=complexification(27.0);
-complex<double>g2=sixty*eisenstein_series(z, 4);
-complex<double>g3=one_hunrdred_fourty*eisenstein_series(z, 6);
 
-//Resultado
-return (g2*g2)-twenty_seven*(g3*g3*g3);
-                                                       };
+  //Variáveis locais
+  complex<double>sixty=complexification(60.0);
+  complex<double>one_hunrdred_fourty=complexification(140.0);
+  complex<double>twenty_seven=complexification(27.0);
+  complex<double>g2=sixty*eisenstein_series(z, 4);
+  complex<double>g3=one_hunrdred_fourty*eisenstein_series(z, 6);
+
+  //Resultado
+  return (g2*g2)-twenty_seven*(g3*g3*g3);
+
+};
 
 //Função que implementa a função (η) eta de Dedekind
 complex<double> dedekind_eta_function(complex<double> z){
-//Variáveis locais
-constexpr double pi=4*std::atan(1.0);
-complex<double>power_pi= (complexification(2*pi)).pow(12);
 
-//Resultado
-return (modular_discriminant(z)/power_pi).pow(1.0/24.0);
-                                                        };
+  //Variáveis locais
+  constexpr double pi=4*std::atan(1.0);
+  complex<double>power_pi= (complexification(2*pi)).pow(12);
+
+  //Resultado
+  return (modular_discriminant(z)/power_pi).pow(1.0/24.0);
+
+};
 
 //Função que implementa a função invariante j
 complex<double> j_invariant(complex<double> z){
-//Variáveis locais
-complex<double> sixty=complexification(60.0);
-complex<double> constant_factor=complexification(1728.0);
-complex<double>g2=sixty*eisenstein_series(z, 4);
 
-//Resultado
-return (constant_factor*g2*g2*g2)/modular_discriminant(z);
-                                              };
+  //Variáveis locais
+  complex<double> sixty=complexification(60.0);
+  complex<double> constant_factor=complexification(1728.0);
+  complex<double>g2=sixty*eisenstein_series(z, 4);
+
+  //Resultado
+  return (constant_factor*g2*g2*g2)/modular_discriminant(z);
+
+};
 
 //Função que implementa a função (ρ) rho de Weierstrass
 complex<double> weierstrass_rho_function(complex<double>z, complex<double>omega1, complex<double>omega2){
-//Restrição
-complex<double> quotient=omega1/omega2;
-assert(quotient.imag>0);
-assert((omega1.real/omega2.real)!=(omega1.imag/omega2.imag));
 
-//Variáveis locais
-complex<double>m, n, parcel, lattice, sum(0.0,0.0);
-int64_t lattice_points=1000;
-int64_t i, j;
+  //Restrição
+  complex<double> quotient=omega1/omega2;
+  assert(quotient.imag>0);
+  assert((omega1.real/omega2.real)!=(omega1.imag/omega2.imag));
 
-//Procedimentos
-//Cálculo do termo da soma
-for(i=(-1)*lattice_points; i<(lattice_points+1); i++){
-for(j=(-1)*lattice_points; j<(lattice_points+1); j++){
-//Excluindo a origem
-if(i==0 && j==0)
-continue;
+  //Variáveis locais
+  complex<double>m, n, parcel, lattice, sum(0.0,0.0);
+  int64_t lattice_points=1000;
+  int64_t i, j;
 
-//Computando os termos da soma
-m=complexification(i);
-n=complexification(j);
-lattice=((m*omega1)+(n*omega2));
+  //Procedimentos
+    //Cálculo do termo da soma
+    for(i=(-1)*lattice_points; i<(lattice_points+1); i++){
+      for(j=(-1)*lattice_points; j<(lattice_points+1); j++){
+  
+        //Excluindo a origem
+        if(i==0 && j==0) continue;
 
-//Excluindo os polos
-if(lattice.real== z.real && lattice.imag== z.imag)
-continue;
+        //Computando os termos da soma
+        m=complexification(i);
+        n=complexification(j);
+        lattice=((m*omega1)+(n*omega2));
 
-parcel = ((z-lattice).pow(2)).inv()-(lattice.pow(2)).inv();
+        //Excluindo os polos
+        if(lattice.real== z.real && lattice.imag== z.imag) continue;
+        parcel = ((z-lattice).pow(2)).inv()-(lattice.pow(2)).inv();
 
-                                                     };
-                                                     };
+      };
+    };
 
-sum.real/=(lattice_points*lattice_points);
-sum.imag/=(lattice_points*lattice_points);
+    sum.real/=(lattice_points*lattice_points);
+    sum.imag/=(lattice_points*lattice_points);
 
-//Resultado
-return (z.pow(2)).inv()+sum;
-                                                                                                        };
+  //Resultado
+  return (z.pow(2)).inv()+sum;
+
+};
+
+
 //Função que implementa função theta de Jacobi (Θ_00 ou simplesmente Θ)
-//Usaremos a função complex_int_pow definida no header
+  //Usaremos a função complex_int_pow definida no header riemann_zeta.hpp
 /*
 
 NOTA:Algumas funções auxiliares Θ_01, Θ_10 e Θ_11 podem ser definidas támbem, para diferenças na notação ver artigo:
@@ -223,23 +246,28 @@ Existem generalizações para outros corpos numéricos como o conjunto dos intei
 
 */
 complex<double> jacobi_theta_function(complex<double> z, complex<double> tau){
-//Variáveis locais
-constexpr double pi = 4*std::atan(1.0);
-complex<double> exponent;
-complex<double> unit(0, 1.0);
-complex<double> parcel, sum(0.0,0.0);
-int64_t n=2000, i;
 
-//Procedimentos
-for(i=(-1)*n; i<(n+1); ++i){
-exponent = (unit*complexification(pi*i*i)*tau)+(unit*complexification(2*pi*i)*z);
-parcel.real=std::cos(exponent.imag)*std::exp(exponent.real);
-parcel.imag=std::sin(exponent.imag)*std::exp(exponent.real);
-sum=sum+parcel;
-                           };
-//Resultado
-return sum;
-                                                                             };
+  //Variáveis locais
+  constexpr double pi = 4*std::atan(1.0);
+  complex<double> exponent;
+  complex<double> unit(0, 1.0);
+  complex<double> parcel, sum(0.0,0.0);
+  int64_t n=2000, i;
+
+
+  //Procedimentos
+    //Loop principal
+    for(i=(-1)*n; i<(n+1); ++i){
+      exponent = (unit*complexification(pi*i*i)*tau)+(unit*complexification(2*pi*i)*z);
+      parcel.real=std::cos(exponent.imag)*std::exp(exponent.real);
+      parcel.imag=std::sin(exponent.imag)*std::exp(exponent.real);
+      sum=sum+parcel;
+    };
+
+  //Resultado
+  return sum;
+
+};
 
 
 
