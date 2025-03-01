@@ -68,18 +68,19 @@ int64_t* compute_mertens_array(int64_t n){
   
     //Computando os demais elementos usando as relações recursivas
     for(int64_t j=(MERTENS_BOUND+1); j<=n; ++j){
+     
+      //Descartando números com pequenos fatores primos quadráticos inferiores a 20
+      if(j%4==0 || j%9==0 || j%25==0 || j%49==0 || j%121==0 || j%169==0 || j%289==0){
+        mertens_array[j]=mertens_array[j-1];
+        continue;
+      }
 
       //Descartando primos que reduzem a função M(n) em uma unidade
       if(pseudosquare_primality_testing(j)==true){
         mertens_array[j]= (mertens_array[j-1]-1);
         continue;
       }
-      
-      //Descartando números com pequenos fatores primos quadráticos inferiores a 30
-      if(j%4==0 || j%9==0 || j%25==0 || j%49==0 || j%121==0 || j%169==0 || j%289==0 || j%361==0 || j%529==0 || j%841==0){
-        mertens_array[j]=mertens_array[j-1];
-        continue;
-      }
+
       
       //Ajuste de variáveis
       sum=0;
@@ -101,4 +102,3 @@ int64_t* compute_mertens_array(int64_t n){
 //******************************************************************************************************
 //FIM DO HEADER
 #endif
-
