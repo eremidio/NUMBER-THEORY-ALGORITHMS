@@ -52,7 +52,7 @@ int64_t* compute_mertens_array(int64_t n){
 
   //Variáveis locais
   int64_t* mertens_array=(int64_t*)calloc((n+1), sizeof(int64_t)); 
-  int small_primes[25]={2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
+  int64_t small_primes[25]={4, 9, 25, 49, 121, 169, 289, 361, 529, 841, 961, 1369, 1681, 1849, 2209, 2809, 3481, 3721, 4489, 5041, 5329, 6241, 6889, 7921, 9409};
   register int64_t sum, bound;
   
 
@@ -69,14 +69,16 @@ int64_t* compute_mertens_array(int64_t n){
     //Computando os demais elementos usando as relações recursivas
     for(int64_t j=(MERTENS_BOUND+1); j<=n; ++j){
      
-      //Descartando números com pequenos fatores primos quadráticos inferiores a 20
-      if(j%4==0 || j%9==0 || j%25==0 || j%49==0 || j%121==0 || j%169==0 || j%289==0){
-        mertens_array[j]=mertens_array[j-1];
-        continue;
-      }
+      //Descartando números com pequenos fatores primos quadráticos inferiores a 100
+      for(int k=0; k<25; ++k){
+        if(j%(small_primes[k])==0){
+          mertens_array[j]=mertens_array[j-1];
+          continue;
+        }
+      };
 
       //Descartando primos que reduzem a função M(n) em uma unidade
-      if(pseudosquare_primality_testing(j)==true){
+      if(j<1000000 && pseudosquare_primality_testing(j)==true){
         mertens_array[j]= (mertens_array[j-1]-1);
         continue;
       }
@@ -102,3 +104,4 @@ int64_t* compute_mertens_array(int64_t n){
 //******************************************************************************************************
 //FIM DO HEADER
 #endif
+
