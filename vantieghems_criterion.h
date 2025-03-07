@@ -1,7 +1,8 @@
-//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA UM TESTE DE PRIMALIDADE BASEADO NO CRITÉRIO DE VANTIEGHEMS PARA INTEIROS PEQUENOS (ATÉ 31)
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA UM TESTE DE PRIMALIDADE BASEADO NO CRITÉRIO DE VANTIEGHEMS PARA INTEIROS
 
 /*
-DE ACORDO COM UM TEOREMA DEVIDO A VANTIEGHEMS UM NÚMERO PRIMO n SATISFAZ A SEGUINTE IGUALDADE PARA k=1, ..., (n-1): Π(2^k -1) = n (mod {2^n-1}).
+DE ACORDO COM UM TEOREMA DEVIDO A VANTIEGHEMS UM NÚMERO PRIMO n SATISFAZ A SEGUINTE IGUALDADE
+PARA k=1, ..., (n-1): Π(2^k -1) = n (mod {2^n-1}).
 TAL TEOREMA FORNECE UM SIMPLES TESTE DE PRIMALIDADE.
 
 PARA MAIORES INFORMAÇÕES:https://en.wikipedia.org/wiki/Vantieghems_theorem
@@ -16,47 +17,73 @@ PARA MAIORES INFORMAÇÕES:https://en.wikipedia.org/wiki/Vantieghems_theorem
 #include<stdint.h>
 #include<stdbool.h>
 #include<assert.h>
+#include<gmp.h>
+
 
 //**************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
-__int128_t generate_vantieghems_factor(int);
-bool vantieghems_criterion(int);
+bool vantieghems_criterion(unsigned long);
 
 //**************************************************************************************************************************************
 //FUNÇÕES
-//Função que determina 2^n-1 provido o valor de n
-__int128_t generate_vantieghems_factor(int n){
-
- //Resultado
- return (2<<(n-1))-1;
-                                             };
 
 //Função que determina se um inteiro ímpar é primo usando o critério de Vantieghem
-bool vantieghems_criterion(int n){
- //RESTRIÇÃO
- assert(n<=31);
+bool vantieghems_criterion(unsigned long n){
 
- //Variáveis locais
- __int128_t modulus=generate_vantieghems_factor(n), tester=1, multiplier;
- int k;
+  //Caso base
+  if(n<2) return false;
 
- //Procedimentos
-  //Loop principal
-  for(int k=1; k<n; k++){
+  //Variáveis locais
+  mpz_t N, p, p1, p2, p3, p4, two;
 
-   multiplier=generate_vantieghems_factor(k);
-   tester=(multiplier*tester)%modulus;
 
-                        };
+  //Procedimentos
+    //Inicializando variáveis
+    mpz_init(N);      
+    mpz_init(p);
+    mpz_init(p1);
+    mpz_init(p2);
+    mpz_init(p3);
+    mpz_init(p4);
+    mpz_init(two);
+
+    mpz_set_ui(p, 1);
+    mpz_set_ui(two, 2);
+    mpz_pow_ui(p1, two, n);
+    mpz_sub_ui(N, p1, 1);//N=2^n-1
+    
+
+    //Loop principal
+    for(unsigned long i=2; i<n; ++i){
+
+      mpz_pow_ui(p1, two, i);
+      mpz_sub_ui(p2, p1, 1); //p2=(2^i)-1
+      mpz_mul(p3, p2, p);
+      mpz_mod(p4, p3, N);    
+      mpz_set(p, p4);
+
+    };
+  
+    mpz_mod(p1, p, N);
+    unsigned long result=mpz_get_ui(p1);
+      
+
+    //Limpando cachê de memória
+    mpz_clear(N);      
+    mpz_clear(p);
+    mpz_clear(p1);
+    mpz_clear(p2);
+    mpz_clear(p3);
+    mpz_clear(p4);
+    mpz_clear(two);
 
 
   //Resultado
-  if(tester==n)
-   return true;
-  else
-   return false;
+  if(result==n) return true;
+  else return false;
 
-                                 };
+
+};
 
 
 //**************************************************************************************************************************************
