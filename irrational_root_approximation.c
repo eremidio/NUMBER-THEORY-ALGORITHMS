@@ -1,5 +1,5 @@
 //VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO irrational_root_approximation.h
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o irrational_root_approximation irrational_root_approximation.c -lm
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o irrational_root_approximation irrational_root_approximation.c -lgmp
 
 
 //Cabeçalho
@@ -10,13 +10,13 @@
 int main(){
 
   //Variáveis locais
-  int64_t n;
+  unsigned long n;
   int ord;
 
   //Procedimentos
     //Recebendo input do usuário
     printf("Radicando: ");
-    scanf("%li", &n);
+    scanf("%lu", &n);
     printf("Número de aproximações para √%li: ", n);
     scanf("%i", &ord);
 
