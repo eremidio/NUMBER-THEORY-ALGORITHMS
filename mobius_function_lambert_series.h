@@ -26,7 +26,7 @@ PARA MAIORES INFORMAÇÕES: https://mathworld.wolfram.com/LambertSeries.html
 
 //*************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
-int32_t * compute_mobius_function(int32_t);
+int8_t * compute_mobius_function(int32_t);
 
 //*************************************************************************************************************
 //FUNÇÕES
@@ -39,10 +39,11 @@ int32_t * compute_mobius_function(int32_t);
         No fim das contas o algoritmo final consiste em uma modificação da peneira de Eratóstenes.
 
 */
-int32_t * compute_mobius_function(int32_t n){
+
+int8_t * compute_mobius_function(int32_t n){
 
   //Variáveis locais
-  int32_t* mobius_array=(int32_t*) calloc((n+1), sizeof(int32_t));
+  int8_t* mobius_array=(int8_t*) calloc((n+1), sizeof(int8_t));
 
 
   //Procedimentos

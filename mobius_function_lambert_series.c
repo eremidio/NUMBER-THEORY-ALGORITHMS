@@ -19,7 +19,7 @@ int main(){
     if(scanf("%i", &n)!=1) return 0;
 
     //Calculando a função de Möbius no intervalo {1,2,...,n}
-    int32_t* mobius_array=compute_mobius_function(n);
+    int8_t* mobius_array=compute_mobius_function(n);
 
     for(int32_t i=1; i<=n; ++i) printf("μ(%i)=%i, ", i, mobius_array[i]);
     printf("...\n");
@@ -28,6 +28,7 @@ int main(){
     //Limpando o cachê de memória
     if(mobius_array) free(mobius_array);
     mobius_array=NULL;
+
 
   //Finalizando a aplicação
   return 0;
