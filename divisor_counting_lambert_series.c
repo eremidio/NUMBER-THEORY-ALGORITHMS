@@ -1,5 +1,5 @@
 //VAMOS CRIAR UM PROGRAMA PARA TESTAR MAS ROTINAS CRIADAS NO ARQUIVO divisor_counting_lambert_series.h
-//COMPILAR ESTE PROGRAMA COM O COMANDO: g++ -o divisor_counting_lambert_series divisor_counting_lambert_series.c -O2
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o divisor_counting_lambert_series divisor_counting_lambert_series.c -O2
 
 
 //Cabeçalho
