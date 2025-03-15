@@ -82,7 +82,7 @@ double nth_root(int64_t n, int order){
   return exp(log(n)/order);
 };
 
-//Função que detecta potências de números primos por divisão e erro usando uma roda 210k+r
+//Função que detecta potências de números primos 
 bool fast_prime_power_detection(int64_t number, int64_t* prime){
 
   //Casos bases: n=2 ou n primo
@@ -109,7 +109,7 @@ bool fast_prime_power_detection(int64_t number, int64_t* prime){
 
   //Variáveis locais
   int max_root=log2(number);
-  int64_t upper,lower, upper2, lower2, tester;
+  int64_t upper,lower, tester;
   double root;
 
 
@@ -118,9 +118,9 @@ bool fast_prime_power_detection(int64_t number, int64_t* prime){
     for(int i=2; i<=max_root; ++i){
       root=nth_root(number, i);
       upper=ceil(root);
-      upper2=upper+1;
       lower=floor(root);
-      lower2 = lower-1;
+   
+      if(lower==upper) lower--;
 
       tester=1;
       while(tester<number) tester*=upper;
@@ -136,21 +136,8 @@ bool fast_prime_power_detection(int64_t number, int64_t* prime){
         return true;
       }
  
-      tester=1;
-      while(tester<number) tester*=upper2;
-      if(tester== number && baillie_psw_test(upper2)==true){
-        (*prime)=upper2;
-        return true;
-      }
-           
-      tester=1;
-      while(tester<number) tester*=lower2;
-      if(tester== number && baillie_psw_test(lower2)==true){
-        (*prime)=lower2;
-        return true;
-      }   
 
-    }
+    };
   
   //Em caso de falha
   return false;
