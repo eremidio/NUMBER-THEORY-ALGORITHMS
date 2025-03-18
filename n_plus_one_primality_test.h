@@ -41,51 +41,11 @@ PARA MAIORES INFORMAÇÕES: https://t5k.org/prove/prove3_2.html
 
 //********************************************************************************************************************************************************
 // DECLARAÇÃO DE FUNÇÕES
-bool lucas_lehmer_test(__int128_t);
 void set_lucas_sequence_parameters(int64_t*, int64_t*, int64_t);
 bool n_plus_one_primality_test(int64_t);
 
 //********************************************************************************************************************************************************
 // FUNÇÕES
-// Função que realiza o teste de Lucas Lehmer para a primalidade dos chamados números de Mersenne da forma n=(2^p)-1
-bool lucas_lehmer_test(__int128_t n) {
-  // Parte 1: Checando se o número em questão é um número de Mersenne
-  // Variáveis locais
-  __int128_t p = 2;
-  __int128_t mersenne;
-
-  // Procedimentos
-  // Loop principal
-  while (true) {
-    mersenne = bin_pow(2, p) - 1;
-
-    if (mersenne == n) break;
-
-    if (mersenne < n) {
-      p++;
-      continue;
-    };
-
-    // Se o número em questão não é um número de Mersenne, o teste é inconclusivo
-    if (mersenne > n) return false;
-   
-  };
-
-  // Parte2: O teste de Lucas - Lehmer.
-  // Variáveis locais
-  uint64_t i;
-  __int128_t lucas_lehmer = 4;
-
-  // Procedimentos
-  // Loop principal
-  for (i = 0; i < (p - 2); ++i)
-    lucas_lehmer = ((lucas_lehmer * lucas_lehmer) - 2) % mersenne;
-
-  if (lucas_lehmer == 0) return true;
-  else return false;
-
-};
-
 // Função que calcula os parâmetros p, q a serem usados para computar as sequências de Lucas no teste de primalidade (n+1): (D|n)=(-1)
 void set_lucas_sequence_parameters(int64_t* P, int64_t* Q, int64_t n) {
   // Variáveis locais
