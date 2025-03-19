@@ -20,14 +20,16 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Arithmetic_function
 // CABEÇALHO
 #ifndef PRIME_DECOMPOSITION_H
 #define PRIME_DECOMPOSITION_H
+#include"gauss_euler_primality_test.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+
 // CONSTANTE GLOBAIS
-#define ARITHMETIC_MAX 100000
+#define ARITHMETIC_MAX 1000000
 
 //****************************************************************************************************************************************************************
 // DECLARAÇÕES DE FUNÇÕES
@@ -52,74 +54,72 @@ int64_t euclides_algorithm(int64_t a, int64_t b) {
   else return euclides_algorithm(b, a % b);
 };
 
-// Função que testa a primalidade de um númeiro inteiro por divisão e erro
-bool is_integer_prime(int64_t n) {
-
-  // Casos triviais
-  if (n < 2) return false;
-  if (n == 2 || n == 3) return true;
-  if ((n % 2) == 0 || (n % 3) == 0) return false;
-
-  // Variáveis locais
-  int64_t i, limit = sqrt(n);
-
-  // Loop principal
-  for (i = 5; i < limit; i += 6) {
-    if ((n % i) == 0 || (n % (i + 2)) == 0) return false;
-  };
-  return true;
-};
-
 //********************************
 // Funções de decomposição em fatores primos
+
 // Função de contagem de fatores primos distintos (função ω)
 int64_t omega_function(int64_t n) {
 
-  // Caso trivial:
-  if (is_integer_prime(n)) return 1;
+  // Caso trivial: Verificação de primalidade
+  if (gauss_euler_primality_test(n)) return 1;
 
   // Variáveis locais
   int64_t limit = sqrt(n);
   int64_t i = 0, counter = 0;
   int64_t factor1 = 0, factor2 = 0;
-  // Procedimentos
-  // Caso base:
-  if (n <= ARITHMETIC_MAX) {
-    // Contando fatores 2
-    if ((n % 2) == 0) counter++;
 
-    while ((n % 2) == 0) n /= 2;
+  //Procedimentos
+    // Caso base: n <= ARITHMETIC_MAX
+    if (n <= ARITHMETIC_MAX) {
 
-    // Contando fatores ímpares
-    for (i = 3; i < n; i += 2) {
-      if ((n % i) == 0) counter++;
+      // Contando fatores de 2 (fatores pares)
+      if ((n & 1) == 0) { 
+        counter++;
+        while ((n & 1) == 0) n >>= 1;
+            
+      }
 
-      while ((n % i) == 0) n /= i;
+      // Contando fatores ímpares
+      for (i = 3; i <= limit; i += 2) {
+        if (n % i == 0) {
+          counter++;
+          while (n % i == 0) n /= i;
+        }
+        if (n == 1) return counter;
+        
+        }
 
-      if (n == 1) break;
-    };
+        // Se o número for maior que 1 após o loop, ele é um fator primo
+        if (n > 1) {
+            counter++;
+        }
+        return counter;
+    }
 
-    // Resultado
-    return counter + 1;
-  }
+    //Recursão: busca de fatores coprimos
+    factor1 = 2;
+    for (; factor1 * factor1 <= n; factor1++) {
+        if (n % factor1 == 0) {  
+            factor2 = n / factor1;
+            int64_t gcd=euclides_algorithm(factor1, factor2);
+            if (gcd== 1) break;
+            else {
+              factor1*=gcd; factor2/=gcd;
+              break; 
+            }
+          
+        }
+    }
 
-  else {
-    factor1 = limit;
-    for (; factor1 < n; factor1++) {
-      if ((n % factor1) == 0) {
-        factor2 = n / factor1;
-        if (euclides_algorithm(factor1, factor2) == 1) break;
-      };
-    };
-    // Resultado
+    //Resultado
     return omega_function(factor1) + omega_function(factor2);
-  };
-};
+}
 
 // Função de contagem de fatores primos (função Ω)
 int64_t capital_omega_function(int64_t n) {
+
   // Caso trivial:
-  if (is_integer_prime(n)) return 1;
+  if (gauss_euler_primality_test(n)) return 1;
 
   // Variáveis locais
   int64_t limit = sqrt(n);
@@ -141,23 +141,25 @@ int64_t capital_omega_function(int64_t n) {
           counter++;
           n /= i;
         };
-        if (n == 1) break;
+        if (n == 1) return counter;
       };
 
 
     // Resultado
     return counter + 1;
-  } else {
-    factor1 = limit;
-    for (; factor1 < n; factor1++) {
+    }
+
+    //Chamada recursiva do algoritmo
+    factor1 = 2;
+    for (; factor1 * factor1 <= n; factor1++) {
       if ((n % factor1) == 0) {
         factor2 = n / factor1;
         break;
       };
     };
-    // Resultado
-    return capital_omega_function(factor1) + capital_omega_function(factor2);
-  };
+
+  // Resultado
+  return capital_omega_function(factor1) + capital_omega_function(factor2);
 
 };
 
@@ -181,7 +183,7 @@ int64_t p_adic_valuation(int64_t n, int64_t prime) {
 // Derivada aritmética
 int64_t arithmetic_derivative(int64_t n) {
   // Caso base
-  if (is_integer_prime(n) == true) return 1;
+  if (gauss_euler_primality_test(n)) return 1;
 
   // Chamada recursiva da função
   // Variáveis locais
