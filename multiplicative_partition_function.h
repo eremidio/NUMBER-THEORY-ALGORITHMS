@@ -48,7 +48,7 @@ int64_t bell_numbers[25]={1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, 115975, 678
 
 //*************************************************************************************************************************
 //DECLARAÇÃO
-bool is_square_factor_free(int64_t);
+bool is_square_free(int64_t);
 int32_t* generate_divisors_array(int32_t, int32_t*);
 int64_t multiplicative_partition_function(int32_t);
 
