@@ -34,7 +34,7 @@ void multiplicative_partitions(int32_t);
 uint64_t* generate_multiplicative_partitions(int32_t n, int32_t divisors_array[], int32_t divisors_size, uint64_t* mp_array_size){
 
   //Variáveis locais
-  int32_t double_check_array[100000]={0};
+  uint64_t double_check_array[1000000]={0};
   uint64_t* multiplicative_partition_array=NULL;
   uint64_t bit_setter=pow(2,  divisors_size), mp_size=0, k=0, l=0;
   int32_t t=0, double_check_index=0;
@@ -51,7 +51,7 @@ uint64_t* generate_multiplicative_partitions(int32_t n, int32_t divisors_array[]
 
         if(k&1){
           t*=divisors_array[bit_position];
-          double_check_index+=divisors_array[bit_position];
+          if(divisors_array[bit_position]>=3) double_check_index+=divisors_array[bit_position];
         }
         k>>=1;
         bit_position++;
