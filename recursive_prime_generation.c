@@ -8,21 +8,24 @@
 
 //Função principal
 int main(){
-//Variáveis
-uint64_t seed, iterations;
 
-//Procedimentos
-//Recebendo inputdo usuário
-printf("Digite um valor inicial para iniciar a sequência de números primos: ");
-scanf("%lu", &seed);
-printf("Digite quantas iterações serão usadas neste experimento: ");
-scanf("%lu", &iterations);
-
-//Gerando a lista de primos
-printf("Primos gerados usando-se a relação R(n) = R(n-1)+mdc(n, R(N-1)):\n");
-recursive_prime_generation(seed, iterations);
+  //Variáveis
+  uint64_t seed, iterations;
 
 
-//Finalizando a aplicação
-return 0;
-          }
+  //Procedimentos
+    //Recebendo inputdo usuário
+    printf("Digite um valor inicial para iniciar a sequência de números primos: ");
+    scanf("%lu", &seed);
+    printf("Digite quantas iterações serão usadas neste experimento: ");
+    scanf("%lu", &iterations);
+
+    //Gerando a lista de primos
+    printf("Primos gerados usando-se a relação R(n) = R(n-1)+mdc(n, R(N-1)):\n");
+    recursive_prime_generation(seed, iterations);
+
+
+  //Finalizando a aplicação
+  return 0;
+
+}
