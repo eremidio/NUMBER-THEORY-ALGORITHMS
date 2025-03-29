@@ -1,8 +1,7 @@
-// VAMOS ESCREVER UM ARQUIVO QUE IMPLEMENTA AS QUATRO OPERAÇÕES FIUNDAMENTAIS DA
-// ARITMETICA USANDO OPERADORES DE BIT
+//VAMOS ESCREVER UM ARQUIVO QUE IMPLEMENTA AS QUATRO OPERAÇÕES FUNDAMENTAIS DA ARITMETICA USANDO OPERADORES DE MANIPULAÇÕES DE BIT
 
 /*
-OS SEGUINTES OPERADORES ESTÃO DISPONÍVEIS EM C E C++:
+OS SEGUINTES OPERADORES ESTÃO DISPONÍVEIS MUITAS LINGUAGENS DE PROGRAMAÇÃO PARA MANIPULAÇÃO FORMAL DE BITS:
 
 1. & AND
 
@@ -30,7 +29,7 @@ OS SEGUINTES OPERADORES ESTÃO DISPONÍVEIS EM C E C++:
 
 5. OS OPERADORES << (SHIFT LEFT) E >> (SHIFT RIGHT) TRANSLADAM A SEQUÊNCIA DE
 BITS PARA A ESQUERDA OU DIREITA PREENCHENDO AS LACUNAS COM 0'S. << PERFORMA UMA
-MULTIPLICAÇÃO POR POTÊNCIAS DE DOIS E >> A DIVISÃOPOR POTÊNCIAS DE 2.
+MULTIPLICAÇÃO POR POTÊNCIAS DE DOIS E >> A DIVISÃO POR POTÊNCIAS DE 2.
 
 OPERAÇÕES ARITMÉTICAS SÃO INDEPENDENTES DO SISTEMA DE NUMERAÇÃO USADO.
 SEJA POR EXEMPLO A AOPERAÇÃO DE ADIÇÃO:
@@ -55,17 +54,32 @@ CARRY:  0010  (TOMAMOS UM BIT EMPRESTADO CASO O BIT SER SUBTRAÍDO SEJA MENOR)
         ----
         0010
 
+PARA REFERÊNCIAS: https://people.eecs.berkeley.edu/~vazirani/sp04/notes/lecture2.pdf
+
+
 */
 
-//****************************************************************************************************************************
-// CABEÇALHO
-#include <stdint.h>
+
 
 //****************************************************************************************************************************
-// OPERAÇÕES ARITMÉTICAS
+//CABEÇALHO
+#include <stdint.h>
+#include <stdbool.h>
+
+
+//****************************************************************************************************************************
+//DECLARAÇÃO DE FUNÇÕES
+int64_t bit_add(int64_t, int64_t);
+int64_t bit_sub(int64_t, int64_t);
+int64_t bit_mul(int64_t, int64_t);
+int64_t bit_div(int64_t, int64_t);
+
+
+//****************************************************************************************************************************
+//OPERAÇÕES ARITMÉTICAS
 
 // Soma
-int64_t bit_add(int64_t a, int64_t b) {
+int64_t bit_add(int64_t a, int64_t b){
   if (b == 0)
     return a;
   else
@@ -80,30 +94,8 @@ int64_t bit_sub(int64_t a, int64_t b) {
     return bit_sub(a ^ b, ((~a) & b) << 1);
 };
 
-// Multiplição
-int64_t bit_mul(int64_t a, int64_t b) {
-  // Variáveis locais
-  int sign;
-  int64_t parcel = a;
-  // Procedimentos
-  // Conferindo os sinais de a e b, para operandos negativos
-  if (a > 0 && b < 0) {
-    sign = 0;
-    b = (~b) + 1;
-  };
-  if (a < 0 && b > 0) {
-    sign = 0;
-    a = (~a) + 1;
-  };
-  if (a < 0 && b < 0) {
-    sign = 1;
-    b = (~b) + 1;
-    a = (~a) + 1;
-  };
-  if (a > 0 && b > 0) {
-    sign = 1;
-  };
 
+// Multiplição
   // Dois algoritmos são possíveis:
   /* 1.Executar a multiplicação usando as relações: para b para a.b =
      (2a).(b/2), se b for ímpar a.b =(2a).(b/2)+a. A paridade é checada usando
@@ -115,50 +107,92 @@ int64_t bit_mul(int64_t a, int64_t b) {
   /* 2. Recursão usando a adição de a+a e reduzindo b em uma unidade até zerar o
    * valor de b. */
 
-  while (b != 1) {
-    a = bit_add(a, parcel);
-    b = bit_sub(b, 1);
-  };
+int64_t bit_mul(int64_t a, int64_t b) {
+ 
+  //Variáveis locais
+  int64_t result=0;
+  bool is_negative=false;
 
-  // Calculando o sinal do resultado
-  if (sign == 1) return a;
-  if (sign == 0) return (~a) + 1;
+  
+  //Procedimentos
+    //Ajuste de sinais
+    if((a>0 && b<0) || (a<0 && b>0)) is_negative=true;
+    if(a<0) a=(-a); if(b<0) b=(-b); 
+
+
+    //Loop principal:iterando sobre os bits da segunda parcela
+    while(b>0){
+      
+      //Checando a paridade do bit da segunda parcela
+      if(b&1)result=bit_add(result, a);
+ 
+      //Atualizando variáveis para a próxima iteração
+      b>>=1;
+      a<<=1;
+
+    }; //Fim do loop principal
+
+
+  //Resultado
+  if(is_negative) return (-result);
+  else return result;
+
 };
 
-// Divisão
+
+//Divisão
 int64_t bit_div(int64_t a, int64_t b) {
-  // Caso trivial
-  if (b > a) return 0;
-  // Variáveis locais
-  int sign;
+
+  //Restrição
+  if (b == 0) return (-1);
+
+
+  //Caso base: divisor maior que o dividendo
+  if(b>a) return 0;
+
+
+
+  //Variáveis locais
   int64_t result = 0;
-  // Procedimentos
-  // Conferindo os sinais de a e b, para operandos negativos
-  if (a > 0 && b < 0) {
-    sign = 0;
-    b = (~b) + 1;
-  };
-  if (a < 0 && b > 0) {
-    sign = 0;
-    a = (~a) + 1;
-  };
-  if (a < 0 && b < 0) {
-    sign = 1;
-    b = (~b) + 1;
-    a = (~a) + 1;
-  };
-  if (a > 0 && b > 0) {
-    sign = 1;
-  };
+  int64_t shift = 0;
+  bool is_negative=false;
 
-  // Usaremos recursão e a operação de subtração
 
-  while (a > 0) {
-    a = bit_sub(a, b);
-    result = bit_add(result, 1);
-  };
 
-  // Calculando o sinal do resultado
-  if (sign == 1) return result;
-  if (sign == 0) return (~result) + 1;
+  //Procedimentos
+    //Ajuste de sinais
+    if((a>0 && b<0) || (a<0 && b>0)) is_negative=true;
+    a = (a < 0) ? -a : a;
+    b = (b < 0) ? -b : b;
+
+    //Ajuste da diferença de magnitude entre os dois números
+    while (a >= b) {
+      b <<= 1;
+      shift++;
+    }
+
+    //Ajuste do divisor
+    b >>= 1;
+    shift--;
+
+    // Loop principal: iterando sobre os bits
+    while (shift >= 0) {
+
+      //Se o dividendo for maior ou igual ao divisor, subtrai e coloca o bit correspondente no resultado
+      if (a >= b) {
+        a=bit_sub(a, b);
+        result |= (1 << shift);
+      }
+
+
+      // Desloca o divisor b para a direita
+      b >>= 1;
+      shift--;
+    };
+
+
+  //Resultado
+  if(is_negative) return (-result);
+  else return result;
+
 };
