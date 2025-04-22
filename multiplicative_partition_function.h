@@ -45,11 +45,14 @@ int64_t bell_numbers[25]={1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, 115975, 678
   1382958545, 10480142147, 82864869804, 682076806159, 5832742205057, 51724158235372, 474869816156751, 4506715738447323,
   44152005855084346, 445958869294805289};
 
+int32_t divisors[100]={0,};
+int64_t multiplicative_partition_number=0;
 
 //*************************************************************************************************************************
 //DECLARAÇÃO
 bool is_square_free(int64_t);
 int32_t* generate_divisors_array(int32_t, int32_t*);
+void multiplicative_partition_function_nonsquarefree(int32_t, int32_t, int);
 int64_t multiplicative_partition_function(int32_t);
 
 //*************************************************************************************************************************
@@ -110,10 +113,26 @@ int32_t* generate_divisors_array(int32_t n, int32_t* divisors_counter){
 };
 
 
-// Função de comparação usada para ordenar as partições
-int compare_ints(const void *a, const void *b) {
-  return (*(int32_t*)a - *(int32_t*)b);
-}
+// Função que computa o número de partições multiplicativas de um inteiro que possui fatores primos repetidos
+void multiplicative_partition_function_nonsquarefree(int32_t n, int32_t start, int index){
+
+  //Caso base: n está completamente fatorado (não necessariamente em fatores primos)
+  if(n==1){
+    multiplicative_partition_number++;
+    return;
+  }
+
+
+  //Caso geral: extraindo recursivamente os divisores (não necessariamente primos) de n e contando as partições multiplicativas recursivamente
+  for(int32_t i=start; i<=n; ++i){
+    if(n%i==0){
+      divisors[index]=i;
+      multiplicative_partition_function_nonsquarefree((n/i), i, index+1);
+    }
+  }
+    
+
+};
 
 // Função que computa o número de partições multiplicativas de um inteiro
 int64_t multiplicative_partition_function(int32_t n){
@@ -135,70 +154,11 @@ int64_t multiplicative_partition_function(int32_t n){
   }
 
   // Caso geral: n contém fatores primos repetidos
-
-  // Variáveis locais
-  int32_t divisor_counter = 0, t = 1, k = 1, bit_position = 0;
-  int32_t* divisors_set = generate_divisors_array(n, &divisor_counter);
-  uint64_t bit_setter = pow(2, divisor_counter); 
-  int64_t result = 0;
-  int32_t partitions[1000][divisor_counter];
-  int64_t partition_count = 0;
-
-  //Procedimnetos
-    // Loop principal: iterando sobre os possíveis divisores de n
-    for (uint64_t i = 0; i < bit_setter; ++i) {
-   
-      t = 1; k = i; bit_position = 0;
-      int partition[divisor_counter]; // Array para armazenar a partição atual
-      int partition_size = 0; // Tamanho da partição atual
-    
-      while (k > 0) {
-
-        // Checa a paridade do bit
-        if (k & 1) {
-          t *= divisors_set[bit_position];
-          partition[partition_size++] = divisors_set[bit_position];
-        }
-
-        // Atualiza as variáveis para a próxima iteração
-        k >>= 1;
-        bit_position++;        
-        if (t >= n) break;
-      }
-
-      // Se o produto dos divisores for igual a n, verifica se a partição é única
-      if (t == n) {
-
-        // Ordena a partição para garantir que combinações repetidas sejam identificadas
-        qsort(partition, partition_size, sizeof(int32_t), compare_ints);
-
-        // Verifica se essa partição já existe na lista de partições
-        int is_duplicate = 0;
-        for (int j = 0; j < partition_count; ++j) {
-          if (memcmp(partitions[j], partition, sizeof(int32_t) * partition_size) == 0) {
-            is_duplicate = 1;
-            break;
-          }
-        }
-
-        // Se não for uma duplicata, adiciona à lista
-        if (!is_duplicate) {
-          memcpy(partitions[partition_count++], partition, sizeof(int32_t) * partition_size);
-        }
-      }
-    }
-
-
-    //Ajuste do resultado
-    result = partition_count;
-
-    // Libera o cache de memória
-    if (divisors_set) free(divisors_set);
-    divisors_set = NULL;
-
+  multiplicative_partition_number=0;
+  multiplicative_partition_function_nonsquarefree(n, 2, 0);
 
   // Retorna o resultado
-  return result+1;
+  return multiplicative_partition_number;
 
 };
 
