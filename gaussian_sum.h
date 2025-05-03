@@ -101,7 +101,20 @@ void find_relative_prime_factors(int64_t n, int64_t* factor1,
         return;
       };
     };
+
+    if ((n % (sqrt_n-i)) == 0) {
+      temp1 = (sqrt_n-i);
+      temp2 = n / (sqrt_n-i);
+
+      if (gcd_s64(temp1, temp2) == 1) {
+        (*factor1) = temp1;
+        (*factor2) = temp2;
+        return;
+      };
+    };
+
   };
+
 };
 
 // Função que calcula a soma de Gauss quadrática
