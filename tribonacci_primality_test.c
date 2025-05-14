@@ -3,8 +3,8 @@
 
 
 /*
-EXISTEM VÁRIAS GENERALIZAÇÕES DA SEQUÊNCIA DE FIBONACCI. AS CHAMADAS SEQUÊNCIAS DE TRIBONACCI SÃO DEFINIDAS PELAS RELLAÇÕES: T(0)=0; T(1)=0, T(2)=9 E
-T(n)=T(n-1)+3T(n-2)+9T(n-3).
+EXISTEM VÁRIAS GENERALIZAÇÕES DA SEQUÊNCIA DE FIBONACCI. UMA VARIANTES DAS CHAMADAS SEQUÊNCIAS DE TRIBONACCI É
+DEFINIDA PELAS RELAÇÕES: T(0)=0; T(1)=0, T(2)=9 E T(n)=T(n-1)+3T(n-2)+9T(n-3).
 
 UM SIMPLES TESTE DE PRIMALIDADE BASEIA-SE NA SEGUINTE PROPROSIÇÃO:
 PARA n PRIMO T(n)= 0 (mod n) PARA n=1,3 (mod 8) OU T(n)= 4 (mod n) PARA n=5,7 (mod 8), PARA n>5.
@@ -22,7 +22,7 @@ PARA MAIORES INFORMAÇÕES: https://trizenx.blogspot.com/2020/01/primality-testi
 
 //*********************************************************************************************************************************************************************
 //FUNÇÕES 
-bool tribonacci_primality_test(int64_t n){
+bool tribonacci_primality_test(uint64_t n){
 
   //Variáveis locais
   int64_t t0=0, t1=0, t2=9, t3;
