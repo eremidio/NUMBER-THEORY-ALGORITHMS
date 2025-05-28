@@ -9,7 +9,7 @@ DEFININDO AS FUNÇÕES G(q) E H(q) RESPECTIVAMENTE PELAS IDENTIDADES G(q)= Σ{q^
 H(q)= Σ{q^(n²+n)}/(q; q)(n), ONDE (q; q)(n) DENOTA OS SÍMBOLOS DE Q-POCHHAMMER AS IDENTIDADES DE ROGER-RAMANUJAN 
 SÃO ESCRITAS COMO: G(q)=1/{(q; q^5)(∞)(q^4; q^5)(∞)} E H(q)=1/{(q^2; q^5)(∞)(q^3; q^5)(∞)}.
 
-DO PONTO DE VISTA COMBINATÓRIA AS DUAS FÓRMULAS PARA AS FUNÇÕES H(q) E G(q) IMPLICAM OS SEGUINTES TEOREMAS: O
+DO PONTO DE VISTA COMBINATÓRIO, AS DUAS FÓRMULAS PARA AS FUNÇÕES H(q) E G(q) IMPLICAM OS SEGUINTES TEOREMAS: O
 NÚMERO DE PARTIÇÕES DE UM INTEIRO EM QUE CADA PARCELA DIFERE POR NO MÍNIMO 2 É IGUAL AO NÚMERO DE PARTIÇÕES CUJOS
 TERMOS SÃO CONGRUENTES A 1,4 (mod 5). O NÚMERO DE PARTIÇÕES DE UM INTEIRO EM QUE CADA PARCELA DIFERE POR NO
 MÍNIMO 2 E QUE NÃO CONTÉM 1'S É IGUAL AO NÚMERO DE PARTIÇÕES CUJOS TERMOS SÃO CONGRUENTES A 2,3 (mod 5).
@@ -27,7 +27,7 @@ R(q)={q^(1/5)}____1____
                                1  + ___q³____   
                                        1+ ... 
 
-TAL FUNÇÃO SATISFAZ UM COMJUNTO DE EQUAÇÕES MODULARES (O FATOR q^(1/5) É NECESSÁRIO POR ESTA RAZÃO) PARA VALORES
+TAL FUNÇÃO SATISFAZ UM CONJUNTO DE EQUAÇÕES MODULARES (O FATOR q^(1/5) É NECESSÁRIO POR ESTA RAZÃO) PARA VALORES
 ESPECÍFICOS DE q, ALÉM DISSO PARA VALORES DO TIPO e^{-πn} COM n É POSSÍVEL MOSTRAR QUE R(q) É UM NÚMERO ALGÉBRICO
 (TAIS VALORES PODEM SER EXPRESSOS EM TERMOS DA FUNÇÃO NOME q=e^{iπτ}, PARA τ COMPLEXO COM PARTE REAL NULA).
 A FUNÇÃO R(q) APARECE EM CERTOS MODELOS DE FÍSICA ESTATÍSTICA, NA SOLUÇÃO FECHADA DE CERTOS TIPOS DE EQUAÇÃO
@@ -70,7 +70,7 @@ polynomial<T> compute_rogers_ramanujan_h_function(int64_t);
 
 //******************************************************************************************************************************
 //FUNÇÕES
-//Função que computa uma expansão paricial do denominador para a funções de Roger-Ramanujan
+//Função que computa uma expansão paricial do denominador para a funções de Rogers-Ramanujan
 template<typename T>
 polynomial<T> compute_partial_denominator(int64_t n, int64_t m, int64_t k){
 
