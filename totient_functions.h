@@ -26,136 +26,169 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Carmichael_function
 //CABEÇALHO
 #ifndef TOTIENT_FUNCTIONS_H
 #define TOTIENT_FUNCTIONS_H
-#include"euler_totient_function.h"
-#include<math.h>
-#include<stdint.h>
+#include"factorization_map.h"
+#include"mod_bin_exponentiation128.h"
+#include"prime_power_detection.h"
 #include<stdlib.h>
 #include<stdio.h>
-#include<stdbool.h>
+
+
+//CONSTANTES GLOBAIS
+uint64_t prime_powers[30]={0,};
+
 
 //***********************************************************************************************************************
 //DECLARAÇÕES DE FUNÇÕES
+uint64_t gcd_u64(uint64_t, uint64_t);
+uint64_t lcm_prime_power_array(uint64_t[]);
+uint64_t euler_totient_function_prime_power(uint64_t, int);
 uint64_t carmichael_function(uint64_t);
 uint64_t jordan_totient_function(uint64_t, uint64_t);
-long double dedekind_psi_function(uint64_t, uint64_t);
+uint64_t dedekind_psi_function(uint64_t, uint64_t);
 
 
 //***********************************************************************************************************************
 //FUNÇÕES
-/*NOTA: Usaremos a função gcd_euclides definida no arquivo euler_totient_function.h*/
-//Função totiente reduzida ou função λ de Carmichael
-//NOTA: usaremos a função gcd_euclides definida no arquivo euler_totient_function.h
-uint64_t carmichael_function(uint64_t n){
+//Função que calcula o gcd de dois inteiros de 64 bits
+uint64_t gcd_u64(uint64_t a, uint64_t b){
 
-  //Caso trivial
-  if(gauss_euler_primality_test(n)==true)
-    return(n-1);
+  if(b==0) return a;
+  else return gcd_u64(b, (a%b));
 
-  //Caso geral
+};
+
+//Função que calcula o mínimo múltiplo comum  de um array de inteiros de 64 bits
+uint64_t lcm_prime_power_array(uint64_t prime_power_array[]){
+
+  //Caso base: potência de números primos
+  if(prime_power_array[1]==0) return prime_power_array[0];
+
+
+  //Caso geral:
   //Variáveis locais
-  uint64_t* coprime_array=NULL;
-  uint64_t counter=0, i=1, j=0;
-  uint64_t tester, exponent;
-  uint64_t limit=sqrt(n);
+  __int128_t temp=0;
+  uint64_t result=1, gcd_=1;
 
 
-  //Procedimentos
-    //Calculando números coprimos com n
-    for(tester=2; tester<n; ++tester){
-      if(gcd_euclides(tester, n)==1){
-        counter++;
-        coprime_array=(uint64_t*)realloc(coprime_array, counter*sizeof(uint64_t));
-          coprime_array[counter-1]=tester;
+  //Procedimento
+    //Loop principal: iterando sobre elementos do array
+    for(int64_t i=0; i<30; ++i){
+      temp=result*prime_power_array[i];
+      if(temp==0) break;
+      else{
+        gcd_=gcd_u64(result, prime_power_array[i]);
+        result=temp/gcd_;
+      }
 
-      };
-    };
+    };///Fim do loop principal
 
-
-
-    //Calculando o expoente que satisfaz a definição da função λ
-    for(; i<n; ++i){
-      if(mod_bin_pow(coprime_array[0], i, n)==1){
-        exponent=i;
-        break;
-      };
-    };
-
-
-
-    //Testando se o expoente encontrado satisfaz as relações de congruência
-    pick:
-      for(j=0; j<counter; j++){
-        if(mod_pow(coprime_array[j], exponent, n)!=1){
-          exponent++;
-          goto pick;
-        };
-      };
-
-
-  //Limpando o cachê de memória e  retornando um resultado
-  free(coprime_array);
-  return exponent;
-
-                                        };
-
-//Função totiente de Jordan J(k, n)
-uint64_t jordan_totient_function(uint64_t k, uint64_t n){
-
-  //Caso trivial:
-  if(k==1) return euler_totient_function(n);
-
-  //Chamada recursiva do algoritmo
-  if(n>10000){
-
-    //Variáveis locais
-    uint64_t limit=sqrt(n), factor1=0, factor2=0;
-
-    //Procedimentos
-    factor1=limit;
-    for(;factor1<n; factor1++){
-      if((n%factor1)==0){
-        factor2=n/factor1;
-        if(gcd_euclides(factor1,factor2)==1)
-      break;
-    };
-                          };
-
-    //Resultado
-    return jordan_totient_function(k, factor1)*jordan_totient_function(k, factor2);
-  };
-
-
-  //Caso base n<=10000
-  //Variáveis locais
-  __int128_t result=round(pow(n, k));
-  uint64_t i=0;
- 
-  //Procedimentos
-    //Cálculo do resultado
-    if((n%2)==0){
-      result*=round(pow(2, k)-1);
-      result/=pow(2, k);
-    };
-
-
-
-    for(i=3; i<n; i+=2){
-      if((n%i)==0){
-        result*=round(pow(i, k)-1);
-        result/=pow(i, k);
-      };
-    };
-
-
+    
   //Resultado
   return result;
 
 };
 
-//Função Ψ de Dedekind
-long double dedekind_psi_function(uint64_t k, uint64_t n){
-  return jordan_totient_function((2*k),n)/(jordan_totient_function(k,n)*1.0);
+//Função que calcula afunção totiente de Euler para potências de números primos 
+uint64_t euler_totient_function_prime_power(uint64_t prime, int power){
+ 
+ //Resultado
+ return (prime-1) * bin_pow(prime,(power - 1));
+
 };
+
+
+//Função que computa o valor da função totiente de Carmichael λ(n)
+uint64_t carmichael_function(uint64_t n){
+
+  //Caso base: n é primo
+  if(baillie_psw_test(n)==true) return (n-1);
+
+
+  //Variáveis locais
+  uint64_t prime_powers[30];
+  uint64_t primes[30];
+  int multiplicities[30];
+  
+
+  //Procedimentos
+    //Ajuste de variáveis
+    for(int k=0;  k<30; ++k){
+      prime_powers[k]=0;
+      primes[k]=0;
+      multiplicities[k]=1;
+    }
+    
+    //Calculando a decomposição de n em fatores primos
+    factorization_map(n, primes, multiplicities);
+    
+    //Cálculo das potências de números primos
+    for(int i=0;  i<30; ++i){
+      if(primes[i]==0) break;
+      else{
+        prime_powers[i]=euler_totient_function_prime_power(primes[i], multiplicities[i]);
+        if(primes[i]==2 && multiplicities[i]>2) prime_powers[i]=prime_powers[i]/2;
+      }
+    }
+    
+
+  //Resultado
+  uint64_t result=lcm_prime_power_array(prime_powers);
+  return result;
+
+
+};
+
+
+//Função que computa o valor da função totiente de Jordan J(k, n)
+uint64_t jordan_totient_function(uint64_t n, uint64_t k){
+
+  //Caso base:
+  if(n==1) return 1;
+
+
+  //Variáveis locais
+  uint64_t primes_[30];
+  int multiplicities_[30];
+  __int128_t J=1;
+  
+
+  //Procedimentos
+    //Ajuste de variáveis
+    for(int m=0;  m<30; ++m){
+      primes_[m]=0;
+      multiplicities_[m]=1;
+    }
+
+
+    //Calculando a decomposição de n em fatores primos
+    factorization_map(n, primes_, multiplicities_);
+ 
+
+    //Interando sobre fatores primos distintos de n
+    for(int i=0; i<30; ++i){
+
+      if(primes_[i]<2) break;
+      else{
+        __int128_t j0=bin_pow(primes_[i], k*multiplicities_[i]);
+        __int128_t j1=bin_pow(primes_[i], (multiplicities_[i]-1)*k);
+        J=J*(j0-j1);
+
+      }
+
+    };//Fim do loop principal
+
+  
+  //Resultado
+  return J;
+
+};
+
+
+//Função Ψ de Dedekind
+uint64_t dedekind_psi_function(uint64_t n, uint64_t k){
+  return jordan_totient_function((2*k),n)/(jordan_totient_function(k,n));
+};
+
 
 //***********************************************************************************************************************
 //FIM DO HEADER
