@@ -17,6 +17,9 @@ int main(){
 
   
   //Procedimentos
+    //Inicializando o cache da função de Mertens
+    mertens_caching();
+
     //Computando a função de contagem de primos π(x) usando convoluções de Dirichlet
     printf("π(10)=%i\n", prime_counting_function_dirichlet_convolution(10, prime_omega_array, mobius_array));
     printf("π(100)=%i\n", prime_counting_function_dirichlet_convolution(100, prime_omega_array, mobius_array));
