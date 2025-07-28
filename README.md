@@ -187,3 +187,6 @@ Number Theoretical Algorithms in Criptography by O. N. Vasilenko
 A Computational Introduction to Number Theory and Algebra  by Victor Shoup 
 
 Algorithmic Number Theory: Lattices, Number Fields, Curves And Cryptography by J.P. Buhler and P. Stevenhagen
+
+Introduction to Analytic Number Theory by T. M. Apostol
+
