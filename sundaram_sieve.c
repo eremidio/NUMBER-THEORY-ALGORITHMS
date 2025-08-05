@@ -2,6 +2,7 @@
 //COMPILAR ESTE PROGRAMA COM O COMANDO: clang -o sundaram_sieve sundaram_sieve.c -lm -O2
 
 /*
+
 PARA MAIORES INFORMAÇÕES: https://canonica.ai/page/Sieve_of_Sundaram
 
 */
@@ -30,7 +31,8 @@ void sundaram_sieve(int64_t n){
     //Descartando números compostos
    for(j=1; j<n; ++j){
      for(i=1; i<j; ++i){
-       if((i+j+2*i*j)<n) number_list[i+j+2*i*j]=false;
+       int64_t index = (i+j+2*i*j);
+       if(index<n) number_list[index]=false;
      };
    };
 
@@ -71,3 +73,4 @@ int main(){
   return 0;
 
 }
+
