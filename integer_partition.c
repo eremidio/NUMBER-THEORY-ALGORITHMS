@@ -8,19 +8,22 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-unsigned int number;
 
-//Procedimentos
-//Recebendo input do usuário
-printf("Digite um número inteiro: ");
-scanf("%u", &number);
+  //Variáveis locais
+  int number;
 
-//Teste de funções
-//Função de partição
-printf("Soma dos divisores de %u: %u\n", number, sum_of_divisors(number));
-printf("Número de partições de %u: %u\n", number, partition_function(number));
+  //Procedimentos
+    //Recebendo input do usuário
+    printf("Digite um número inteiro: ");
+    scanf("%i", &number);
 
-//Finalizando a aplicação
-return 0;
-          }
+    //Cálculo da função de partição e da função soma de divisores
+    __int128_t partition=partition_function(number);
+    printf("Soma dos divisores de %i: %i\n", number, sum_of_divisors(number));
+    printf("Número de partições de %i: ", number); printf128(partition);
+
+
+  //Finalizando a aplicação
+  return 0;
+
+}

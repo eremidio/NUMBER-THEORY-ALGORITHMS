@@ -44,29 +44,38 @@ https://en.wikipedia.org/wiki/Partition_(number_theory)
 // CABEÇALHO
 #ifndef INTEGER_PARTITON_H
 #define INTEGER_PARTITON_H
+#include"int128.h"
 #include <math.h>
 #include <stdint.h>
 
+
+//CONSTANTES GLOBAIS
+__int128_t partition_array[2000];
+int summation_array[2000];
+
+
 //****************************************************************************************************************************
-// PROTÓTIPO DE FUNÇÕES
-unsigned int sum_of_divisors(unsigned int); 
-unsigned int partition_function(unsigned int);
+//DECLARAÇÃO DE FUNÇÕES
+int sum_of_divisors(int); 
+__int128_t partition_function(int);
 
 //****************************************************************************************************************************
 // FUNÇÕES
 // Função que calcula a soma dos divisores de uma dado número
-unsigned int sum_of_divisors(unsigned int n) {
+ int sum_of_divisors( int n) {
+
   // Casos triviais
   if (n == 0) return 0;
   if (n == 1) return 1;
 
   // Variáveis locais
-  unsigned int sum = 0;
-  unsigned int i;  // Variável de iteração
-  unsigned int limit = sqrt(n);
+  int sum = 0;
+  int i;  // Variável de iteração
+  int limit = sqrt(n);
 
-  // Procedimento
+  // Procedimento: loop principal
   for (i = 1; i <= limit; ++i) {
+  
     // Caso particular de quadrados perfeitos
     if ((i * i) == n) {
       sum += i;
@@ -74,25 +83,58 @@ unsigned int sum_of_divisors(unsigned int n) {
     };
 
     if ((n % i) == 0) sum += (i + (n / i));
+
   };
+
+  //Resultado
   return sum;
+
 };
 
 // Função que calcula o número de partições para um dado número inteiro
-unsigned int partition_function(unsigned int n) {
+__int128_t partition_function(int n) {
+
   // Casos triviais
   if (n == 0 || n == 1) return 1;
-  // Caso geral
+
+  // Caso geral:
   // Variáveis
-  unsigned int i;
-  unsigned int sum = 0;
-  // Procedimentos
-  // Definindo a função recursivamente
-  for (i = 0; i < n; ++i)
-    sum += (sum_of_divisors(n - i) * partition_function(i));
+  __int128_t sum = 0, s0;
+  int s1;
+
+
+  //Procedimentos
+  //Definindo a função recursivamente
+  for (int i = 0; i < n; ++i){
+    s1=summation_array[n-i];
+    s0=partition_array[i];
+  
+    if(s0>0 && s1>0){
+      sum += s0*s1;
+    }
+    else if(s0>0){
+      int temp=sum_of_divisors(n - i);
+      sum += s0*temp;
+      summation_array[n-i]=temp;
+    }
+    else if(s1>0){
+      __int128_t temp=partition_function(i);
+      sum += s1* temp;
+      partition_array[i]=temp;
+    }
+    else{
+      int temp0=sum_of_divisors(n - i);
+      __int128_t temp1=partition_function(i);
+
+      sum += temp0 * temp1;
+      partition_array[i]=temp1;
+      summation_array[n-i]=temp0;
+    }
+  }
 
   // Resultado
   return sum / n;
+
 };
 
 //****************************************************************************************************************************
