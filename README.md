@@ -162,6 +162,12 @@ https://www.mdpi.com/2227-7390/12/17/2624
 
 https://www.researchgate.net/publication/304025431_Two_pentagonal_number_primality_tests_and_twin_prime_counting_in_arithmetic_progressions_of_modulus_24
 
+https://www.mat.uniroma3.it/scuola_orientamento/alumni/laureati/bedodi/Tesi.pdf
+
+https://www.journals.vu.lt/nonlinear-analysis/article/download/15165/14170/23644
+
+https://arxiv.org/abs/1307.1840
+
 THE FOLLOWING LINK CONTAIN A LIST OF USEFUL FUNCTIONS AND MATHEMATICAL CONSTANTS WHICH CAN APPROXIMATED BY USING INFINITE CONTINUED FRACTIONS: https://link.springer.com/content/pdf/bbm:978-94-91216-37-4/1. ONE CAN USE SOME VARIANT OF THE CODE PROVIDED HERE TO COMPUTE ALL FUNCTION AND CONSTANTS AT ONCE BY PROVIDING A LIST OF PARTIAL NUMERATORS AND DENOMINATORS UP TO SOME TRUNCATION POINT.
 
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
