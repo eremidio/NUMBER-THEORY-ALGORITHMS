@@ -216,3 +216,5 @@ Algorithmic Number Theory: Lattices, Number Fields, Curves And Cryptography by J
 
 Introduction to Analytic Number Theory by T. M. Apostol
 
+Computational Number Theory by Abhijit Das
+
