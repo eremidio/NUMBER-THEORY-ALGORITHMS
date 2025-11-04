@@ -192,6 +192,20 @@ https://marcjoye.github.io/papers/JPV00gen.pdf
 
 https://arxiv.org/pdf/1904.11822
 
+https://math.colgate.edu/~integers/v109/v109.pdf
+
+https://vixra.org/pdf/2406.0134v3.pdf
+
+https://arxiv.org/pdf/2106.01327
+
+https://www.sciencedirect.com/science/article/pii/0196885886900230
+
+https://arxiv.org/pdf/2002.08062
+
+https://web.stanford.edu/class/archive/cs/cs265/cs265.1254/Lectures/Lecture3/l3.pdf
+
+https://vixra.org/pdf/1202.0029v3.pdf
+
 THE FOLLOWING LINK CONTAIN A LIST OF USEFUL FUNCTIONS AND MATHEMATICAL CONSTANTS WHICH CAN APPROXIMATED BY USING INFINITE CONTINUED FRACTIONS: https://link.springer.com/content/pdf/bbm:978-94-91216-37-4/1. ONE CAN USE SOME VARIANT OF THE CODE PROVIDED HERE TO COMPUTE ALL FUNCTION AND CONSTANTS AT ONCE BY PROVIDING A LIST OF PARTIAL NUMERATORS AND DENOMINATORS UP TO SOME TRUNCATION POINT.
 
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
