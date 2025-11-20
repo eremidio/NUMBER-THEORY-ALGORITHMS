@@ -13,9 +13,9 @@ ENTÃON Q(n)=2 (mod n). (A ARITMÉTICA PODE SER FEITA VIA GF(p²))
 SE COMBINANDO COM UMTESTE DE FERMAT BASE 5 E SE n NÃO FOR MÚLTIPLO DE 2 E 3,TEM-SE UM EFICIENTE
 TESTE DE PRIMALIDADE.
 
-ESTE PROCEDIMENTO PODE SER GENERALIZADO AMPLIADO PARA UMCONJUNTO DE VÁRIAS SEQUÊNCIA DE INTEIROS,
+ESTE PROCEDIMENTO PODE SER GENERALIZADO AMPLIADO PARA UM CONJUNTO DE VÁRIAS SEQUÊNCIA DE INTEIROS,
 CONSTRUÍDAS USANDO-SE UM CONJUNTO DE FUNÇÕES GERADORAS DO TIPO P(x)/Q(x) = Σa(n)x^n, ONDE P(x),
-Q(x) SÃO POLINÔMIOS COM COEFICIENTES INTEIROS,NO CASO DA SEQUÊNCIA DE PELL-LUCAS P(x)=2x-2,
+Q(x) SÃO POLINÔMIOS COM COEFICIENTES INTEIROS, NO CASO DA SEQUÊNCIA DE PELL-LUCAS P(x)=2x-2,
 Q(x)=x²+2x-1.
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Pell_number#Pell–Lucas_numbers
@@ -33,19 +33,22 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Pell_number#Pell–Luc
 #define PELL_LUCAS_PRIMALITY_TEST_H
 #include<stdbool.h>
 #include"cipolla_algorithm.h"
+#include"kronecker_symbol.h"
 
 
 //CONSTANTES GLOBAIS
 #define PELL_LUCAS1 10000
 #define PELL_LUCAS2 10000000
 
+
 //***********************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
 bool pell_lucas_primality_test(int64_t);
 
+
 //***********************************************************************************
 //FUNÇÕES
-//Função que implementa o teste de primalidade usando a sequência de Pell-Lucas
+//Função que implementa o teste de primalidade usando a sequência de Pell-Lucas e de Pell
 /*
 NOTA: usaremos a estrutura 'algebraic_quadratic_number' e a função para rápida
       exponenciação modular em GF(p²) disponível no arquivo 'cipolla_algorithm.h'.
@@ -75,8 +78,6 @@ bool pell_lucas_primality_test(int64_t n){
   }
 
 
-
-
   //Teste 2: teste da sequência de Pell-Lucas
 
   //Variáveis locais
@@ -90,13 +91,17 @@ bool pell_lucas_primality_test(int64_t n){
     zp2=algebraic_quadratic_pow_mod(z2, n, n);
 
     result=(zp1.a+zp2.a+2*n)%n;
-  
+    if(result%n!=2) return false;  
+
+    result=((zp1.b-zp2.b)/2);//Teste usando a sequência de Pell ordinária P(n)={(1+√2)^n-(1-√-2)^n}/(2√2)
+    result=(result-kronecker(2,n))%n;//Para n primo P(n)-(2|n)= 0 (mod n) (|) denota o símbolo de Kronecker
+    if(result%n!=0) return false;  
+
+
   //Resultado
-  if(result%n==2) return true;
-  else return false;
+  return true;
 
 };
-
 
 
 //***********************************************************************************
