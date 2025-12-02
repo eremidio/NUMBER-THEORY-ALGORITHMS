@@ -1,205 +1,136 @@
-//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA UMA VARIANTE DO ALGORITMO (p+1) DE WILLWIAMS PARA FATORAR NÚMEROS INTEIROS
-  //USANDO CORPOS ALGÉBRICOS NÚMERICOS NO LUGAR DE SEQUÊNCIAS DE LUCAS
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA UMA VARIANTE DO ALGORITMO (p+1) DE WILLIAMS USANDO ARITMÉTICA EM CORPOS FINITOS DO SEGUNDO TIPO
 
 /*
-O ALGORITMO DE FATORAÇÃO (p+1) PODE SER REEXPRESSO EM TERMOS DE ARITMÉTICA
-USANDO CORPOS NÚMERICOS QUADRÁTICOS Q(√n)=a+b√n NO LUGAR DE SEQUÊNCIAS DE LUCAS.
-ESTE ALGORITMO É PARTICULARMENTE ÚTIL PARA SEMIPRIMOS (PRODUTOS DE DOIS FATORES
-PRIMOS). GENERALIZAÇÕES INCLUEM A FATORAÇÃO VIA POLINÔMIOS CICLOTÔMICOS.
+
+O ALGORITMO DE FATORAÇÃO (p+1) PODE SER REEXPRESSO EM TERMOS DE ARITMÉTICA USANDO CORPOS NÚMERICOS QUADRÁTICOS Q(√n) CUJOS ELEMENTOS
+SÃO DA FORMA z=a+b√n.
+
+ESTE ALGORITMO É PARTICULARMENTE ÚTIL PARA SEMIPRIMOS (PRODUTOS DE DOIS FATORES PRIMOS). GENERALIZAÇÕES INCLUEM A FATORAÇÃO VIA
+POLINÔMIOS CICLOTÔMICOS.
 
 
 PARA MAIORES INFORMAÇÕES: https://www.semanticscholar.org/paper/Factoring-with-cyclotomic-polynomials-Bach-Shallit/b47948d1d665cb8276bc638d5fca6eabd23806c7
                           https://github.com/eremidio/NUMBER-THEORY-ALGORITHMS/blob/main/williams_factorization.c
+
 */
 
 //******************************************************************************************************************************************************************
 // CABEÇALHO
 #ifndef WILLIAM_FACTORIZATION_ALGEBRAIC_H
 #define WILLIAM_FACTORIZATION_ALGEBRAIC_H
-#include <stdio.h>
-#include <time.h>
-#include "int128.h"
+#include"cipolla_algorithm.h"
+#include"fast_perfect_square_detection.h"
+#include<stdlib.h>
+#include<time.h>
+
 
 //******************************************************************************************************************************************************************
 // DECLARAÇÃO DE FUNÇÕES
-void algebraic_multiplication(__int128_t[], __int128_t[], __int128_t[], __int128_t, __int128_t);
-void algebraic_exponentiation(__int128_t[], __int128_t[], __int128_t,  __int128_t, __int128_t);
-void algebraic_rationalization(__int128_t[], __int128_t[], __int128_t, __int128_t);
-__int128_t gcd128(__int128_t, __int128_t);
-void williams_algebraic_factorization(__int128_t, __int128_t);
+void setup_williams_parameters(int64_t*, int64_t*, int64_t*, int64_t);
+struct algebraic_quadratic_number algebraic_quadratic_number_rationalization(struct algebraic_quadratic_number, int64_t);
+int64_t  gcd_s64(int64_t, int64_t);
+void williams_factorization_algebraic(int64_t);
+
 
 //******************************************************************************************************************************************************************
 // FUNÇÕES
+//Função que define os parâmetros usados no algoritmo
+void setup_williams_parameters(int64_t* a, int64_t*  b, int64_t* d, int64_t N){
 
-//Função que executa a multiplicação de números em um corpo algébrico a menos de uma relação de congruência
-  // z1.z2=(a1.a2+b1.b2.ω²)+(a1.b2+a2.b1)ω=(a1.a2+b1.b2.n)+(a1.b2+a2.b1)ω.
-void algebraic_multiplication(__int128_t result[], __int128_t parcel1[],
-                              __int128_t parcel2[], __int128_t root_squared,
-                              __int128_t number) {
-  // Calculando as parcelas do resultado
-  result[0] = (parcel1[0] * parcel2[0])%number + (parcel1[1] * parcel2[1] * root_squared)%number;
-  result[1] = (parcel1[0] * parcel2[1])%number + (parcel1[1] * parcel2[0])%number;
-  result[0] = (result[0] % number);
-  result[1] = (result[1] % number);
- 
-};
-
-// Função que executa a exponenciação de números em um corpo algebrico a menos de uma relação de congruência
-void algebraic_exponentiation(__int128_t result[], __int128_t parcel[],
-                              __int128_t root_squared, __int128_t exponent,
-                              __int128_t number) {
-  // Variáveis locais
-  __int128_t algebraic_number[2], algebraic_product[2], algebraic_squared[2],
-      temp[2];
-  __int128_t power = 0;
-
-  // Procedimentos
-  // Ajuste de variáveis
-  algebraic_number[0] = parcel[0];
-  algebraic_number[1] = parcel[1];
-
-  // 1ª iteração
-  algebraic_multiplication(algebraic_squared, algebraic_number,
-                           algebraic_number, root_squared, number);
-  power += 2;
-
-  // Ajuste de variáveis
-  algebraic_product[0] = algebraic_squared[0];
-  algebraic_product[1] = algebraic_squared[1];
-
-  // Loop principal com otimização binária
-  while (power < exponent) {
-    // Caso 1
-    if ((power * power) < exponent) {
-      algebraic_multiplication(temp, algebraic_product, algebraic_product, root_squared, number);
-
-      // Ajuste de variáveis
-      algebraic_product[0] = temp[0];
-      algebraic_product[1] = temp[1];
-
-      power = power * 2;
-      continue;
-    };
-
-    // Caso 2
-    if ((power + 2) < exponent) {
-      algebraic_multiplication(temp, algebraic_product, algebraic_squared, root_squared, number);
-
-      // Ajuste de variáveis
-      algebraic_product[0] = temp[0];
-      algebraic_product[1] = temp[1];
-      power = power + 2;
-      continue;
-    };
-
-    // Caso 3
-    algebraic_multiplication(temp, algebraic_product, algebraic_number,  root_squared, number);
-
-    // Ajuste de variáveis
-    algebraic_product[0] = temp[0];
-    algebraic_product[1] = temp[1];
-
-    power++;
-  };
-
-  // Resultado
-  result[0] = algebraic_product[0] % number;
-  result[1] = algebraic_product[1] % number;
-};
-
-// Função que racionaliza um inteiro algébrico x=t⁺/t, com t=a+b√n  e t⁺=a-b√n
-void algebraic_rationalization(__int128_t result[], __int128_t parcel[],
-                               __int128_t root_squared, __int128_t number) {
-  // Variáveis locais
-  __int128_t numerator[2];
-  __int128_t denominator;
-
-  // Procedimentos
-    // Cálculo do denominador
-    denominator =((parcel[0] * parcel[0]) - (parcel[1] * parcel[1] * root_squared));
-
-    // Cálculo do numerador
-    numerator[0] = ((parcel[0] * parcel[0]) + (parcel[1] * parcel[1] * root_squared));
-    numerator[1] = (-2) * parcel[0] * parcel[1];
-
-  // Resultado
-  result[0] = numerator[0] / denominator;
-  result[1] = numerator[1] / denominator;
-
-};
-
-// Função que implementa o algoritmo de Euclides para inteiros de 128bits
-__int128_t gcd128(__int128_t a, __int128_t b) {
-  if (b == 0)
-    return a;
-  else
-    return gcd128(b, a % b);
-};
-
-//Função que implementa a versão algébrica do algoritmo (p+1) de Williams para fatorar números inteiros
-void williams_algebraic_factorization(__int128_t number, __int128_t E) {
-
-
-  // Semente para geração de números aléatorios
+  //Semente para  geração de números aletórios
   srand(time(NULL));
 
-  // Variáveis locais
-  __int128_t a, b, d;
-  __int128_t t[2];
-  __int128_t x[2];
-  __int128_t x_powered[2];
-  __int128_t v, u;
-  __int128_t factor1, factor2;
-  int64_t random_number;
+
+  //Procedimentos
+    //Gerando números aleatórios usados no algoritmo
+      reselect_parameters:
+    int64_t a_=rand()%N;
+    int64_t b_=rand()%N;
+    int64_t d_=rand()%N ;
+    
+    int64_t r=0;    
+    if(perfect_square_detection_64bits(d_, &r)) goto reselect_parameters;
+    else{
+      (*a)=a_; (*b)=b_; (*d)=d_;
+      return;
+    };
+
+};
+
+
+//Função que racionaliza um número algébrico quadrático
+struct algebraic_quadratic_number algebraic_quadratic_number_rationalization(struct algebraic_quadratic_number z0, int64_t N){
+
+  //Variáveis locais
+  struct algebraic_quadratic_number z1; 
+  __int128_t den=(z0.a*z0.a)-(z0.b*z0.b*z0.d);
+
+  //Procedimentos
+    //Ajuste de variáveis
+    z1.a=(z0.a*z0.a)+(z0.b*z0.b*z0.d); z1.b=(-2)*z0.a*z0.b; z1.d=z0.d;
+    z1.a=z1.a/den;  z1.b=z1.b/den;
+    z1.a=z1.a%N;  z1.b=z1.b%N;
+    if(z1.a<0)  z1.a=z1.a+N;
+    if(z1.b<0)  z1.b=z1.b+N;  
+
+  //Resultado
+  return z1;
+
+};
+
+
+//Função que calcula o mdc de dois números inteiros de 128 bits
+int64_t gcd_s64(int64_t a, int64_t b){
+
+  //Resultado
+  if(b==0) return a;
+  else return gcd_s64(b, a%b);
+
+};
+
+
+//Função nque fatora um minteiro de 64 bits usando a variante algébrica do algoritmo (p+1) de Williams
+void williams_factorization_algebraic(int64_t N){
+
+  //Variáveis locais
+  struct algebraic_quadratic_number zN, z;
+  int64_t a, b, d, factor;
+  int64_t logN=2*log2(N)*log2(N)*log2(N);
   int trials=0;
 
-  // Procedimentos
-    // Ajuste de variáveis
-    restart:
-    random_number = rand() % 100000000000000000;
-    a = (random_number * random_number) % number;
-    random_number = rand() % 100000000000000000;
-    b = (random_number * random_number) % number;
-    random_number = rand() % 100000000000000000;
-    d = (random_number * random_number) % number;
-
-    t[0] = a;
-    t[1] = b;
-    algebraic_rationalization(x, t, d, number);
-
-
-    // Calculo de x^E (mod N)
-    algebraic_exponentiation(x_powered, x, E, d, number);
-
-
-    // Ajuste de variáveis
-    u = x_powered[0];
-    v = x_powered[1];
-
-    // Cálculo de fatores primos
-    factor1 =gcd128((u - 1), number);
-    if(factor1>1 && factor1<number) goto yield_result;
-    factor1 = gcd128(v, number);
-
-    if ((factor1 < 2 || factor1 >=number) && trials>1000) {
-      printf("O algoritmo não encotrou um fator primo do número em questão\n");
-      return;
-    }
-    else{
-      trials++;
-      goto restart;
-    }
-
   
-    // Printando o resultado na tela
-    yield_result:
-    factor2 = (number / factor1);
-    printf("Resultado da execução do algoritmo:\n");
-    printf("Número a ser fatorado:\n");
-    printf128(number);
-    printf("Fatores primos encontrados:\n");
-    printf128(factor1);
-    printf128(factor2);
+  //Procedimento
+    //Determinando os paramêtros usados no algoritmo
+    restart:
+    setup_williams_parameters(&a, &b, &d, N);
+    z.a=a; z.b=b; z.d=d; 
+
+    zN=algebraic_quadratic_pow_mod(z, N+1, N);
+    factor=gcd_s64(N, zN.a-1);
+    if(factor>1 && factor<N) goto print_factor;
+    factor=gcd_s64(N, zN.b);
+    if(factor>1 && factor<N) goto print_factor;
+
+
+    //Teste2: testando potências de 
+    for(int64_t i=0; i<logN; ++i){
+    
+      zN=algebraic_quadratic_mul_mod(zN, zN, N);
+
+      factor=gcd_s64(N, zN.a-1);
+      if(factor>1 && factor<N) goto print_factor;
+      factor=gcd_s64(N, zN.b);
+      if(factor>1 && factor<N) goto print_factor;
+
+    }
+
+     
+  //Resultado
+  trials++;
+  if(trials<1000) goto restart;
+
+  print_factor:   
+  printf("Fator de %li encontrado: %li.\n", N, factor);
 
 };
 
