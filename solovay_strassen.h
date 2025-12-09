@@ -17,6 +17,7 @@ PARA MAIORES INFORMAÇÕES: Algorithmic Number Theory vol. 1 by E. Bach, J. Shal
 #ifndef SOLOVAY_STRASSEN_H
 #define SOLOVAY_STRASSEN_H
 #include"mod_bin_exponentiation128.h"
+#include"binary_jacobi_symbol.h"
 #include<math.h>
 #include<stdbool.h>
 #include<stdlib.h>
@@ -25,7 +26,6 @@ PARA MAIORES INFORMAÇÕES: Algorithmic Number Theory vol. 1 by E. Bach, J. Shal
 //********************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
 int64_t gcd_s64(int64_t, int64_t);
-int legendre(int64_t, int64_t);
 bool solovay_strassen(int64_t);
 
 //********************************************************************************************************************
@@ -37,17 +37,6 @@ int64_t gcd_s64(int64_t a, int64_t b){
   else return gcd_s64(b, (a%b));
 
 };
-
-
-//Função que calcula o símbolo de Legendre usando o critério de Euler
-int legendre(int64_t n, int64_t p){
-
-  if((n%p)==0) return 0;
-  else if(mod_bin_pow(n, ((p-1)/2), p)==1) return 1;
-  else return (-1);
-
-};
-
 
 //Função que implementa uma versão determinística do teste de primalidade de Solovay-Strassen
 bool solovay_strassen(int64_t n){
@@ -71,8 +60,8 @@ bool solovay_strassen(int64_t n){
       //Teste 1: pequenos fatores primos
       if(gcd_s64(a, n)>1) return false;
 
-      //Teste 2 computando os símbolos de Legendre e de Jacobi
-      l_symbol=legendre(a, n);
+      //Teste 2 computando os símbolos de Legendre(Jacobi) e checando a relação de congruência
+      l_symbol=binary_jacobi(a, n);
       mod_power= mod_bin_pow(a, (n-1)/2, n);
       if(l_symbol==mod_power) continue;
       else if (l_symbol==(-1) && mod_power==(n-1));

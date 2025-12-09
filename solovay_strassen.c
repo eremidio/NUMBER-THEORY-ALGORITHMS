@@ -18,8 +18,7 @@ int main(){
     printf("Número a ser testado: ");
     if(scanf("%li", &number)!=1)  return 0;
 
-
-    //Usando o teste de Miller-Rabin para inteiros de 128 bits
+    //Usando o teste de Solovay-Strassen para inteiros de 64 bits
     if(solovay_strassen(number)==true)
       printf("O número em questão é primo.\n");
     else
@@ -29,5 +28,5 @@ int main(){
   //Finalizando a aplicação
   return 0;
 
-
 }
+
