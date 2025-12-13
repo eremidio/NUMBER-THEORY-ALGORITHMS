@@ -59,7 +59,7 @@ int64_t class_number_negative_discriminant2(int64_t d){
     for(; a<=B; a++){
       c=round(((b*b)+abs_d)/4.0);
 
-      if((a*a)<c){
+      if((a*a)<=c){
         if((c%a)==0){
           if(a==b || (a*a)==c ||b==0) h++;
           else h+=2;
