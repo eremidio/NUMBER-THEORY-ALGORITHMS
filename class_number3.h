@@ -33,11 +33,12 @@ PARA MAIORES INFORMAÇÕES: https://mathworld.wolfram.com/ClassNumber.html
 #ifndef CLASS_NUMBER_FORMULA_REAL_QUADRATIC_FIELD_H
 #define CLASS_NUMBER_FORMULA_REAL_QUADRATIC_FIELD_H
 #include"kronecker_symbol.h"
+#include"fast_perfect_square_detection.h"
 #include<math.h>
 
 //CONSTANTES GLOBAIS
 const double pi=4.0*atan(1.0);
-const uint64_t MAX_TU=100000000;
+const uint64_t MAX_TU=1E9;
 
 //***********************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
@@ -49,22 +50,33 @@ int64_t class_number_formula_positive_discriminant(int64_t);
 //FUNÇÕES
 //Função que computa uma unidade fundamental em um corpo quadrático real η=(1/2)(T+U√d) por força bruta
 void compute_fundamental_unit(int64_t* T, int64_t* U, int64_t d){
+
+  //Variáveis locais
+  int64_t T_, U_, T_squared;
   
   //Procedimento
+    //Restrição: d não deve ser quadrado perfeito
+    if(perfect_square_detection_64bits(d, &T_))
+      return;  
+
     //Loop principal
-    for(int64_t i=1; i<MAX_TU; ++i){
-      for(int64_t j=1; j<MAX_TU; ++j){
-
-        int64_t n=(i*i)-(d*j*j);
-        if(n<(-4)) break;
-
-        if(n==4 || n==(-4)){
-          (*T)=i; (*U)=j;
-          return;
-        };
-
+    for(U_=1; U_<MAX_TU; ++U_){
+      //Loop 1: iterando sobre soluções de T²-DU=(-4)
+      T_squared=(d*U_*U_)-4;
+      if(T_squared>0 && perfect_square_detection_64bits(T_squared, &T_)){
+        (*T)=T_; (*U)=U_;
+        return;
       }
-    };
+      //Loop 2: iterando sobre soluções de T²-DU=4
+      T_squared=(d*U_*U_)+4;
+      if(T_squared>0 && perfect_square_detection_64bits(T_squared, &T_)){
+        (*T)=T_; (*U)=U_;
+        return;
+      }
+    }
+
+    //Resultado em caso de falha
+    (*T)=0; (*U)=0;
 
 };
 
@@ -72,12 +84,16 @@ void compute_fundamental_unit(int64_t* T, int64_t* U, int64_t d){
 //Função que computa o número de classe de um corpo algébrico quadrático real
 int64_t class_number_formula_positive_discriminant(int64_t d){
 
+  //Restrição: d não deve ser quadrado perfeito
+  int64_t root=0;
+  if(perfect_square_detection_64bits(d, &root))
+    return (-1);  
+
   //Variáveis locais
   double fundamental_unit, sum=0;
   int64_t T, U;
- 
 
-
+  
   //Procedimento
     //Computando uma unidade fundamental
     compute_fundamental_unit(&T, &U, d);
