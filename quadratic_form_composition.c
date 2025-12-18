@@ -1,42 +1,48 @@
 //VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO quadratic_form_composition.h 
 //COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o quadratic_form_composition quadratic_form_composition.c -lm
 
+
 //Cabeçalho
 #include"quadratic_form_composition.h"
 #include<stdio.h>
+
 
 //Função principal
 int main(){
 
   //Variáveis locais
-  int64_t binary_quadratic_form1[3], binary_quadratic_form2[3], binary_quadratic_form3[3];
-
+  struct binary_quadratic_form f1, f2, f3;  
 
   //Procedimentos
     //Recebendo input do usuário
-    printf("Digite o valor do 1º coeficiente da forma quadrática 1: ");
-    scanf("%li", &binary_quadratic_form1[0]);
-    printf("Digite o valor do 2º coeficiente da forma quadrática 1: ");
-    scanf("%li", &binary_quadratic_form1[1]);
-    printf("Digite o valor do 3º coeficiente da forma quadrática 1: ");
-    scanf("%li", &binary_quadratic_form1[2]);
-
-    printf("\nForma quadrática 1: (%lix²)+(%lixy)+(%liy²)\n", binary_quadratic_form1[0], binary_quadratic_form1[1], binary_quadratic_form1[2]);
+    printf("[Coeficiente de  f(x, y)=ax²+bxy+cy²] a:");
+    scanf("%li", &f1.a);
+    printf("[Coeficiente de  f(x, y)=ax²+bxy+cy²] b:");
+    scanf("%li", &f1.b);
+    printf("[Coeficiente de  f(x, y)=ax²+bxy+cy²] c:");
+    scanf("%li", &f1.c);
 
     //Recebendo input do usuário
-    printf("Digite o valor do 1º coeficiente da forma quadrática 2: ");
-    scanf("%li", &binary_quadratic_form2[0]);
-    printf("Digite o valor do 2º coeficiente da forma quadrática 2: ");
-    scanf("%li", &binary_quadratic_form2[1]);
-    printf("Digite o valor do 3º coeficiente da forma quadrática 2: ");
-    scanf("%li", &binary_quadratic_form2[2]);
+    printf("[Coeficiente de  f(x, y)=ax²+bxy+cy²] a:");
+    scanf("%li", &f2.a);
+    printf("[Coeficiente de  f(x, y)=ax²+bxy+cy²] b:");
+    scanf("%li", &f2.b);
+    printf("[Coeficiente de  f(x, y)=ax²+bxy+cy²] c:");
+    scanf("%li", &f2.c);
+  
+    //Aplicando o algoritmo de composição de formas quadráticas 
+    f1=reduce_quadratic_form(f1);
+    f2=reduce_quadratic_form(f2);
+    print_binary_quadratic_form(f1); printf("\n");
+    print_binary_quadratic_form(f2); printf("\n");
 
-  printf("\nForma quadrática 1: (%lix²)+(%lixy)+(%liy²)\n", binary_quadratic_form2[0], binary_quadratic_form2[1], binary_quadratic_form2[2]);
+    assert(binary_quadratic_form_discriminant(f1)==binary_quadratic_form_discriminant(f2) && 
+          "Apenas formas quadráticas de mesmo determinante podem ser combinadas\n");
+   
+    f3=quadratic_form_composition(f1, f2);
+    printf("[Composição de formas quadráticas] ");
+    print_binary_quadratic_form(f3); printf("\n");
 
-
-  //Aplicando o algoritmo de composição de formas quadráticas 
-  quadratic_form_composition(binary_quadratic_form1, binary_quadratic_form2, binary_quadratic_form3);
-  printf("\nForma quadrática composta: (%lix²)+(%lixy)+(%liy²)\n", binary_quadratic_form3[0], binary_quadratic_form3[1], binary_quadratic_form3[2]);
 
   //Finalizando a aplicação
   return 0;
