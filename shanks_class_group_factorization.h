@@ -26,7 +26,7 @@ PARA MAIORES REFERÊNCIAS: A Course In Computational Algebraic Number Theory by 
 //CABEÇALHO
 #ifndef SHANKS_CLASS_GROUP_FACTORIZATION_H
 #define SHANKS_CLASS_GROUP_FACTORIZATION_H
-#include"quadratic_form_composition.h"
+#include"quadratic_form_composition_shanks_atkin.h"
 #include"binary_jacobi_symbol.h"
 #include<time.h>
 #include<stdio.h>
@@ -47,10 +47,8 @@ const int primes_500[168]={2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 4
 //******************************************************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
 int64_t generate_fundamental_discriminant(int64_t);
-struct binary_quadratic_form generate_unit_form(int64_t); 
 struct binary_quadratic_form generate_prime_form(int64_t, int);
 struct binary_quadratic_form generate_random_form(int64_t);
-struct binary_quadratic_form quadratic_form_exponentiation(struct binary_quadratic_form, int64_t, int64_t);
 bool is_ambiguous_form(struct binary_quadratic_form*, int64_t*, int64_t*);
 void shanks_class_group_factorization(int64_t, int64_t, int64_t);
 
@@ -63,27 +61,6 @@ int64_t generate_fundamental_discriminant(int64_t N){
   //Resultado
   if(N%4==3) return (-N);
   else return (-4)*N;
-
-};
-
-
-//Função que gera uma unidade no grupo cl(D) de forma quadráticas de discriminante negativo
-struct binary_quadratic_form generate_unit_form(int64_t D){
-
-  //Variáveis locais
-  struct binary_quadratic_form one;
-
-  //Procedimento
-    //Calculando os coeficientes da forma quadrática unitária
-    if(D%4==0){
-      one.a=1; one.b=0; one.c=(-D/4);    
-    }
-    else{
-      one.a=1; one.b=1; one.c=((1-D)/4);
-    }
-
-  //Resultado
-  return one;
 
 };
 
@@ -172,35 +149,8 @@ struct binary_quadratic_form generate_random_form(int64_t D){
 
 };
 
-//Função que calcula a exponencial de uma forma quadrática binária
-struct binary_quadratic_form quadratic_form_exponentiation(struct binary_quadratic_form f, int64_t D, int64_t exponent){
 
-  //Variáveis locais
-  struct binary_quadratic_form q=f;
-  struct binary_quadratic_form result=generate_unit_form(D);
-
-
-  //Procedimento
-    //Loop sobre os bits do expoente
-    while(exponent>0){
-
-      //Checando a paridade do bit atual
-      if(exponent&1) result=quadratic_form_composition(result, q);
-
-      //Atualizando variáveis para apróxima iteração
-      exponent>>=1;
-      q=quadratic_form_composition(q, q);
-
-    }
-
-
-  //Resultado
-  return result;
-
-};
-
-
-//Função que checa se um fator não trivial foi obtido
+//Função que checa se um fator não trivial foi obtido por meio da detecção de formas quadráticas ambíguas
 bool is_ambiguous_form(struct binary_quadratic_form* f, int64_t* factor1, int64_t* factor2){
 
   //Resultado
@@ -272,12 +222,12 @@ void shanks_class_group_factorization(int64_t N, int64_t D/*discriminante*/, int
         //Ajuste de variáveis
         int64_t p=primes_500[i];
 
-        //Caso base divisão por pequenos primos (esta etapa não é necessária, mas é útil em muitos casos)
-        if(N%p==0){
+        //Caso base: divisão por pequenos primos (esta etapa não é necessária, mas é útil em muitos casos)
+       /* if(N%p==0){
           factor1=p;
           factor2=N/factor1;
           break;
-        } 
+        } */
 
         //Computando formas ambíguas
         struct binary_quadratic_form fp = generate_prime_form(D, i);
@@ -286,13 +236,13 @@ void shanks_class_group_factorization(int64_t N, int64_t D/*discriminante*/, int
         if(is_ambiguous_form(&fp, &factor1, &factor2))
           break;
 
-        struct binary_quadratic_form power_form = quadratic_form_exponentiation(fp, D, r);
+        struct binary_quadratic_form power_form = quadratic_form_exponentiation_fast(fp, r);
         if(is_ambiguous_form(&power_form, &factor1, &factor2))
           goto result_analysis;
 
 
         for(int64_t j=0; j<=s; ++j){ //Computando subgrupos de Sylow de ordem 2 em cl(D)
-          power_form=quadratic_form_composition(power_form, power_form);
+          power_form=NUDUPL(power_form);
           if(is_ambiguous_form(&power_form, &factor1, &factor2))
             goto result_analysis;
         }
