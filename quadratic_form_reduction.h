@@ -151,11 +151,15 @@ struct binary_quadratic_form reduce_quadratic_form(struct binary_quadratic_form 
 
 
   //Procedimentos
+    
+    //Checando a condição de redução de formas quadráticas
+    if(b>(-a) && b<=a)
+      goto final_step_reduction;
+
     //Loop euclidiano
     while(1){
 
       //Redução euclidiana mod 2a
-      if(b>a || b<=(-a) ){
         int64_t a2=(a<<1);
         int64_t r=b%a2;
         int64_t q=(b-r)/a2;
@@ -167,9 +171,9 @@ struct binary_quadratic_form reduce_quadratic_form(struct binary_quadratic_form 
 
         c=c-(((b+r)*q)>>1);
         b=r;
-      }
       
       //Condição que determina o fim do loop
+      final_step_reduction:
       if(a>c){
         b=(-b);
         int64_t t=a;
