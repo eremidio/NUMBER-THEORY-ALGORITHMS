@@ -37,27 +37,27 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Integer_factorization#
 
 //**********************************************************************************************************************************************
 // DECLARAÇÃO DE FUNÇÕES
-void extended_euclidean_algorithm(int64_t, int64_t, int64_t*, int64_t*, int64_t*);
+void extended_euclidean_algorithm(__int128_t, __int128_t, __int128_t*, __int128_t*, __int128_t*);
 struct binary_quadratic_form quadratic_form_composition(struct binary_quadratic_form, struct binary_quadratic_form);
 
 
 //**********************************************************************************************************************************************
 // FUNÇÕES
 // Algoritmo extendido de Euclides para computar o mmc de dois inteiros mmc(a,b) e os coeficientes da identidade de Bézout ax+by=mmc(a,b)
-void extended_euclidean_algorithm(int64_t a, int64_t b, int64_t* gcd, int64_t* x, int64_t* y) {
+void extended_euclidean_algorithm(__int128_t a, __int128_t b, __int128_t* gcd, __int128_t* x, __int128_t* y) {
 
   // Variáveis locais
-  int64_t x0 = 1, y0 = 0;
-  int64_t x1 = 0, y1 = 1;
+  __int128_t x0 = 1, y0 = 0;
+  __int128_t x1 = 0, y1 = 1;
 
   // Procedimentos
     //Loop euclidiano
     while (b!=0) {
   
-      int64_t q = a / b;
-      int64_t r = a % b;
-      int64_t xt = x0 - q * x1;
-      int64_t yt = y0 - q * y1;
+      __int128_t q = a / b;
+      __int128_t r = a % b;
+      __int128_t xt = x0 - q * x1;
+      __int128_t yt = y0 - q * y1;
 
         a = b;  b = r;
         x0 = x1; y0 = y1;
@@ -78,10 +78,10 @@ void extended_euclidean_algorithm(int64_t a, int64_t b, int64_t* gcd, int64_t* x
 struct binary_quadratic_form quadratic_form_composition(struct binary_quadratic_form f1, struct binary_quadratic_form f2){
 
   //Variáveis locais
-  int64_t a1, a2, a3, b1, b2, b3, c1, c2, c3;
-  int64_t n, s;
-  int64_t x2, y1, y2, u, v, d, d1, v1, v2;
-  int64_t delta=binary_quadratic_form_discriminant(f1);
+  __int128_t a1, a2, a3, b1, b2, b3, c1, c2, c3;
+  __int128_t n, s;
+  __int128_t x2, y1, y2, u, v, d, d1, v1, v2;
+  __int128_t delta=binary_quadratic_form_discriminant(f1);
 
   //Procedimentos
     //Ajuste de variáveis

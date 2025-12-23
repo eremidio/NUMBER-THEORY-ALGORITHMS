@@ -69,12 +69,12 @@ int64_t compute_L_const(int64_t D){
 struct binary_quadratic_form NUDUPL(struct binary_quadratic_form f){
 
   //Variáveis locais
-  int64_t D = binary_quadratic_form_discriminant(f);
-  int64_t L = compute_L_const(D);
-  int64_t a=f.a, b=f.b, c=f.c;
-  int64_t a2=0, b2=0, c2=0;
-  int64_t A=0, B=0, C=0, C1=0;
-  int64_t u=0, v=0, d=0, e=0, g=0, q=0, z=0, d1=0, v2=0, v3=0, t2=0, t3=0;
+  __int128_t D = binary_quadratic_form_discriminant(f);
+  __int128_t L = compute_L_const(D);
+  __int128_t a=f.a, b=f.b, c=f.c;
+  __int128_t a2=0, b2=0, c2=0;
+  __int128_t A=0, B=0, C=0, C1=0;
+  __int128_t u=0, v=0, d=0, e=0, g=0, q=0, z=0, d1=0, v2=0, v3=0, t2=0, t3=0;
   
 
   //Procedimentos
@@ -92,7 +92,7 @@ struct binary_quadratic_form NUDUPL(struct binary_quadratic_form f){
   
       while(1){
      
-        int64_t abs_v3=(v3>0)?v3:(-v3);
+        __int128_t abs_v3=(v3>0)?v3:(-v3);
 
         if(abs_v3<=L){
           if((z%2)==1){
@@ -151,15 +151,15 @@ struct binary_quadratic_form NUDUPL(struct binary_quadratic_form f){
 struct binary_quadratic_form NUCOMP(struct binary_quadratic_form f1, struct binary_quadratic_form f2){
 
   //Variáveis locais
-  int64_t D = binary_quadratic_form_discriminant(f1);
-  int64_t L = compute_L_const(D);
-  int64_t a1=0, b1=0, c1=0;
-  int64_t a2=0, b2=0, c2=0;
-  int64_t a3=0, b3=0, c3=0;
-  int64_t s=0, n=0;
-  int64_t A=0, A1=0, B=0, C=0, C1=0;
-  int64_t Q1=0, Q2=0, Q3=0, Q4=0;
-  int64_t u=0, u1=0, v=0, b=0, d=0, e=0, f=0, g=0, q=0, l=0, z=0, d1=0, v1=0, v2=0, v3=0, t2=0, t3=0;
+  __int128_t D = binary_quadratic_form_discriminant(f1);
+  __int128_t L = compute_L_const(D);
+  __int128_t a1=0, b1=0, c1=0;
+  __int128_t a2=0, b2=0, c2=0;
+  __int128_t a3=0, b3=0, c3=0;
+  __int128_t s=0, n=0;
+  __int128_t A=0, A1=0, B=0, C=0, C1=0;
+  __int128_t Q1=0, Q2=0, Q3=0, Q4=0;
+  __int128_t u=0, u1=0, v=0, b=0, d=0, e=0, f=0, g=0, q=0, l=0, z=0, d1=0, v1=0, v2=0, v3=0, t2=0, t3=0;
 
 
   //Procedimento
@@ -211,7 +211,7 @@ struct binary_quadratic_form NUCOMP(struct binary_quadratic_form f1, struct bina
       v = 0; d = a1; v2 = 1; v3 = A; z = 0;
    
       while(1){
-        int64_t abs_v3 = (v3>0)?v3:(-v3);
+        __int128_t abs_v3 = (v3>0)?v3:(-v3);
 
         if(abs_v3 <= L){
           if((z%2) == 1){

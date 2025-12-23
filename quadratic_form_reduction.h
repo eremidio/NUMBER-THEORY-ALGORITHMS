@@ -147,7 +147,7 @@ struct binary_quadratic_form reduce_quadratic_form(struct binary_quadratic_form 
 
   
   //Variáveis locais
-  int64_t a=f.a, b=f.b, c=f.c;
+  __int128_t a=f.a, b=f.b, c=f.c;
 
 
   //Procedimentos
@@ -160,9 +160,9 @@ struct binary_quadratic_form reduce_quadratic_form(struct binary_quadratic_form 
     while(1){
 
       //Redução euclidiana mod 2a
-        int64_t a2=(a<<1);
-        int64_t r=b%a2;
-        int64_t q=(b-r)/a2;
+        __int128_t a2=(a<<1);
+        __int128_t r=b%a2;
+        __int128_t q=(b-r)/a2;
 
         if(r>a){
           r=r-a2;
@@ -176,7 +176,7 @@ struct binary_quadratic_form reduce_quadratic_form(struct binary_quadratic_form 
       final_step_reduction:
       if(a>c){
         b=(-b);
-        int64_t t=a;
+        __int128_t t=a;
         a=c; c=t;
         continue;
       }

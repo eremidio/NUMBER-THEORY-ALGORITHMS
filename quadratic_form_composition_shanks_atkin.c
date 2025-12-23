@@ -1,4 +1,4 @@
-//VAMOSCRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO NO ARQUIVO quadratic_form_composition_shanks_atkin.h
+//VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO NO ARQUIVO quadratic_form_composition_shanks_atkin.h
 //COMPILAR ESTE PROGRAMACOM O COMANDO: gcc -o quadratic_form_composition_shanks_atkin quadratic_form_composition_shanks_atkin.c -lm
 
 
@@ -11,6 +11,7 @@ int main(){
 
   //Variáveis locais
   struct binary_quadratic_form f1, f2, f3;  
+
 
   //Procedimentos
     //Recebendo input do usuário
