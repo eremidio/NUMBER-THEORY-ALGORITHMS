@@ -86,113 +86,76 @@ bool* prime_sieve_setup(int64_t n){
 void pollard_p_minus_1_factorization_stage2(mpz_t n, mpz_t factor, mpz_t H, int64_t B){
 
   //Variáveis locais
+  int coprime_30[8]={1,7,11,13,17,19,23,29};
   int64_t B2 = B * 1000;
-  mpz_t current_prime, next_prime, bound;
-  mpz_t Hq, Q;                //Hq = H^q -> atual, Q -> produto acumulado
-  mpz_t v1, diff, one, temp; 
-  mpz_t diff_array[POLLARD_P_MAX_DIFF];
+  mpz_t H30, H_cp30[8];
+  mpz_t Hq, Q, one, v1; 
 
-  //Inicializando variáveis
-  mpz_init(current_prime); mpz_init(next_prime); mpz_init(bound);
-  mpz_init(Hq); mpz_init(Q);
-  mpz_init(v1); mpz_init(diff); mpz_init(one); mpz_init(temp);
+  //Inicialização de variáveis
+  mpz_init(Hq); mpz_init(Q);  mpz_init(one);  mpz_init(v1);
+  mpz_init(H30);
+  for(int i=0; i<8; ++i){
+    mpz_init(H_cp30[i]);
+  };
 
-  for(int i = 0; i < POLLARD_P_MAX_DIFF; ++i){
-    mpz_init(diff_array[i]);
-    mpz_set_ui(diff_array[i], 0);
-  }
-
-  mpz_set_ui(bound, B2);
-  mpz_set_ui(one, 1);
 
   //Procedimentos
-    //Computando o primeiro primo após o limite inicial
-    mpz_set_si(v1, B);
-    mpz_nextprime(current_prime, v1);
-    if(mpz_cmp(current_prime, bound) > 0)
-      goto memory_cache_cleaning;
+    //Ajuste de variáveis
+    while(B%30>0) B--;
+     
 
-    //Calculando H^q (mod n) e inicializando o produto acumulado
-    mpz_powm(Hq, H, current_prime, n);
-    mpz_set_ui(Q, 1);
-
-    //Q = (H^q - 1)
-    mpz_sub(temp, Hq, one);
-    mpz_mul(Q, Q, temp);
-    mpz_mod(Q, Q, n);
-
-    //Testando se um fator primo foi encontrado
-    mpz_gcd(factor, Q, n);
-    int t1 = mpz_cmp_ui(factor, 1);
-    int t2 = mpz_cmp(factor, n);
-
-    if(t1 > 0 && t2 < 0){
-      gmp_printf("Fator encontrado no estágio 2!\n");
-      goto memory_cache_cleaning;
-    };
-    if(t2 == 0) goto memory_cache_cleaning;
+    for(int i=0; i<8; ++i)
+      mpz_powm_ui(H_cp30[i], H, coprime_30[i], n);
+   
+    mpz_powm_ui(Hq, H, B, n); mpz_set_ui(Q, 1); mpz_powm_ui(H30, H, 30, n);
+    mpz_set_ui(one, 1); mpz_set_ui(v1, 1);
+    
+    
 
     //Loop principal
-    while(1){
+    while(B<B2){
 
-      //Computando o próximo primo
-      mpz_nextprime(next_prime, current_prime);
+      //Loop sobre possíveis primos no intervalo 30k e 30(k+1)
+      for(int i=0; i<8; ++i){
+  
+        mpz_mul(Hq, Hq, H_cp30[i]);
+        mpz_mod(Hq, Hq, n);
+        mpz_sub(v1, Hq, one);
 
-      //Condição de parada
-      if(mpz_cmp(next_prime, bound) > 0)
-        break;
+        mpz_mul(Q, Q, v1);
+        mpz_mod(Q, Q, n);
 
-      //Calculando a diferença entre primos consecutivos
-      mpz_sub(diff, next_prime, current_prime);
-      int64_t d = mpz_get_si(diff);
-
-      //Obtendo H^d (mod n) usando cachê quando possível
-      if(d > 0 && (d/2) < POLLARD_P_MAX_DIFF){
-
-        if(mpz_cmp_ui(diff_array[d/2], 0) == 0)
-          mpz_powm_ui(diff_array[d/2], H, d, n);
-
-        mpz_mul(Hq, Hq, diff_array[d/2]);
       }
-      else{
-        //Caso o gap ultrapasse o limite do cache
-        mpz_powm_ui(temp, H, d, n);
-        mpz_mul(Hq, Hq, temp);
-      }
-
-      mpz_mod(Hq, Hq, n);
-
-      //Atualizando variáveis
-      mpz_sub(temp, Hq, one);
-      mpz_mul(Q, Q, temp);
-      mpz_mod(Q, Q, n);
-
-      //Checando se um fator primo foi encontrado
+      
+      //Testando se um fator primo foi encontrado
       mpz_gcd(factor, Q, n);
-      t1 = mpz_cmp_ui(factor, 1);
-      t2 = mpz_cmp(factor, n);
+      int t1=mpz_cmp_ui(factor, 1);
+      int t2=mpz_cmp(factor, n);
 
-      if(t1 > 0 && t2 < 0){
+      if(t1>0 && t2<0){
         gmp_printf("Fator encontrado no estágio 2!\n");
-        goto memory_cache_cleaning;
+        goto memory_cache_cleaning; //Fator primo encontrado
       }
+      if(t2==0) goto memory_cache_cleaning; //Algoritmo falhou   
+      
 
-      if(t2 == 0)
-        goto memory_cache_cleaning;
+      //Ajuste de variáveis para a apróxima iteração
+      mpz_mul(Hq, Hq, H30); //[30k, 30(k+1)] ---> [30(k+1), 30(k+2)]
+      mpz_mod(Hq, Hq, n);
+      B+=30;
 
-      //Atualizando variáveis para a próxima iteração
-      mpz_set(current_prime, next_prime);
-    }
+    };//Fim do loop principal
+
 
     //Limpando o cachê de memória
     memory_cache_cleaning:
 
-    mpz_clear(current_prime); mpz_clear(next_prime); mpz_clear(bound);
     mpz_clear(Hq); mpz_clear(Q);
-    mpz_clear(v1); mpz_clear(diff); mpz_clear(one); mpz_clear(temp);
-
-    for(int i = 0; i < POLLARD_P_MAX_DIFF; ++i)
-      mpz_clear(diff_array[i]);
+    mpz_clear(one); mpz_clear(v1);
+    mpz_clear(H30);
+    for(int i=0; i<8; ++i){
+      mpz_clear(H_cp30[i]);
+    };
 
 };
 
@@ -252,6 +215,10 @@ void pollard_p_minus_1_factorization(mpz_t n, mpz_t factor, int64_t B, int stage
     if(t1>0 && t2<0) goto memory_cache_cleaning; //Fator primo encontrado
     if(t2==0) goto memory_cache_cleaning; //Algoritmo falhou
 
+    //Limpando o cachê de memória antes do estágio 2
+    if(prime_array){
+     free(prime_array); prime_array=NULL;
+    }
 
     //Estágio 2 do algoritmo
     mpz_add(v1, v1, one);
