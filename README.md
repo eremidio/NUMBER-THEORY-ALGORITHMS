@@ -214,6 +214,12 @@ https://www.researchgate.net/publication/365821520_A_primality_proving_using_ell
 
 https://link.springer.com/chapter/10.1007/978-3-030-90553-8_5
 
+https://arxiv.org/pdf/0811.1595
+
+https://math.stackexchange.com/questions/1394160/conjectured-compositeness-tests-for-n-k-cdot-2n-pm-c
+
+https://math.stackexchange.com/questions/4699423/a-question-about-a-primality-test-for-3n-2-and-n-1-or-n1-factorization
+
 THE FOLLOWING LINK CONTAIN A LIST OF USEFUL FUNCTIONS AND MATHEMATICAL CONSTANTS WHICH CAN APPROXIMATED BY USING INFINITE CONTINUED FRACTIONS: https://link.springer.com/content/pdf/bbm:978-94-91216-37-4/1. ONE CAN USE SOME VARIANT OF THE CODE PROVIDED HERE TO COMPUTE ALL FUNCTION AND CONSTANTS AT ONCE BY PROVIDING A LIST OF PARTIAL NUMERATORS AND DENOMINATORS UP TO SOME TRUNCATION POINT.
 
 THE PRESENT REPOSITORY COVERS ELEMENTARY ASPECTS OF NUMBER THEORY. THE READER INTERESTED MAY CONSULT THE FOLLOWING BIBLIOGRAPHY: 
