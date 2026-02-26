@@ -1,13 +1,11 @@
-// VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA RORTINAS PARA EXPONENCIAÇÃO E
-// EXPONENCIAÇÃO MODULAR DE MATRIZES
+// VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA RORTINAS PARA EXPONENCIAÇÃO E EXPONENCIAÇÃO MODULAR DE MATRIZES
 
 //******************************************************************************************************************************************************
 // CABEÇALHO
 #ifndef MATRIX_EXPONENTIATION_H
 #define MATRIX_EXPONENTIATION_H
-#include <type_traits>
-
 #include "matrix.h"
+
 
 //******************************************************************************************************************************************************
 // DECLARAÇÃO DE FUNÇÕES
@@ -17,13 +15,13 @@ Matrix<T> matrix_pow(Matrix<T>&, U);
 template <typename T, typename U>
 Matrix<T> matrix_powmod(Matrix<T>&, U, U);
 
+
 //******************************************************************************************************************************************************
 // FUNÇÕES
 // Função que calcula a exponencial de uma matriz
 template <typename T, typename U>
 Matrix<T> matrix_pow(Matrix<T>& m1, U exponent) {
-  // Restrição a expoentes inteiros
-  static_assert(std::is_integral<U>::value, "Expoentes devem ser inteiros");
+  // Restrição
   assert(m1.rows == m1.columns);
 
   // Caso bases:expoentes 0 e 1
@@ -55,15 +53,10 @@ Matrix<T> matrix_pow(Matrix<T>& m1, U exponent) {
   return result;
 };
 
-// Função que implementa a exponenciação de matrizes a menos de uma congruência
-// módulo um inteiro
+// Função que implementa a exponenciação de matrizes a menos de uma congruência módulo um inteiro
 template <typename T, typename U>
 Matrix<T> matrix_powmod(Matrix<T>& m1, U exponent, U modulus) {
-  // Restrição a expoentes inteiros
-  static_assert(std::is_integral<T>::value,
-                "Elementos da matriz congruentes devem ser inteiros");
-  static_assert(std::is_integral<U>::value,
-                "Inteiros congruentes devem ser inteiros");
+  // Restrição
   assert(m1.rows == m1.columns);
 
   // Caso bases:expoentes 0 e 1
