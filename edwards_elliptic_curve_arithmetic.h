@@ -36,8 +36,8 @@ void setup_edwards_curve_parameters(mpz_t x0, mpz_t y0, mpz_t d, mpz_t n, mpz_t 
 
  //Restrição
  if(u==0 || (u*u)==1){
-  u=rand()%10000;
-  u=(u*u*u)%10000;
+  u=rand()%1000000;
+  u=(u*u*u)%1000000;
  }
 
   //Variáveis locais
@@ -84,8 +84,8 @@ void setup_edwards_curve_parameters(mpz_t x0, mpz_t y0, mpz_t d, mpz_t n, mpz_t 
 
 
     if(mpz_cmp_ui(d,0)==0 || mpz_cmp_ui(d,1)==0 || mpz_jacobi(d, n)==1){
-      u=rand()%10000;
-      u=(u*u*u)%10000;
+      u=rand()%1000000;
+      u=(u*u*u)%1000000;
       mpz_set_ui(u0, u);
       goto reset;
     }
@@ -123,7 +123,7 @@ void pointwise_addition(mpz_t xr, mpz_t yr, mpz_t xp, mpz_t yp, mpz_t xq, mpz_t 
 
 
     mpz_mul(num1, xp, yq); mpz_mul(temp, xq, yp); mpz_add(num1, num1, temp); mpz_mod(num1, num1, n);// num1 =(xpyq+xqyp) mod n
-    mpz_mul(num2, yp, yq); mpz_mul(temp, xq, xp); mpz_sub(num2, num2, temp);  mpz_mod(num1, num1, n);//num2 = (ypyq-xpxq) mod n
+    mpz_mul(num2, yp, yq); mpz_mul(temp, xq, xp); mpz_sub(num2, num2, temp);  mpz_mod(num2, num2, n);//num2 = (ypyq-xpxq) mod n
 
     //Cálculo coordenadas do ponto resultante
     if(mpz_invert(temp, den1, n)==0){
