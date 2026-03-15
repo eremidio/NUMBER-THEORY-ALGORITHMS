@@ -6,13 +6,13 @@ O ALGORITMO DE ATKIN (OU ATKIN-BERNSTEIN) USA REPRESENTAÇÕES DE INTEIROS POR F
 PRIMOS. OS SEGUINTES TEOREMAS (PROVADOS NO ARTIGO ORIGINAL DE 2003) CONSTITUEM A BASE DO ALGORITMO:
 
 TEOREMA 1: SEJA n UM NATURAL , TAL QUE n≡ 1, 13, 17, 29, 37, 41, 49, 53 mod(60), ISTO É, n≡1 mod(4). ENTÃO n É PRIMO SE E
-SOMENTE SE O NÚMERO SOLUÇÕES DE 4x²+y²=n FOR ÍMPAR E NÃO FOR UM QUADRADO PERFEITO.
+SOMENTE SE O NÚMERO SOLUÇÕES DE 4x²+y²=n FOR ÍMPAR E n NÃO FOR UM QUADRADO PERFEITO.
 
 TEOREMA 2: SEJA n UM NATURAL, TAL QUE n≡ 7, 19, 31, 43 mod(60); ISTO É, n≡1 mod(6). ENTÃO n É PRIMO SE E SOMENTE SE O NÚMERO
-SOLUÇÕES DE 3x²+y²=n FOR ÍMPAR E NÃO FOR UM QUADRADO PERFEITO.
+SOLUÇÕES DE 3x²+y²=n FOR ÍMPAR E n NÃO FOR UM QUADRADO PERFEITO.
 
 TEOREMA 3: SEJA n UM NATURAL, TAL QUE n≡ 11, 23, 47, 59 mod(60); ISTO É, n≡11 mod(12). ENTÃO n É PRIMO SE E SOMENTE SE O
-NÚMERO SOLUÇÕES DE 3x²-y²=n FOR ÍMPAR E NÃO FOR UM QUADRADO PERFEITO.
+NÚMERO SOLUÇÕES DE 3x²-y²=n FOR ÍMPAR E n NÃO FOR UM QUADRADO PERFEITO.
 
 O ALGORITMO USA DOIS LOOPS INTERNOS COM x,y ≲ √n PARA CHECAR AS CONGRUÊNCIAS DOS TEOREMAS ACIMA. MÚLTIPLOS DE QUADRADOS
 PERFEITOS SÃO REMOVIDOS EM UMA ETAPA SUBSEQUENTE DE MODO QUE RESTE APENAS NÚMEROS PRIMOS (COMO 60=2⁴x3x5, OS NÚMEROS 2,3,5
@@ -36,6 +36,7 @@ PARA MAIORES INFORMAÇÕES: https://www.ams.org/journals/mcom/2004-73-246/S0025-
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include<math.h>
 
 
 //*************************************************************************************************************************
@@ -52,14 +53,23 @@ bool* fill_prime_array_sieve(int64_t n){
   //Variáveis locais
   bool* prime_array=(bool*)calloc((n+1), sizeof(bool));
   int64_t value=0, mod=0, k2=0, x2=0, y2=0;
+  int64_t root_n=sqrt(n)+1;
 
 
   //Procedimentos
+    //Pré computando quadrados perfeitos
+    int64_t* num_array=(int64_t*)malloc((root_n+1)*sizeof(int64_t));
+    num_array[0]=0; num_array[1]=1;
+
+    for(int64_t i=1; i<root_n; ++i)
+      num_array[i+1]=num_array[i]+(i<<1)+1; // (n+1)²=n²+2n+1 --> (n+1)²-n² = 2n+1
+    
+    
     //Loop principal: checando congruências usando fórmas quadráticas binárias
-    for(int64_t x=1; (x*x)<=n; ++x){
-      for(int64_t y=1; (y*y)<=n; ++y){
+    for(int64_t x=1; x<=root_n; ++x){
+      for(int64_t y=1; y<=root_n; ++y){
   
-        x2=(x*x); y2=(y*y); //Esse valores podem ser pré-computados uma única vez
+        x2=num_array[x]; y2=num_array[y]; 
 
         //Caso 1: f(x, y) = 4x²+y²
         value=(x2<<2)+y2;
@@ -99,6 +109,11 @@ bool* fill_prime_array_sieve(int64_t n){
 
     //Ajuste dos elementos iniciais
     prime_array[2]=true; prime_array[3]=true; prime_array[5]=true;
+
+    //Limpando o cachê de memória
+    if(num_array){
+      free(num_array); num_array=NULL;
+    }
 
 
   //Resultado

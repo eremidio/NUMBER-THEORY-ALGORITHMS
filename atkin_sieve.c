@@ -1,5 +1,5 @@
 //VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO atkin_sieve.h
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o atkin_sieve atkin_sieve.c -O2
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o atkin_sieve atkin_sieve.c -O2 -lm
 
 
 //Cabeçalho
