@@ -7,19 +7,21 @@
 
 //Função principal
 int main(){
-//Variáveis locais
-uint64_t number;
 
-//Procedimentos
-//Recebendo o input do usuário
-printf("Usuário digite um limitante superior para sua sequência de números primos:\n->");
-if(scanf("%lu", &number)!=1)
-return 0;
+  //Variáveis locais
+  int64_t n;
+
+  //Procedimentos
+    //Recebendo o input do usuário
+    printf("[Inteiro - limitante para a sequência de números primos] n: ");
+    if(scanf("%li", &n)!=1) return 0;
 
 
-//Aplicando o algoritmo de Atkin para computar e exibir
-atkin_sieve(number);
+    //Computando números primos usando o crivo de Atkin
+    atkin_sieve(n);
 
-//Finalizando a aplicação
-return 0;
-          }
+
+  //Finalizando a aplicação
+  return 0;
+          
+}

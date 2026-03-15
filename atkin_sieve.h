@@ -1,122 +1,139 @@
-//ESTE ARQUIVO CONTERÁ UMA IMPLEMENTAÇÃO DA PENEIRA DE ATKINS, UM DOS ALGORITMOS MAIS EFICIENTES PARA SE CALCULAR NÚMEROS PRIMOS
+//VAMOS CRIAR UM PROGRAMA QUE IMPLEMENTA A PENEIRA DE ATKIN UM DOS ALGORITMOS MAIS EFICIENTES PARA GERAR NÚMEROS PRIMOS
 
 /*
-O ALGORITMO DE ATKIN USA FORMAS QUADRÁTICAS PARA CALCULAR NÚMEROS PRIMOS.
-OS SEGUINTES TEOREMAS PROVADOS NO ARTIGO ORIGINAL DE 2003 SÃO USADOS:
-TEOREMA 1: SEJA n UM NATURAL , TAL QUE n≡ 1, 13, 17, 29, 37, 41, 49, 53 mod(60); ISTO É, n≡1 mod(4).
-ENTÃO n É PRIMO SE E SOMENTE SE O NÚMERO SOLUÇÕES DE 4x²+y²=n FOR ÍMPAR E NÃO FOR UM QUADRADO PERFEITO.
 
-TEOREMA 2: SEJA n UM NATURAL , TAL QUE n≡ 7, 19, 31, 43 mod(60); ISTO É, n≡1 mod(6).
-ENTÃO n É PRIMO SE E SOMENTE SE O NÚMERO SOLUÇÕES DE 3x²+y²=n FOR ÍMPAR E NÃO FOR UM QUADRADO PERFEITO.
+O ALGORITMO DE ATKIN (OU ATKIN-BERNSTEIN) USA REPRESENTAÇÕES DE INTEIROS POR FORMAS QUADRÁTICAS BINÁRIAS PARA DETECTAR NÚMEROS
+PRIMOS. OS SEGUINTES TEOREMAS (PROVADOS NO ARTIGO ORIGINAL DE 2003) CONSTITUEM A BASE DO ALGORITMO:
 
-TEOREMA 3: SEJA n UM NATURAL , TAL QUE n≡ 11, 23, 47, 59 mod(60); ISTO É, n≡11 mod(12).
-ENTÃO n É PRIMO SE E SOMENTE SE O NÚMERO SOLUÇÕES DE 3x²-y²=n FOR ÍMPAR E NÃO FOR UM QUADRADO PERFEITO.
+TEOREMA 1: SEJA n UM NATURAL , TAL QUE n≡ 1, 13, 17, 29, 37, 41, 49, 53 mod(60), ISTO É, n≡1 mod(4). ENTÃO n É PRIMO SE E
+SOMENTE SE O NÚMERO SOLUÇÕES DE 4x²+y²=n FOR ÍMPAR E NÃO FOR UM QUADRADO PERFEITO.
 
-O ALGORITMO É EXECUTADO NAS SEGUINTES ETAPAS:
-1. UM ARRAY DE BOOLEANOS É INDEXADO POR UM LIMITE ESPECIFICADO PELO USUÁRIO.
-2. INICIALMENTE TODOS OS ELEMENTOS DESTE ARRAY SÃO INSTANCIADOS COMO FALSO.
-3. PARA TODOS OS INDEXES SUPERIORES A 60 A CONGRUÊNCIA POR 60 É COMPUTADA.
-4. CASO O RESULTADO DA ETAPA SEJA 2, 3, 5 (FATORES PRIMOS DE 60), O NÚMERO É MARCADO COMO NÃO PRIMO. 
-5. CASO O RESULTADO DA ETAPA 3 SEJA: 1, 7, 11, 13, 17, 23, 29, 31, 37, 43, 47, 49, 53, 59. É CHECADO SE O INDEX EM QUESTÃO SATIFAZ AS CONSDIÇÕES DOS TEOREMAS CITADOS ACIMA.
-6. INDEXES SATISFAZENDO A CONDIÇÃO DOS TEOREMAS ACIMA SÃO MARCADOS COMO PRIMOS.
+TEOREMA 2: SEJA n UM NATURAL, TAL QUE n≡ 7, 19, 31, 43 mod(60); ISTO É, n≡1 mod(6). ENTÃO n É PRIMO SE E SOMENTE SE O NÚMERO
+SOLUÇÕES DE 3x²+y²=n FOR ÍMPAR E NÃO FOR UM QUADRADO PERFEITO.
+
+TEOREMA 3: SEJA n UM NATURAL, TAL QUE n≡ 11, 23, 47, 59 mod(60); ISTO É, n≡11 mod(12). ENTÃO n É PRIMO SE E SOMENTE SE O
+NÚMERO SOLUÇÕES DE 3x²-y²=n FOR ÍMPAR E NÃO FOR UM QUADRADO PERFEITO.
+
+O ALGORITMO USA DOIS LOOPS INTERNOS COM x,y ≲ √n PARA CHECAR AS CONGRUÊNCIAS DOS TEOREMAS ACIMA. MÚLTIPLOS DE QUADRADOS
+PERFEITOS SÃO REMOVIDOS EM UMA ETAPA SUBSEQUENTE DE MODO QUE RESTE APENAS NÚMEROS PRIMOS (COMO 60=2⁴x3x5, OS NÚMEROS 2,3,5
+DEVEM SER INCLUSOS AO FINAL).
+
+O ALGORITMO TEM UMA COMPLEXIDADE ASSINTÓTICA DE O(n), SENDO TEORICAMENTE O ALGORITMO MAIS EFICIENTE PARA GERAÇÃO DE NÚMEROS
+PRIMOS, EMBORA ALGUMAS VARIANTES DO CRIVO DE ERATÓSTENES TENHAM MELHOR PERFORMANCE QUANDO IMPLEMENTADAS (MENORES CONSTANTES
+MULTIPLICATIVAS).
+
+
+PARA MAIORES INFORMAÇÕES: https://www.ams.org/journals/mcom/2004-73-246/S0025-5718-03-01501-1/S0025-5718-03-01501-1.pdf
+                          https://en.wikipedia.org/wiki/Sieve_of_Atkin#Computational_complexity
 
 */
 
-//**********************************************************************************************************************************************************************
+//*************************************************************************************************************************
 //CABEÇALHO
 #ifndef ATKIN_SIEVE_H
 #define ATKIN_SIEVE_H
-#include<stdbool.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdint.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-//CONSTANTES GLOBAIS
-#define MAX_VALUES 8000000 //valor limite determinado pela memória RAM da máquina em estocar um array de booleanos
 
-//**********************************************************************************************************************************************************************
+//*************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
-void atkin_sieve(uint64_t);
+bool* fill_prime_array_sieve(int64_t);
+void atkin_sieve(int64_t);
 
-//**********************************************************************************************************************************************************************
+
+//*************************************************************************************************************************
 //FUNÇÕES
-//Função que implementa a peneirade Atkin para computar números primos até um determinado valor
-void atkin_sieve(uint64_t limit){
+//Função que computa uma lista de números primos usando representações de inteiros por formas quadráticas binárias módulo 60
+bool* fill_prime_array_sieve(int64_t n){
 
-//Variáveis locais
-bool number_array[limit+1];
-uint64_t n, x, y;
-
-
-//Procedimentos
-//2,3,5 são marcados comos primos
-if(limit>=2)
-number_array[2]=true;
-if(limit>=3)
-number_array[3]=true;
-if(limit>=5)
-number_array[5]=true;
+  //Variáveis locais
+  bool* prime_array=(bool*)calloc((n+1), sizeof(bool));
+  int64_t value=0, mod=0, k2=0, x2=0, y2=0;
 
 
-//Loop principal: computando soluções das formas quadráticas 4x²+y², 3x²+y² e 3x²-y² e flipando as  repetivas entradas se n=1 (mod 4), 1 (mod 6), 11 (mod 12)
-for(x=1; (x*x)<=limit; x++){
-for(y=1; (y*y)<=limit; y++){
+  //Procedimentos
+    //Loop principal: checando congruências usando fórmas quadráticas binárias
+    for(int64_t x=1; (x*x)<=n; ++x){
+      for(int64_t y=1; (y*y)<=n; ++y){
+  
+        x2=(x*x); y2=(y*y); //Esse valores podem ser pré-computados uma única vez
 
-//Caso 1: n=1 (mod 4)
-n=(4*x*x)+(y*y);
+        //Caso 1: f(x, y) = 4x²+y²
+        value=(x2<<2)+y2;
+        mod=(value%12);
 
-if(n<=limit && ((n%12)==1 || (n%12)==5))
-number_array[n]^=true;
-                       
-//Caso 2: n=1 (mod 6)
-n=(3*x*x)+(y*y);
+        if(value<=n && (mod==1 || mod==5))
+          prime_array[value]=((prime_array[value]+1)&1);// Toggling usando operadores bitwise: false <---> true
 
-if(n<=limit && (n%12)==7)
-number_array[n]^=true;
+        //Caso 2: f(x, y) = 3x²+y²
+        value=value-x2;
+        mod=(value%12);
 
+        if(value<=n &&  mod==7)
+          prime_array[value]=((prime_array[value]+1)&1);
 
+        //Caso 3: f(x, y) = 3x²-y²
+        if(y>=x) continue;
 
-//Caso 3: n=11 (mod 12)
-n=(3*x*x)-(y*y);
+        value=value-(y2<<1);
+        mod=(value%12);
 
-if(n<=limit && x>y && (n%12)==11)
-number_array[n]^=true;
+        if(value<=n &&  mod==11)
+          prime_array[value]=((prime_array[value]+1)&1);
 
-                           };
-                           };
+      }
+    }
 
+    //Removendo múltiplos de quadrados perfeitos
+    for(int64_t k=5; (k2=(k*k))<=n; ++k){
 
-//Marcando números com fatores primos repetidos como não primos
-for(n=5; (n*n)<=limit; n++){
+      if(prime_array[k2]==false)
+        continue;
 
-if(number_array[n]==true){
-for(x=(n*n); x<=limit; x+=(n*n))
-number_array[x]=false;
-                         };
+      for(int64_t l=k2; l<=n; l+=k2)
+        prime_array[l]=false;
+    }
 
-
-                          };
-
-
-//Exibindo números primos na tela
-printf("Eis a lista de primos até %lu:\n", limit);
-
-for(n=0; n<=limit; n++){
-//Marcando multiplos de 2,3,5 como não primos
-if(n>=6 && ((n%2)==0 || (n%3)==0 || (n%5)==0))
-number_array[n]=false;
+    //Ajuste dos elementos iniciais
+    prime_array[2]=true; prime_array[3]=true; prime_array[5]=true;
 
 
-if(number_array[n])
-printf("%lu, ", n);
-                       };
+  //Resultado
+  return prime_array;
 
-printf("...\n");
+};
 
-                                };
+//Função que implementa o crivo de Atkin
+void atkin_sieve(int64_t n){
+
+  //Variáveis locais
+  bool* prime_array=fill_prime_array_sieve(n);// 1--> indexa números primos, 0 -->indexa números compostos
 
 
+  //Procedimentos
+    //Exibindo o resultado do algoritmo
+    printf("Lista de números primos encontrados até %li: ", n);
 
-//**********************************************************************************************************************************************************************
+    for(int64_t i=1; i<=n; ++i){
+    
+      if(prime_array[i]==true){
+        printf("%li, ", i);
+      }
+
+    }
+
+    printf("...\n");
+
+
+    //Limpando o cachê de memória
+    if(prime_array){
+      free(prime_array); prime_array=NULL;
+    }
+
+};
+
 //FIM DO HEADER
 #endif
