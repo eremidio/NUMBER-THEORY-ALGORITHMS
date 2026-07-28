@@ -59,7 +59,7 @@ long double logarithm_negative_power_integral(long double x, int N){
   //Variáveis locais
   long double fact1 = factorial_db(N-1), fact2 = 0;
   long double ln_x = log(x), ln_2 = log(2), log_power = 0.0;
-  long double result = logarithmic_integral_continued_fraction(x)/fact1; 
+  long double result = logarithmic_integral_continued_fraction(x); 
 
 
   //Procedimento: loop principal
@@ -67,16 +67,17 @@ long double logarithm_negative_power_integral(long double x, int N){
 
     fact2 = factorial_db(k);
 
-    log_power = pow(ln_x, (k+1));
-    result = result-((x*fact2)/log_power);
-
     log_power = pow(ln_2, (k+1));
     result = result+((2*fact2)/log_power);
+
+    log_power = pow(ln_x, (k+1));
+    result = result-((x*fact2)/log_power);
 
   }
 
 
   //Resultado
+  result/=fact1;
   return result;
 
 };
