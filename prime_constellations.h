@@ -127,10 +127,17 @@ bool is_admissible_constellation(int ktuple[]){
 
 
       //Testando se a enupla define uma constelação válida de números primos
-      if(hits==t) return false; //Condição que define constelações não admissíveis
+      if(hits==t){ 
+
+        //Limpando o cachê de memória
+        if(residual_class) free(residual_class); residual_class=NULL;
+        return false;  //Condição que define constelações não admissíveis
+
+      }
       else{ //Resetando variáveis de teste
-      hits=0;
-      for(int v=0; v<K_TUPLE_HIGHEST; ++v) residual_class[v]=0;
+    
+        hits=0;
+        for(int v=0; v<K_TUPLE_HIGHEST; ++v) residual_class[v]=0;
       };
 
       

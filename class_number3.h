@@ -36,9 +36,11 @@ PARA MAIORES INFORMAÇÕES: https://mathworld.wolfram.com/ClassNumber.html
 #include"fast_perfect_square_detection.h"
 #include<math.h>
 
+
 //CONSTANTES GLOBAIS
 const double pi=4.0*atan(1.0);
 const uint64_t MAX_TU=1E9;
+
 
 //***********************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
@@ -91,12 +93,15 @@ int64_t class_number_formula_positive_discriminant(int64_t d){
 
   //Variáveis locais
   double fundamental_unit, sum=0;
+  int64_t bound=floor((d-1)/2.0);
   int64_t T, U;
+ 
 
-  
+
   //Procedimento
     //Computando uma unidade fundamental
     compute_fundamental_unit(&T, &U, d);
+    if(U==0) return 0; //Falha na busca por uma unidade fundamental nos limites especificados
     fundamental_unit=0.5*(T+sqrt(d)*U);
 
     //Loop principal
