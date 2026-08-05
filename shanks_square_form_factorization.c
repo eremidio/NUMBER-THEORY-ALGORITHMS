@@ -1,28 +1,31 @@
 //VAMOS CRIAR UM PROGRAMA QUE EMPREGA O ALGORITMO DE FORMAS QUADRÁTICAS DE SHANK PARA FATORAR NÚMEROS INTEIROS
 //COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o shanks_square_form_factorization shanks_square_form_factorization.c -lm -O2
 
+
 /*
-O ALGORITMO DE SHANKS É UM APRIMORAMENTO DO TESTE DE FERMAT PARA FATORAR NÚMEROS INTEIROS E USA
-O FATOR DE SE FOREM ENCONTRADOS a E b SATISFAZENDO a²=b² (mod n), COM n SENDO O NÚMERO A SER
-FATORADO ENTÃO POSSÍVEIS FATORES NÃO TRIVIAIS TEM A SEGUINTE FORMA mdc(a+b, n) OU mdc(|a-b|, n).
+O ALGORITMO DE SHANKS É UM APRIMORAMENTO DO TESTE DE FERMAT PARA FATORAR NÚMEROS INTEIROS E USA O FATOR DE SE FOREM ENCONTRADOS
+a E b SATISFAZENDO AS RELAÇÕES DE KRAITCHIK a²=b² (mod n), COM n SENDO O NÚMERO A SER FATORADO ENTÃO POSSÍVEIS FATORES NÃO
+TRIVIAIS TEM A SEGUINTE FORMA mdc(a+b, n) OU mdc(|a-b|, n).
 
 ESTE ALGORITMO NÃO FUNCIONA PARA NÚMEROS DA FORMA n=p^k, COM p PRIMO E k INTEIRO POSITIVO.
 
-O ALGORITMO EM QUESTÃO BASEIA-SE NO FATO DE QUE NO GRUPO DE FORMAS QUADRÁTICAS DE DISCRIMINANTE
-POSITIVO UMA DEFINIÇÃO ADEQUADA DE DISTÂNCIA ENTRE FORMAS QUADRÁTICAS cl(d) (OU EQUIVALENTEMENTE
-ENTRE IDEAIS EM CORPOS ALGÉBRICOS QUADRÁTICOS REAIS) PODE SER DEFINIDA E DE FORMA SIMILAR A
-CORPOS ALGÉBRICOS QUADRÁTICOS IMAGINÁRIOS UMA NOÇÃO DE FORMA AMBÍGUA É DEFINIDA,E DADO UM CERTO
+O ALGORITMO EM QUESTÃO BASEIA-SE NO FATO DE QUE NO GRUPO DE FORMAS QUADRÁTICAS DE DISCRIMINANTE POSITIVO UMA DEFINIÇÃO ADEQUADA
+DE DISTÂNCIA ENTRE FORMAS QUADRÁTICAS cl(d) (OU EQUIVALENTEMENTE ENTRE IDEAIS EM CORPOS ALGÉBRICOS QUADRÁTICOS REAIS) PODE SER
+DEFINIDA E DE FORMA SIMILAR A CORPOS ALGÉBRICOS QUADRÁTICOS IMAGINÁRIOS UMA NOÇÃO DE FORMA AMBÍGUA É DEFINIDA,E DADO UM CERTO
 DISCRIMINANTE d, COMPUTAR FORMAS AMBÍGUAS EQUIVALE A FATORAR d. 
 
-O ALGORITMO PODE SER EXPRESSO TANTO EM TERMOS DE CONVERGENTES DE FRAÇÕES CONTÍNUAS COMO EM TERMOS
-DE FORMAS QUADRÁTICAS. ALGUMAS VARIANTES USAM LISTAS DEVALORES PRÉ-COMPUTADOS PARA ACELERAR O
-ALGORITMO.
+O ALGORITMO PODE SER EXPRESSO TANTO EM TERMOS DE CONVERGENTES DE FRAÇÕES CONTÍNUAS COMO EM TERMOS DE FORMAS QUADRÁTICAS. ALGUMAS
+VARIANTES USAM LISTAS DEVALORES PRÉ-COMPUTADOS PARA ACELERAR O ALGORITMO. O USO DE MULTIPLICADORES AUMENTA A PROBABILIDADE DE
+SUCESSO NA FATORAÇÃO DE UM INTEIRO.
+
 
 PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Shanks%27s_square_forms_factorization
                           A Course In Computational Algebraic Number Theory by Henri Cohen
                           The Joy Of Factoring by Samuel Wagstaff Jr
 
+
 */ 
+
 
 //***************************************************************************************************************************
 //CABEÇALHO
@@ -35,16 +38,24 @@ PARA MAIORES INFORMAÇÕES: https://en.wikipedia.org/wiki/Shanks%27s_square_form
 const int64_t multiplicatives[]={1, 3, 5, 7, 11, 15, 21, 35, 55, 77, 105, 165, 231, 385, 1155};
 int multiplicatives_size=sizeof(multiplicatives)/sizeof(multiplicatives[0]);
 
+
 //***************************************************************************************************************************
 //DECLARAÇÃO DE FUNÇÕES
 bool perfect_square_checker(int64_t);
 int64_t gcd_s64(int64_t , int64_t);
 void shanks_square_form_factorization(int64_t);
 
+
 //***************************************************************************************************************************
 //FUNÇÕES
 //Função que determina se um número é quadrado perfeito
 bool perfect_square_checker(int64_t n){
+  
+  //Pré-teste de classes residuais mod 16 para rápida detecção de não quadrados perfeitos
+  int64_t mod16=(n&15);
+  if(mod16!=0 && mod16!=1 && mod16!=4 && mod16!=9)
+    return false;
+
 
   //Variáveis locais
   int64_t odd=1;
@@ -58,8 +69,10 @@ bool perfect_square_checker(int64_t n){
   
       if(n==0) return true;
       if(n<0) return false;
+
     };
 };
+
 
 
 //Função que implementa o algoritmo de Euclides
@@ -67,14 +80,17 @@ int64_t gcd_s64(int64_t a, int64_t b){
 
   if(b==0) return a;
   else return gcd_s64(b, a%b);
-                                                };
+
+};
+
 
 //Função que implementa o algoritmo de formas quadráticas de Shanks
 void shanks_square_form_factorization(int64_t n){
 
   //Definindo um fator multiplicativo
-  rerun:
   int k_index=0;
+  rerun:
+
 
   if(k_index==multiplicatives_size)
     printf("O algoritmo não foi capaz de fatorar o número em questão!\n");
@@ -83,8 +99,8 @@ void shanks_square_form_factorization(int64_t n){
 
   //Variáveis locais
   int64_t factor1=0, factor2=0;
-  int64_t i; //Variável de iteração
-  int64_t b0, b, p0, p1, p2, q0, q1, q2; //Variáveis usadas nos loops
+  int64_t i, root_n=sqrt(n); 
+  int64_t b0, b, p0, p1, p2, q0, q1, q2; 
 
 
   //Procedimentos 
@@ -97,8 +113,9 @@ void shanks_square_form_factorization(int64_t n){
 
     //Loop1
     while(perfect_square_checker(q1)==false){
+
       ++i;
-      if(n>10000000 && i>sqrt(n)) break;
+      if(n>10000000 && i>root_n) break;
 
       //Cálculo das variáveis
       b=floor((p0+p1)/q1);
@@ -109,6 +126,7 @@ void shanks_square_form_factorization(int64_t n){
       q0=q1;
       q1=q2;
       p1=p2;
+
     };
 
 
@@ -124,6 +142,7 @@ void shanks_square_form_factorization(int64_t n){
 
     //Loop retógrado
     do{
+
         ++i;
         if(n>10000000 && i>sqrt(n)) break;
 
@@ -138,6 +157,7 @@ void shanks_square_form_factorization(int64_t n){
         q0=q1;
         q1=q2;
         p1=p2;
+
     }while(true);
 
 
@@ -157,13 +177,13 @@ void shanks_square_form_factorization(int64_t n){
 };
 
 
-
 //***************************************************************************************************************************
 //FUNÇÃO PRINCIPAL
 int main(){
 
   //Variáveis locais
   int64_t number;
+
 
   //Procedimentos
     //Recebendo input do usuário
@@ -173,8 +193,8 @@ int main(){
     //Fatorando o número em questão
     shanks_square_form_factorization(number);
 
+
   //Finalizando a aplicação
   return 0;
-
 
 }
