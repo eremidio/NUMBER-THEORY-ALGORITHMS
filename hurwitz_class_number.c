@@ -1,5 +1,5 @@
 //VAMOS CRIAR UM PROGRAMA PARA TESTAR AS ROTINAS CRIADAS NO ARQUIVO hurwitz_class_number.h
-//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o hurwitz_class_number hurwitz_class_number.c -lm  
+//COMPILAR ESTE PROGRAMA COM O COMANDO: gcc -o hurwitz_class_number hurwitz_class_number.c -lm -O2
 
 
 
@@ -17,7 +17,7 @@ int main(){
   //Procedimentos
     //Recebendo input do usuário
     printf("[Inteiro] N: ");
-    scanf("%li", &N);
+    if(scanf("%li", &N)!=1) return 0;
 
     //Computando o número de classe de Hurwitz
     struct hurwitz_fraction H=hurwitz_class_number_reduced_forms(N);

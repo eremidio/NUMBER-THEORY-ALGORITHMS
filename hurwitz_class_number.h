@@ -32,12 +32,14 @@ PARA MAIORES INFORMAÇÕES: A Course In Computational Algebraic Number Theory by
 #include<stdint.h>
 #include<stdbool.h>
 #include<math.h>
+#include<stdio.h>
 
 
 //***************************************************************************************************************
 //ESTRUTURAS E FUNÇÕES USADAS NO ALGORITMO
 //Função que computa o mdc de dois inteiros de 64 bits
 int64_t gcd_hurwitz(int64_t a, int64_t b){
+
   if(b<0) b=(-b);   if(a<0) a=(-a);
   if(b==0) return a;
   else return gcd_hurwitz(b, (a%b));
@@ -48,7 +50,6 @@ int64_t gcd_hurwitz(int64_t a, int64_t b){
 struct hurwitz_fraction{
   int64_t num;
   int64_t den;
-
 };
 
 //Constantes
@@ -71,6 +72,7 @@ struct hurwitz_fraction hurwitz_fraction_add(struct hurwitz_fraction h1, struct 
     if(ratio>1){
       h3.den/=ratio; h3.num/=ratio;
     };
+
 
   //Resultado
   return h3;
@@ -101,81 +103,125 @@ struct hurwitz_fraction hurwitz_class_number_reduced_forms(int64_t);
 
 //***************************************************************************************************************
 //FUNÇÕES
-//Função que computa o número de classe de Hurwitz usando contangem de formas quadráticas primitivas
+//Função que computa o número de classe de Hurwitz usando contagem de formas quadráticas reduzidas não necessariamente primitivas
 struct hurwitz_fraction hurwitz_class_number_reduced_forms(int64_t N){
 
-  //Casos bases 
+  //Restrição: N deve ser negativo
+  if(N>0) return hurwitz_zero;
+
+  //Casos bases
   if(N==0){
     struct hurwitz_fraction H={-1, 12};
     return H;
   };
 
-  if(N==3){
+  if(N==(-3)){
     struct hurwitz_fraction H={1,3};
     return H;
   };
 
-  if(N==4){
+  if(N==(-4)){
     struct hurwitz_fraction H={1,2};
     return H;
   };
 
-  if(N&3==1 || N&3==2) return hurwitz_zero;
 
-  //CASO GERAL:
+//CASO GERAL:
+
   //Variáveis locais
-  struct hurwitz_fraction H=hurwitz_zero, adder;
-  int64_t D=(-N);
-  int64_t B=floor(sqrt((N/3.0)));
-  int64_t a, b, c;
-
+  struct hurwitz_fraction H=hurwitz_one, adder;
+  int64_t B=floor(sqrt((-N/3.0)));
+  int64_t a, b, q;
 
   //Procedimentos
-    //Loop principal:contagem de formas reduzidas
-    for(b=(N&1); b<=B; b+=2){
+    //Inicializando
+    b=N%2;
+    if(b<0) b+=2;
+    printf("[Limite] B: %li\n",B);
 
-      //Inicializando variáveis
-      a=b;
-      if(a<=1) a=1;
+    //Loop principal
+    while(1){
 
-     //Loop secundário sobre possiveis valores de a
-     for(; a<=B; a++){
-       c=round(((b*b)-D)/4.0);
+      //Ajuste de variáveis
+      q=((b*b-N)/4);
+      a = (b < 2) ? 2 : b;
 
-       if((a*a)<c){
-         if((c%a)==0){
+      //Loop secundário
+      while(1){
 
-           //Caso 1: a=b
-           if(a==b){
-              if(c==a*b){
-                adder.num=1; adder.den=3;
-                H=hurwitz_fraction_add(H, adder);
-              }
-              else H=hurwitz_fraction_add(H,hurwitz_one);
-           }        
+      //Checando a contagem de formas quadráticas reduzidas
+      if((q%a)==0){
 
-           //Caso 2: a²=q
-           else if((a*a)==c){
-             if(b==0){
-               adder.num=1; adder.den=2;
-               H=hurwitz_fraction_add(H, adder);
-             }
-             else H=hurwitz_fraction_add(H,hurwitz_one);
+         //Caso 1: a=b
+         if(a==b){
+
+           if((a*b)==q){
+             adder.num=1; printf("a: %li b: %li q: %li +1/3\n", a, b, q);
+             adder.den=3;
            }
-          
-           //Caso 3:
            else{
-             adder.num=2; adder.den=1;
-             H=hurwitz_fraction_add(H, adder);
-             
-           };
+             adder.num=1; printf("a: %li b: %li q: %li +1\n", a, b, q);
+             adder.den=1;
+           }
 
-         };
-       };
-  
-     };
-  
+           H=hurwitz_fraction_add(H, adder);
+           goto a_loop;
 
+         }//Fim do caso 1
+
+
+         //Caso 2: a²=q
+         if((a*a)==q){
+
+           if(b==0){
+             adder.num=1;
+             adder.den=2; printf("a: %li b: %li q: %li +1/2\n", a, b, q);
+           }
+           else{
+            adder.num=1; printf("a: %li b: %li q: %li +1\n", a, b, q);
+            adder.den=1;
+           }
+
+           H=hurwitz_fraction_add(H, adder);
+           goto a_loop; 
+
+         }//Fim do caso 2
+
+
+        //Caso 3
+        if((a*a)!=q && a!=b){
+
+          if(b==0){
+            adder.num=1; printf("a: %li b: %li q: %li +1\n", a, b, q);
+            adder.den=1;
+          }
+          else{
+            adder.num=2; printf("a: %li b: %li q: %li +2\n", a, b, q);
+            adder.den=1;
+          }
+
+          H=hurwitz_fraction_add(H, adder);
+
+        }
+
+
+        }//Fim da contagem de formas quadráticas reduzidas
+
+
+        //Ajuste de variáveis
+        a_loop:
+
+        a++;
+        if((a*a)>q) break;
+
+      };//Fim do loop secundário
+
+
+      //Ajuste de variáveis
+      b_loop:
+
+      b+=2;
+      if(b>B) break;
 
     };//Fim do loop principal
 
@@ -183,7 +229,8 @@ struct hurwitz_fraction hurwitz_class_number_reduced_forms(int64_t N){
   //Resultado
   return H;
 
-};
+};  
+
 
 //***************************************************************************************************************
 //FIM DO HEADER
