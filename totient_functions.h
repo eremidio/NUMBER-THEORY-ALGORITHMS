@@ -7,9 +7,9 @@ A FUNÇÃO λ DE CARMICHAEL OU FUNÇÃO TOTIENTE REDUZIDA É DEFINIDA COMO O MEN
 NÚMEROS COPRIMOS a COM n NO INTERVALO 2,..., (n-1); SATISFAZEM
 A RELAÇÃO a^λ(n)=1 (mod n). 
 
-O TEOREMA DE CARMICHAEL AFIRMA QUE PARA n= 8, 16, 32, 64, ..., (2^r) COM r>3 λ(n)=φ(n). SE n=2, 4 OU p^r COM
-p PRIMO E λ(n)=(1/2)φ(n) se n=2^r com r≳3. SE n PUDER SER DECOMPOSTO EM FATORES PRIMOS DESTA NATUREZA
-n=(p(1)^r(1))...(p(k)^r(k)), ENTÃO λ(n)=mmc(λ(p(1)^r(1)), ..., λ(p(n)^r(n))).
+O TEOREMA DE CARMICHAEL AFIRMA QUE PARA SE n=2, 4 OU p^r COM p PRIMO, ENTÃO λ(n)=φ(n) E SE n=2^r com r≳3,
+ENTÃO λ(n)=(1/2)φ(n). SE n PUDER SER DECOMPOSTO EM FATORES PRIMOS DESTA NATUREZA n=(p(1)^r(1))...(p(k)^r(k)),
+ENTÃO λ(n)=mmc(λ(p(1)^r(1)), ..., λ(p(n)^r(n))).
 
 A FUNÇÃO TOTIENTE DE JORDAN É DEFINIDA PELA RELAÇÃO J(k, n)=(n^k)Π(1-(1/(p^k))).
 A FUNÇÃO TOTIENTE DE JORDAN É UMA FUNÇÃO MULTIPLICATIVA DADO m E n COPRIMOS J(k, mn)=J(k, m)J(k, n).
