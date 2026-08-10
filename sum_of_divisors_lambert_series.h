@@ -54,7 +54,7 @@ int32_t * compute_sum_of_divisors_function(int32_t n){
   //Procedimentos
     //Inicializando o array de coeficientes de somas parciais da séries de Lambert
     for(int32_t k=1; k<=n; ++k) sum_of_divisors_array[k]=k+1;//1 e n são divisores triviais de qualquer número
-
+    sum_of_divisors_array[1]=1;
 
     //Computando os valores da função de somas de divisores
     for(int32_t i=2; i<=(n/2); ++i){
