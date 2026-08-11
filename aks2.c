@@ -20,7 +20,7 @@ int main(){
     printf("Número a ser testado: ");
     if(scanf("%lu", &number)!=1)  return 0;
 
-
+   
     //Usando o teste de primalidade AKS
     if(aks_primality_test(number, Yes)==true)
       printf("O número em questão é primo.\n");
