@@ -24,118 +24,176 @@ void binary_extended_gcd(int64_t*, int64_t*, int64_t*, int64_t, int64_t);
 
 //*******************************************************************************************************************************************
 //FUNÇÕES
-//Função que implementa uma versão binária do algoritmo de Euclides extendido ( ax+bx=mdc(a,b))
-void binary_extended_gcd(int64_t* a, int64_t* b, int64_t* gcd, int64_t x, int64_t y){
+//Função que implementa uma versão binária do algoritmo de Euclides
+//extendido ( ax+by=mdc(a,b))
+void binary_extended_gcd(int64_t* U, int64_t* V, int64_t* gcd,
+                         int64_t a, int64_t b){
 
   //Variáveis locais
-  int64_t u, v, d;
-  int64_t t1, t3, v1, v3;
-  int bit_shift=0;
-  bool f1=false, f2=false;
+  __int128_t u, v, d, q, r;
+  __int128_t t1, t3, v1, v3;
+  int k=0;
+  int f1=0, f2=0;
 
   //Procedimentos
-    //Redução da ordem dos operandos
-    if(x<y){
-      int64_t temp=y;
-      y=x; x=temp;
-      f1=true;
-    }
-   
-    //Caso base: b=0
-    base_case:
-    if(y==0){
-      if(f1==false){
-        u=1; v=0; d=x;
-        goto yield_result;
-      }
-
-      if(f1==true){
-        u=0; v=1; d=x;
-        goto yield_result;
-      }
-
-    };
-
-    //Redução
-      /*NOTA: Essa etapa é feita para que os números de bits de x e y, o algoritmo em questão se aplica se apenas um dos
-            argumentos for um inteiro de precisão multipla, nesse caso as variáveis auxiliares t1, t3, v1, v3
-            necessitam ser um inteiro de precisão múltipla
-      */
-      int64_t r=(x%y);
-      int64_t q=(x/y);
-      x=y; y=r;
-      if(y==0) goto base_case;
-
-    //Removendo os fatores 2 em comum
-    while(!(x&1) && !(y&1)){
-      x>>=1; y>>=1;
-      bit_shift++;
-    };     
-
-    
-    //Inicializando variáveis
-    if(!(y&1)){
-      int64_t temp=y;
-      y=x; x=temp;
-      f2=true;
-    }
-
-    u=1; d=x; v1=0; v3=y;
-    if(x&1){
-      t1=0; t3=(-y);
-      goto positive_check;    
+    //Ajuste dos operandos
+    if(b>a){
+      int64_t temp = a;
+      a=b;
+      b=temp;
+      f1=1;
     }
     else{
-      t1=((y+1)>>2); t3=(x>>1);
-    };
+      f1=0;
+    }
 
-    //Loop principal: redução euclidiana
-    while(t3>0){
-
-      //Removendo fatores 2 restante
-      if(!(t3&1)){
-        t3>>=1;
-        if(!(t1&1)) t1>>=1;
-        else t1=((t1+y)>>1);  
+    //Caso base: b=0
+    if(b==0){
+      if(f1==0){
+        u=1;
+        v=0;
+        d=a;
+        goto yield_result;
       }
-
-      //Ajuste de variáveis
-      positive_check:
-      if(t3>0){
-        u=t1; d=t3;
-      } 
       else{
-        v1=(y-t1); v3=(-t3);
+        u=0;
+        v=1;
+        d=a;
+        goto yield_result;
+      }
+    }
+
+    //Reduzindo a ordem dos operandos: necessário caso a ordem dos números seja muito diferente
+    r=(a%b);
+    q=(a-r)/b;
+    a=b;
+    b=r;
+
+    //Caso base: resto nulo
+    if(b==0){
+      if(f1==0){
+        u=0;
+        v=1;
+        d=a;
+        goto yield_result;
+      }
+      else{
+        u=1;
+        v=0;
+        d=a;
+        goto yield_result;
+      }
+    }
+
+
+    //Removendo fatores 2 em comum
+    while(!(a&1) && !(b&1)){
+      b>>=1;
+      a>>=1;
+      k++;
+    }
+
+    //Ajustando a paridade dos operandos
+    if(!(b&1)){
+      int64_t temp = a;
+      a=b;
+      b=temp;
+      f2=1;
+    }
+    else{
+      f2=0;
+    }
+
+    //Ajuste de variáveis usadas no loop euclidiano
+    u=1;
+    d=a;
+    v1=b;
+    v3=b;
+
+    if((a&1)){
+      t1=0;
+      t3=(-b);
+      goto a_odd_step;
+    }
+    else{
+      t1=((b+1)>>1);
+      t3=(a>>1);
+    }
+
+
+    //Loop euclidiano
+    while(1){
+
+      //Ajuste da paridade das variáveis usadas no loop euclidiano
+      if(!(t3&1)){
+        t3=(t3>>1);
+
+        if(!(t1&1))
+          t1=(t1>>1);
+        else
+          t1=((t1+b)>>1);
+
+        continue;
       }
 
+      //Ajustando das variáveis usadas no loop euclidiano
+      a_odd_step:
+
+      if(t3>0){
+        u=t1;
+        d=t3;
+      }
+      else{
+        v1=b-t1;
+        v3=(-t3);
+      }
+
+      //Verificando se os operandos foram reduzidos
       t1=(u-v1);
       t3=(d-v3);
-      if(t1<0) t1+=y;
-  
-    };//Fim do loop principal
+
+      if(t1<0)
+        t1+=b;
+
+      if(t3==0)
+        break;
+
+    };
 
 
-    //Ajuste fino do resultado
-    v=(d-(x*u))/y;
-    if(f2==true){
-      int64_t temp=u;
-      u=v; v=temp;
+    //Ajuste final do resultado
+    v=(d-a*u)/b;
+
+    //Restaurando os fatores 2 removidos anteriormente
+    d<<=k;
+
+    //Se os operandos foram trocados no ajuste de paridade
+    //trocar também os coeficientes correspondentes
+    if(f2==1){
+      __int128_t temp = u;
+      u=v;
+      v=temp;
     }
-    
-    u=-(v*q);
 
-    //Resultado
-    yield_result:
-      if(f1==true){
-        (*a)=u; (*b)=v;
-      }
-      else{
-        (*a)=v; (*b)=u;
-      }
-      if(bit_shift>0) (*gcd)=(d<<bit_shift);
-      else (*gcd)= d;
+    //Desfazendo a redução euclidiana inicial
+    u-=(v*q);
+
+    //Desfazendo a troca inicial dos operandos
+    if(f1==0){
+      __int128_t temp = u;
+      u=v;
+      v=temp;
+    }
+
+
+  //Resultado
+  yield_result:
+  (*U)=(int64_t)u;
+  (*V)=(int64_t)v;
+  (*gcd)=(int64_t)d;
 
 };
+
 
 //*******************************************************************************************************************************************
 //FIM DO HEADER
