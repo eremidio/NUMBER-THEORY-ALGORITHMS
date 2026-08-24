@@ -6,12 +6,15 @@
 
 //Função principal
 int main(){
-//Criando um objeto da classe
-elliptic_curve_method factorizer;
 
-//Executando o algoritmo
-factorizer.run();
+  //Criando um objeto da classe
+  elliptic_curve_method factorizer;
 
-//Finalizando a aplicação
-return 0;
-          }
+  //Executando o algoritmo
+  factorizer.run();
+
+  //Finalizando a aplicação
+  return 0;
+          
+}
+
